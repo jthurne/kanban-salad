@@ -3,6 +3,6 @@
 
     <string name="app_name">Kanban Data Tracker</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Data Reader</string>
 
 </resources>
