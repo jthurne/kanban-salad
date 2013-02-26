@@ -11,9 +11,9 @@ import android.view.Menu;
 
 public class SelectTagActivity extends Activity {
     private static final String APP_MIME_TYPE = "application/vnd.kdt";
-	private static final Charset ASCII = Charset.forName("US-ASCII");
+    private static final Charset ASCII = Charset.forName("US-ASCII");
 
-	@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_tag);
@@ -21,23 +21,20 @@ public class SelectTagActivity extends Activity {
         configureNFCTag(createMessage());
     }
 
+    private void configureNFCTag(NdefMessage message) {
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter == null)
+            return;
+        nfcAdapter.setNdefPushMessage(message, this);
+    }
 
-	private void configureNFCTag(NdefMessage message) {
-		NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-		if (nfcAdapter == null) return;
-		nfcAdapter.setNdefPushMessage(message, this);
-	}
+    private NdefMessage createMessage() {
+        NdefRecord mimeRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
+                encode(APP_MIME_TYPE), new byte[0],
+                encode("You've been BEAMED!"));
 
-
-	private NdefMessage createMessage() {
-		NdefRecord  mimeRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-				encode(APP_MIME_TYPE),
-				new byte[0],
-				encode("You've been BEAMED!"));
-
-		return new NdefMessage(new NdefRecord[] {mimeRecord});
-	}
-
+        return new NdefMessage(new NdefRecord[] { mimeRecord });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,7 +44,7 @@ public class SelectTagActivity extends Activity {
     }
 
     private byte[] encode(String toConvert) {
-	return toConvert.getBytes(ASCII);
+        return toConvert.getBytes(ASCII);
     }
 
 }
