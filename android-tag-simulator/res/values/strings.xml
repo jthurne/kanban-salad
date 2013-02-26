@@ -4,5 +4,7 @@
     <string name="app_name">KDT  Tag Simulator</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Ready to simulate an NFC Tag</string>
+    <string name="title_activity_program_tag">Program Tag</string>
+    <string name="program_tag_title">Programming Tag</string>
 
 </resources>

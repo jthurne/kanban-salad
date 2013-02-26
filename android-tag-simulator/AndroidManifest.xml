@@ -7,7 +7,7 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="16" />
-    
+
     <uses-permission android:name="android.permission.NFC" />
 
     <application
@@ -23,6 +23,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="org.kdt.tagsimulator.ProgramTagActivity"
+            android:label="@string/title_activity_program_tag" >
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+			<meta-data android:name="android.nfc.action.TECH_DISCOVERED"
+    				   android:resource="@xml/programmable_tags" />
+            
         </activity>
     </application>
 
