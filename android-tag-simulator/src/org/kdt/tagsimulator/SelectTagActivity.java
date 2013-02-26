@@ -10,25 +10,33 @@ import android.app.Activity;
 import android.view.Menu;
 
 public class SelectTagActivity extends Activity {
+    private static final String APP_MIME_TYPE = "application/vnd.kdt";
+	private static final Charset ASCII = Charset.forName("US-ASCII");
 
-    @Override
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_tag);
-        
-		NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-		
-		NdefRecord  uriRecord = NdefRecord.createUri("http://github.com/jthurne/kanban-data-tracker");
-		NdefRecord  mimeRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, 
-				"application/vnd.kdt".getBytes(Charset.forName("US-ASCII")),
-				new byte[0], 
-				"You've been BEAMED!".getBytes(Charset.forName("US-ASCII")));
-		
-		NdefMessage message = new NdefMessage(new NdefRecord[] {mimeRecord});
-		
-		if (nfcAdapter == null) return;
-		nfcAdapter.setNdefPushMessage(message, this);        
+
+        configureNFCTag(createMessage());
     }
+
+
+	private void configureNFCTag(NdefMessage message) {
+		NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		if (nfcAdapter == null) return;
+		nfcAdapter.setNdefPushMessage(message, this);
+	}
+
+
+	private NdefMessage createMessage() {
+		NdefRecord  mimeRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
+				encode(APP_MIME_TYPE),
+				new byte[0],
+				encode("You've been BEAMED!"));
+
+		return new NdefMessage(new NdefRecord[] {mimeRecord});
+	}
 
 
     @Override
@@ -37,5 +45,9 @@ public class SelectTagActivity extends Activity {
         getMenuInflater().inflate(R.menu.select_tag, menu);
         return true;
     }
-    
+
+    private byte[] encode(String toConvert) {
+	return toConvert.getBytes(ASCII);
+    }
+
 }
