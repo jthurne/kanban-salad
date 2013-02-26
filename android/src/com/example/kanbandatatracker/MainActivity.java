@@ -32,11 +32,10 @@ public class MainActivity extends Activity {
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
 	        Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 	        if (rawMsgs != null) {
-	            NdefMessage[] msgs = new NdefMessage[rawMsgs.length];
-	            for (int i = 0; i < rawMsgs.length; i++) {
-	                msgs[i] = (NdefMessage) rawMsgs[i];
+	            for (Parcelable rawMessage : rawMsgs) {
+	                NdefMessage message = (NdefMessage) rawMessage;
 
-	                NdefRecord[] records = msgs[i].getRecords();
+	                NdefRecord[] records = message.getRecords();
 	                for (NdefRecord record : records) {
 	                	byte[] payload = record.getPayload();
 	                	String text = new String(payload, Charset.forName("US-ASCII"));
