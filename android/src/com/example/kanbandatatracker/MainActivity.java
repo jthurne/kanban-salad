@@ -1,5 +1,7 @@
 package com.example.kanbandatatracker;
 
+import java.nio.charset.Charset;
+
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -33,8 +35,15 @@ public class MainActivity extends Activity {
 	            NdefMessage[] msgs = new NdefMessage[rawMsgs.length];
 	            for (int i = 0; i < rawMsgs.length; i++) {
 	                msgs[i] = (NdefMessage) rawMsgs[i];
-	                final TextView helloWorldText = (TextView) findViewById(R.id.hello_world);
-	                helloWorldText.setText(msgs[i].toString());
+
+	                NdefRecord[] records = msgs[i].getRecords();
+	                for (NdefRecord record : records) {
+	                	byte[] payload = record.getPayload();
+	                	String text = new String(payload, Charset.forName("US-ASCII"));
+
+	                	final TextView helloWorldText = (TextView) findViewById(R.id.hello_world);
+		                helloWorldText.setText(text);
+	                }
 	            }
 	        }
 	    }
