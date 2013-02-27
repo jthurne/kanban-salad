@@ -70,7 +70,12 @@ public class MainActivity extends Activity {
 		
 		NdefRecord[] records = message.getRecords();
 		for (NdefRecord record : records) {
-			String text = decodePayload(record);
+			String mimeType = decodePayload(record.getType());
+			String text = decodePayload(record.getPayload());
+			
+			if (mimeType.endsWith("task")) {
+				text = "\t\t" + text;
+			}
 			
 			textPayloads.add(text);
 		}
@@ -78,10 +83,8 @@ public class MainActivity extends Activity {
 		return textPayloads;
 	}
 
-	private String decodePayload(NdefRecord record) {
-		byte[] payload = record.getPayload();
-		String text = new String(payload, Charset.forName("US-ASCII"));
-		return text;
+	private String decodePayload(byte[] payload) {
+		return new String(payload, Charset.forName("US-ASCII"));
 	}
 
 }
