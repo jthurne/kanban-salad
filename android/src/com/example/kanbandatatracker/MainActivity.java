@@ -10,6 +10,7 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.widget.TextView;
 
@@ -27,23 +28,23 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
 	@Override
-	public void onResume() {
-		super.onResume();
-		List<String> payloads = tagToStrings();
+    protected void onNewIntent(Intent intent) {
+		List<String> payloads = tagToStrings(intent);
 		
 		for (String text : payloads) {
 			final TextView helloWorldText = (TextView) findViewById(R.id.hello_world);
-		    helloWorldText.setText(text);
+			//each activity is new and doesn't just keep a running list
+		    helloWorldText.append("\n"+text);
 		}
 	}
 
-	private List<String> tagToStrings() {
+	private List<String> tagToStrings(Intent intent) {
 		List<String> textPayloads = new LinkedList<String>();
 		
-		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-			Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+			Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 			textPayloads.addAll(rawToStrings(rawMsgs));
 	    }
 		
