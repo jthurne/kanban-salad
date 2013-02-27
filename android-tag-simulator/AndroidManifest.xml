@@ -18,21 +18,19 @@
         <activity
             android:name="org.kdt.tagsimulator.SelectTagActivity"
             android:label="@string/app_name" >
-            <intent-filter>
+<!--             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter> -->
         </activity>
         <activity
             android:name="org.kdt.tagsimulator.ProgramTagActivity"
-            android:label="@string/title_activity_program_tag" >
+            android:label="@string/title_activity_program_tag"
+            android:launchMode="singleTask" >
             <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-			<meta-data android:name="android.nfc.action.TECH_DISCOVERED"
-    				   android:resource="@xml/programmable_tags" />
-            
         </activity>
     </application>
 

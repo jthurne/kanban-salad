@@ -9,8 +9,40 @@
     tools:context=".ProgramTagActivity" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/program_tag_title" />
+
+    <RadioGroup
+        android:id="@+id/tag_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp" >
+
+        <RadioButton
+            android:id="@+id/cell_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Cell" />
+
+        <RadioButton
+            android:id="@+id/task_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Task" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/tag_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tag_type"
+        android:layout_marginTop="25dp"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>
