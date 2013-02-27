@@ -34,13 +34,29 @@ public class MainActivity extends Activity {
 		List<String> payloads = tagToStrings(intent);
 		
 		for (String text : payloads) {
-			final TextView helloWorldText = (TextView) findViewById(R.id.hello_world);
+			final TextView helloWorldText = getSnapshotTextView();
 			//each activity is new and doesn't just keep a running list
 		    helloWorldText.append("\n"+text);
 		}
 	}
+	
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("snapshot", getSnapshotTextView().getText().toString());
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        getSnapshotTextView().setText(savedInstanceState.getString("snapshot"));
+    }
+    
+    private TextView getSnapshotTextView() {
+       return (TextView) findViewById(R.id.hello_world);
+    }
 
-	private List<String> tagToStrings(Intent intent) {
+    private List<String> tagToStrings(Intent intent) {
 		List<String> textPayloads = new LinkedList<String>();
 		
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
