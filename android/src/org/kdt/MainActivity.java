@@ -32,6 +32,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		onNewIntent(getIntent());
 	}
 
 	@Override
@@ -49,14 +50,13 @@ public class MainActivity extends Activity {
 		for (String text : payloads) {
 			final TextView helloWorldText = getSnapshotControl();
 			//each activity is new and doesn't just keep a running list
-		    helloWorldText.append("\n"+text+" - num payloads " + payloads.size());
+		    helloWorldText.append("\n"+text);
 		}
 	}
 	
     @Override
     protected void onResume() {
         super.onResume();
-        onNewIntent(getIntent());
     }
 
     @Override
