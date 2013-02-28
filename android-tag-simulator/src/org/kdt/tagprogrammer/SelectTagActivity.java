@@ -1,4 +1,4 @@
-package org.kdt.tagsimulator;
+package org.kdt.tagprogrammer;
 
 import java.nio.charset.Charset;
 

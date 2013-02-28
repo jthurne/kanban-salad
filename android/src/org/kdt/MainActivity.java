@@ -1,8 +1,10 @@
-package com.example.kanbandatatracker;
+package org.kdt;
 
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.kdt.kanbandatatracker.R;
 
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
