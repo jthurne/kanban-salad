@@ -196,9 +196,10 @@ public class ProgramTagActivity extends Activity {
 
     private NdefMessage createMessage() {
         NdefRecord mimeRecord = createMimeRecord();
-        return new NdefMessage(new NdefRecord[] { mimeRecord });
+        NdefRecord appRecord = createAppRecord();
+        return new NdefMessage(new NdefRecord[] { mimeRecord, appRecord });
     }
-
+    
     private NdefRecord createMimeRecord() {
         String mimeType = findMimeType();
         String tagData = getTagData();
@@ -206,6 +207,10 @@ public class ProgramTagActivity extends Activity {
         return new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
                 encode(mimeType), new byte[0],
                 encode(tagData));
+    }
+    
+    private NdefRecord createAppRecord() {
+        return NdefRecord.createApplicationRecord("org.kdt.kanbandatatracker");
     }
 
     private String findMimeType() {

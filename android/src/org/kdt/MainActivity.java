@@ -21,16 +21,15 @@ import java.util.List;
 
 import org.kdt.kanbandatatracker.R;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -59,6 +58,12 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onNewIntent(getIntent());
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -110,6 +115,11 @@ public class MainActivity extends Activity {
 		NdefRecord[] records = message.getRecords();
 		for (NdefRecord record : records) {
 			String mimeType = decodePayload(record.getType());
+
+			if(!mimeType.startsWith("application/vnd.kdt")) {
+			    continue;
+			}
+			
 			String text = decodePayload(record.getPayload());
 			
 			if (mimeType.endsWith("task")) {
