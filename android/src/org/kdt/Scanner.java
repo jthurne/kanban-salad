@@ -15,12 +15,12 @@
  */
 package org.kdt;
 
-import java.util.List;
+import org.kdt.model.Scanable;
 
 import android.content.Intent;
 
 public interface Scanner {
 	
-	public List<String> scan(Intent intent);
+	public Scanable scan();
 
 }

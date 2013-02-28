@@ -15,9 +15,9 @@
  */
 package org.kdt;
 
-import java.util.List;
-
 import org.kdt.kanbandatatracker.R;
+import org.kdt.model.Scanable;
+import org.kdt.model.Task;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -44,13 +44,16 @@ public class MainActivity extends Activity {
 	
 	@Override
     protected void onNewIntent(Intent intent) {
-		Scanner scanner = new NfcScanner();
-		List<String> payloads = scanner.scan(intent);
+		Scanner scanner = new NfcScanner(intent);
+		Scanable payload = scanner.scan();
 		
-		for (String text : payloads) {
+		if (payload != null) {
 			final TextView helloWorldText = getSnapshotControl();
 			//each activity is new and doesn't just keep a running list
-		    helloWorldText.append("\n"+text);
+			if (payload instanceof Task) {
+				helloWorldText.append("\t\t");
+			}
+		    helloWorldText.append(payload.getPayload()+"\n");
 		}
 	}
 	

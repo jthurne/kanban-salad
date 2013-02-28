@@ -16,8 +16,10 @@
 package org.kdt;
 
 import java.nio.charset.Charset;
-import java.util.LinkedList;
-import java.util.List;
+
+import org.kdt.model.Cell;
+import org.kdt.model.Scanable;
+import org.kdt.model.Task;
 
 import android.content.Intent;
 import android.nfc.NdefMessage;
@@ -28,52 +30,41 @@ import android.os.Parcelable;
 
 public class NfcScanner implements Scanner {
 	
-	public List<String> scan(Intent intent) {
-		List<String> textPayloads = new LinkedList<String>();
-		
+	private final Intent intent;
+	
+	public NfcScanner(Intent intent) {
+		this.intent = intent;
+	}
+	
+	public Scanable scan() {
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
 			Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-			textPayloads.addAll(rawToStrings(rawMsgs));
+			return rawToScanable(rawMsgs);
 	    }
 		
-		return textPayloads;
+		return null;
 	}
 	
-	private List<String> rawToStrings(Parcelable[] rawMsgs) {
-		List<String> textPayloads = new LinkedList<String>();
-		
-		if (rawMsgs != null) {
-		    for (Parcelable rawMessage : rawMsgs) {
-		        NdefMessage message = (NdefMessage) rawMessage;
-
-		        textPayloads.addAll(messageToStrings(message));
-		    }
-		}
-		
-		return textPayloads;
+	private Scanable rawToScanable(Parcelable[] rawMsgs) {
+	    NdefMessage message = (NdefMessage) rawMsgs[0];
+    	return messageToScanable(message);
 	}
 	
-	private List<String> messageToStrings(NdefMessage message) {
-		List<String> textPayloads = new LinkedList<String>();
+	private Scanable messageToScanable(NdefMessage message) {
 		
-		NdefRecord[] records = message.getRecords();
-		for (NdefRecord record : records) {
-			String mimeType = decodePayload(record.getType());
+		NdefRecord record = message.getRecords()[0];
+		String text = decodePayload(record.getPayload());
+		
+		String mimeType = decodePayload(record.getType());
 
-			if(!mimeType.startsWith("application/vnd.kdt")) {
-			    continue;
-			}
-			
-			String text = decodePayload(record.getPayload());
-			
-			if (mimeType.endsWith("task")) {
-				text = "\t\t" + text;
-			}
-			
-			textPayloads.add(text);
+		Scanable kanbanArtifact;
+		if (mimeType.endsWith("task")) {
+			kanbanArtifact = new Task(text);
+		} else {
+			kanbanArtifact = new Cell(text);
 		}
 		
-		return textPayloads;
+		return kanbanArtifact;
 	}
 	
 	private String decodePayload(byte[] payload) {
