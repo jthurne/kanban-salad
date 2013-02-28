@@ -12,6 +12,8 @@ import android.os.Parcelable;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -34,7 +36,7 @@ public class MainActivity extends Activity {
 		List<String> payloads = tagToStrings(intent);
 		
 		for (String text : payloads) {
-			final TextView helloWorldText = getSnapshotTextView();
+			final TextView helloWorldText = getSnapshotControl();
 			//each activity is new and doesn't just keep a running list
 		    helloWorldText.append("\n"+text);
 		}
@@ -43,17 +45,21 @@ public class MainActivity extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("snapshot", getSnapshotTextView().getText().toString());
+        outState.putString("snapshot", getSnapshotControl().getText().toString());
     }
     
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        getSnapshotTextView().setText(savedInstanceState.getString("snapshot"));
+        getSnapshotControl().setText(savedInstanceState.getString("snapshot"));
     }
     
-    private TextView getSnapshotTextView() {
-       return (TextView) findViewById(R.id.hello_world);
+    public void saveSnapshot(View view) {
+        getSnapshotControl().setText("");
+    }    
+    
+    private TextView getSnapshotControl() {
+       return (TextView) findViewById(R.id.snapshot_editText);
     }
 
     private List<String> tagToStrings(Intent intent) {
