@@ -8,5 +8,8 @@
 1) Touch phone to cell\n
 2) Touch phone to each task in cell\n</string>
     <string name="save">Save</string>
+    <string name="action_about">About</string>
+    <string name="action_help">Help</string>
+    <string name="action_program">Program</string>
 
 </resources>
