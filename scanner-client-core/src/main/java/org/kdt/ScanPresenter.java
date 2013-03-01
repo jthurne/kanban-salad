@@ -55,4 +55,8 @@ public class ScanPresenter {
         view.clearLog();
     }
 
+    public void helpMenuItemClicked() {
+        view.showHelp();
+    }
+
 }

@@ -24,4 +24,6 @@ public interface ScanView {
 
     public void clearLog();
 
+    public void showHelp();
+
 }

@@ -69,6 +69,16 @@ public class ScanPresenterTest {
         then.the_scan_log_should_be_cleared();
     }
 
+    @Test
+    public void displays_help__when_help_menu_selected() throws Exception {
+        when.presenter.helpMenuItemClicked();
+        then.the_help_should_be_displayed();
+    }
+
+    private void the_help_should_be_displayed() {
+        verify(mockView).showHelp();
+    }
+
     private void the_scanner_returns(Scanable scanable) {
         when(mockScanner.scan()).thenReturn(scanable);
     }

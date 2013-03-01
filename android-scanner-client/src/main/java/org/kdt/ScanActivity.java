@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -81,6 +82,15 @@ public class ScanActivity extends Activity implements ScanView {
         scanLog.clear();
     }
 
+    public void helpMenuItemClicked(MenuItem item) {
+        presenter.helpMenuItemClicked();
+    }
+
+    public void showHelp() {
+        Intent intent = new Intent(this, HelpActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -109,5 +119,4 @@ public class ScanActivity extends Activity implements ScanView {
     public void saveSnapshot(View view) {
         presenter.saveSnapshot();
     }
-
 }
