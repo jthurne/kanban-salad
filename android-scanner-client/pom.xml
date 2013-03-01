@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.kdt</groupId>
-	<artifactId>kanbandatatracker</artifactId>
+	<artifactId>android-scanner-client</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>apk</packaging>
-	<name>Kanban Data Tracker</name>
+	<name>Kanban Data Tracker - Board Scanner</name>
 
 	<dependencies>
 		<dependency>
@@ -21,6 +21,12 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+		  <groupId>org.mockito</groupId>
+		  <artifactId>mockito-core</artifactId>
+		  <version>1.9.5</version>
+		  <scope>test</scope>
+        </dependency>
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>
