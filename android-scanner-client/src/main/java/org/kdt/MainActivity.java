@@ -30,6 +30,7 @@ public class MainActivity extends Activity implements CaptureView {
     private final CapturePresenter presenter;
 
     private ArrayAdapter<String> scanLog;
+    private NfcForegroundDispatchController nfcDispatchController;
 
     public MainActivity() {
         presenter = new CapturePresenter(this, new NfcScanner(this));
@@ -40,12 +41,17 @@ public class MainActivity extends Activity implements CaptureView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initScanLog();
+        nfcDispatchController = new NfcForegroundDispatchController(this);
+
+        presenter.tryToScanTag();
+    }
+
+    private void initScanLog() {
         scanLog = new ArrayAdapter<String>(this, R.layout.scanned_item);
 
         ListView scanLogView = (ListView) findViewById(R.id.scanLog);
         scanLogView.setAdapter(scanLog);
-
-        onNewIntent(getIntent());
     }
 
     @Override
@@ -82,6 +88,18 @@ public class MainActivity extends Activity implements CaptureView {
     // super.onRestoreInstanceState(savedInstanceState);
     // getSnapshotControl().setText(savedInstanceState.getString("snapshot"));
     // }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        nfcDispatchController.disableForegroundDispatch();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        nfcDispatchController.enableForegroundDispatch();
+    }
 
     public void saveSnapshot(View view) {
         presenter.saveSnapshot();
