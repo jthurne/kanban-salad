@@ -18,7 +18,7 @@ package org.kdt;
 /**
  * 
  */
-public interface CaptureView {
+public interface ScanView {
 
     public void appendToLog(String textToDisplay);
 

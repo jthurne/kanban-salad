@@ -32,7 +32,7 @@ limitations under the License.
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="org.kdt.MainActivity"
+            android:name="org.kdt.ScanActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
             <intent-filter>

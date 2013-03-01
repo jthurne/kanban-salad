@@ -26,19 +26,19 @@ import org.kdt.model.Task;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class CapturePresenterTest {
+public class ScanPresenterTest {
 
-    private CapturePresenter presenter;
+    private ScanPresenter presenter;
 
     @Mock
-    private CaptureView mockView;
+    private ScanView mockView;
     @Mock
     private Scanner mockScanner;
 
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new CapturePresenter(mockView, mockScanner);
+        presenter = new ScanPresenter(mockView, mockScanner);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class CapturePresenterTest {
     }
 
     @SuppressWarnings("unused")
-    private CapturePresenterTest given = this, when = this, then = this,
+    private ScanPresenterTest given = this, when = this, then = this,
             and = this, with = this;
 
 }

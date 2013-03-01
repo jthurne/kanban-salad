@@ -21,12 +21,12 @@ import org.kdt.model.Task;
 /**
  * 
  */
-public class CapturePresenter {
+public class ScanPresenter {
 
-    private final CaptureView view;
+    private final ScanView view;
     private final Scanner scanner;
 
-    public CapturePresenter(CaptureView view, Scanner scanner) {
+    public ScanPresenter(ScanView view, Scanner scanner) {
         this.view = view;
         this.scanner = scanner;
     }

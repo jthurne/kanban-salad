@@ -27,22 +27,22 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class MainActivity extends Activity implements CaptureView {
+public class ScanActivity extends Activity implements ScanView {
 
-    private final CapturePresenter presenter;
+    private final ScanPresenter presenter;
 
     private ArrayList<String> scanLogList;
     private ArrayAdapter<String> scanLog;
     private NfcForegroundDispatchController nfcDispatchController;
 
-    public MainActivity() {
-        presenter = new CapturePresenter(this, new NfcScanner(this));
+    public ScanActivity() {
+        presenter = new ScanPresenter(this, new NfcScanner(this));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_scan);
 
         initScanLog();
         nfcDispatchController = new NfcForegroundDispatchController(this);
