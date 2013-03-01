@@ -32,23 +32,23 @@ public class ScanPresenter {
     }
 
     public void tryToScanTag() {
-        Scanable scanedTag = scanner.scan();
-        display(scanedTag);
+        Scanable scannedTag = scanner.scan();
+        display(scannedTag);
     }
 
-    private void display(Scanable scanedTag) {
-        if (scanedTag == null)
+    private void display(Scanable scannedTag) {
+        if (scannedTag == null)
             return;
 
-        if (isATask(scanedTag)) {
-            view.appendToLog("\t\t" + scanedTag.getPayload());
+        if (isATask(scannedTag)) {
+            view.appendToLog("\t\t" + scannedTag.getPayload());
         } else {
-            view.appendToLog(scanedTag.getPayload());
+            view.appendToLog(scannedTag.getPayload());
         }
     }
 
-    private boolean isATask(Scanable scanned) {
-        return scanned instanceof Task;
+    private boolean isATask(Scanable scannedTag) {
+        return scannedTag instanceof Task;
     }
 
     public void saveSnapshot() {
