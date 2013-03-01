@@ -17,8 +17,6 @@ package org.kdt;
 
 import org.kdt.model.Scanable;
 
-import android.content.Intent;
-
 public interface Scanner {
 	
 	public Scanable scan();

@@ -15,9 +15,6 @@
  */
 package org.kdt;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.kdt.kanbandatatracker.R;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
@@ -29,9 +26,13 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
-	
-	private final List<Scanable> scanned = new LinkedList<Scanable>();
+public class MainActivity extends Activity implements CaptureView {
+    
+    private final CapturePresenter presenter;
+    
+    public MainActivity() {
+        presenter = new CapturePresenter(this);
+    }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +51,17 @@ public class MainActivity extends Activity {
 	@Override
     protected void onNewIntent(Intent intent) {
 		Scanner scanner = new NfcScanner(intent);
-		Scanable payload = scanner.scan();
-		
-		if (payload != null) {
-			scanned.add(payload);
-			final TextView helloWorldText = getSnapshotControl();
-			//each activity is new and doesn't just keep a running list
-			if (payload instanceof Task) {
-				helloWorldText.append("\t\t");
-			}
-		    helloWorldText.append(payload.getPayload()+"\n");
-		}
+		presenter.scanned(scanner.scan());
 	}
 	
+    public void appendToLog(String textToDisplay) {
+        getSnapshotControl().append(textToDisplay + "\n");
+    }
+
+    public void clearLog() {
+        getSnapshotControl().setText("");
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -81,11 +80,8 @@ public class MainActivity extends Activity {
     }
     
     public void saveSnapshot(View view) {
-        getSnapshotControl().setText("");
-        for (Scanable payload : scanned) {
-        	getSnapshotControl().append(payload.getPayload() + " - SAVED!\n");
-        }
-    }    
+        presenter.saveSnapshot();
+    }
     
     private TextView getSnapshotControl() {
        return (TextView) findViewById(R.id.snapshot_editText);

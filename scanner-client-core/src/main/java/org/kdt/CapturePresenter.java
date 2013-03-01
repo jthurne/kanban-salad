@@ -16,6 +16,7 @@
 package org.kdt;
 
 import org.kdt.model.Scanable;
+import org.kdt.model.Task;
 
 /**
  * 
@@ -28,8 +29,23 @@ public class CapturePresenter {
         this.view = view;
     }
 
-    public void scanned(Scanable task) {
-        view.appendToLog(task.getPayload());
+    public void scanned(Scanable scanned) {
+        if (scanned == null)
+            return;
+        
+        if (isATask(scanned)) {
+            view.appendToLog("\t\t" + scanned.getPayload());
+        } else {
+            view.appendToLog(scanned.getPayload());            
+        }
+    }
+
+    private boolean isATask(Scanable scanned) {
+        return scanned instanceof Task;
+    }
+
+    public void saveSnapshot() {
+        view.clearLog();
     }
     
 }

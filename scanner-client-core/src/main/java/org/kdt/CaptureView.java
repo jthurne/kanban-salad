@@ -20,9 +20,8 @@ package org.kdt;
  */
 public interface CaptureView {
 
-    /**
-     * @param textToDisplay
-     */
     public void appendToLog(String textToDisplay);
+
+    public void clearLog();
 
 }
