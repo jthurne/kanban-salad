@@ -15,19 +15,17 @@
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
 
-    <TextView
-        android:id="@+id/snapshot_editText"
+    <ListView
+        android:id="@+id/scanLog"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:ems="10"
-        android:gravity="top"
-        android:textIsSelectable="true"
         android:scrollbars="vertical"
         android:background="@drawable/back"
-        android:padding="5sp" >
-    </TextView>
-
+        android:padding="5sp"        
+        >
+    </ListView>
+ 	
     <Button
         android:id="@+id/saveButton"
         android:layout_width="match_parent"

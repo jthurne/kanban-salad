@@ -22,11 +22,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends Activity implements CaptureView {
 
     private final CapturePresenter presenter;
+
+    private ArrayAdapter<String> scanLog;
 
     public MainActivity() {
         presenter = new CapturePresenter(this, new NfcScanner(this));
@@ -36,6 +39,12 @@ public class MainActivity extends Activity implements CaptureView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        scanLog = new ArrayAdapter<String>(this, R.layout.scanned_item);
+
+        ListView scanLogView = (ListView) findViewById(R.id.scanLog);
+        scanLogView.setAdapter(scanLog);
+
         onNewIntent(getIntent());
     }
 
@@ -54,32 +63,28 @@ public class MainActivity extends Activity implements CaptureView {
     }
 
     public void appendToLog(String textToDisplay) {
-        getSnapshotControl().append(textToDisplay + "\n");
+        scanLog.add(textToDisplay);
     }
 
     public void clearLog() {
-        getSnapshotControl().setText("");
+        scanLog.clear();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("snapshot", getSnapshotControl().getText()
-                .toString());
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        getSnapshotControl().setText(savedInstanceState.getString("snapshot"));
-    }
+    // @Override
+    // protected void onSaveInstanceState(Bundle outState) {
+    // super.onSaveInstanceState(outState);
+    // outState.putString("snapshot", getSnapshotControl().getText()
+    // .toString());
+    // }
+    //
+    // @Override
+    // protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    // super.onRestoreInstanceState(savedInstanceState);
+    // getSnapshotControl().setText(savedInstanceState.getString("snapshot"));
+    // }
 
     public void saveSnapshot(View view) {
         presenter.saveSnapshot();
-    }
-
-    private TextView getSnapshotControl() {
-        return (TextView) findViewById(R.id.snapshot_editText);
     }
 
 }
