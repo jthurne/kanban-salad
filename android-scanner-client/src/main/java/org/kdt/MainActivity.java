@@ -15,6 +15,8 @@
  */
 package org.kdt;
 
+import java.util.ArrayList;
+
 import org.kdt.kanbandatatracker.R;
 
 import android.app.Activity;
@@ -29,6 +31,7 @@ public class MainActivity extends Activity implements CaptureView {
 
     private final CapturePresenter presenter;
 
+    private ArrayList<String> scanLogList;
     private ArrayAdapter<String> scanLog;
     private NfcForegroundDispatchController nfcDispatchController;
 
@@ -48,7 +51,9 @@ public class MainActivity extends Activity implements CaptureView {
     }
 
     private void initScanLog() {
-        scanLog = new ArrayAdapter<String>(this, R.layout.scanned_item);
+        scanLogList = new ArrayList<String>();
+        scanLog = new ArrayAdapter<String>(this, R.layout.scanned_item,
+                scanLogList);
 
         ListView scanLogView = (ListView) findViewById(R.id.scanLog);
         scanLogView.setAdapter(scanLog);
@@ -76,18 +81,18 @@ public class MainActivity extends Activity implements CaptureView {
         scanLog.clear();
     }
 
-    // @Override
-    // protected void onSaveInstanceState(Bundle outState) {
-    // super.onSaveInstanceState(outState);
-    // outState.putString("snapshot", getSnapshotControl().getText()
-    // .toString());
-    // }
-    //
-    // @Override
-    // protected void onRestoreInstanceState(Bundle savedInstanceState) {
-    // super.onRestoreInstanceState(savedInstanceState);
-    // getSnapshotControl().setText(savedInstanceState.getString("snapshot"));
-    // }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("scanLog", scanLogList);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        scanLog.clear();
+        scanLog.addAll(savedInstanceState.getStringArrayList("scanLog"));
+    }
 
     @Override
     protected void onPause() {
