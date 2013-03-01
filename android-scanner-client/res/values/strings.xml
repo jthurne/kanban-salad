@@ -3,9 +3,10 @@
 
     <string name="app_name">Kanban Data Tracker</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Scanning the board:\n
+    <string name="scanning_instructions">Scanning the board:\n
 \n
 1) Touch phone to cell\n
 2) Touch phone to each task in cell\n</string>
+    <string name="save">Save</string>
 
 </resources>
