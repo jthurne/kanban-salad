@@ -21,6 +21,7 @@ import org.kdt.model.Cell;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -30,13 +31,14 @@ import android.os.Parcelable;
 
 public class NfcScanner implements Scanner {
 	
-	private final Intent intent;
+	private final Activity parentActivity;
 	
-	public NfcScanner(Intent intent) {
-		this.intent = intent;
+	public NfcScanner(Activity parentActivity) {
+		this.parentActivity = parentActivity;
 	}
 	
 	public Scanable scan() {
+	    Intent intent = parentActivity.getIntent();
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
 			Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 			return rawToScanable(rawMsgs);

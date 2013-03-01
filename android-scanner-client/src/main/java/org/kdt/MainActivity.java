@@ -16,8 +16,6 @@
 package org.kdt;
 
 import org.kdt.kanbandatatracker.R;
-import org.kdt.model.Scanable;
-import org.kdt.model.Task;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,33 +25,34 @@ import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements CaptureView {
-    
+
     private final CapturePresenter presenter;
-    
+
     public MainActivity() {
-        presenter = new CapturePresenter(this);
+        presenter = new CapturePresenter(this, new NfcScanner(this));
     }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		onNewIntent(getIntent());
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        onNewIntent(getIntent());
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-	
-	@Override
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
-		Scanner scanner = new NfcScanner(intent);
-		presenter.scanned(scanner.scan());
-	}
-	
+        super.onNewIntent(intent);
+        this.setIntent(intent);
+        presenter.tryToScanTag();
+    }
+
     public void appendToLog(String textToDisplay) {
         getSnapshotControl().append(textToDisplay + "\n");
     }
@@ -63,28 +62,24 @@ public class MainActivity extends Activity implements CaptureView {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("snapshot", getSnapshotControl().getText().toString());
+        outState.putString("snapshot", getSnapshotControl().getText()
+                .toString());
     }
-    
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         getSnapshotControl().setText(savedInstanceState.getString("snapshot"));
     }
-    
+
     public void saveSnapshot(View view) {
         presenter.saveSnapshot();
     }
-    
+
     private TextView getSnapshotControl() {
-       return (TextView) findViewById(R.id.snapshot_editText);
+        return (TextView) findViewById(R.id.snapshot_editText);
     }
 
 }

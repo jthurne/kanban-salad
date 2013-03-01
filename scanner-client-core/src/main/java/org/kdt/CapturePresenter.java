@@ -24,19 +24,26 @@ import org.kdt.model.Task;
 public class CapturePresenter {
 
     private final CaptureView view;
-    
-    public CapturePresenter(CaptureView view) {
+    private final Scanner scanner;
+
+    public CapturePresenter(CaptureView view, Scanner scanner) {
         this.view = view;
+        this.scanner = scanner;
     }
 
-    public void scanned(Scanable scanned) {
-        if (scanned == null)
+    public void tryToScanTag() {
+        Scanable scanedTag = scanner.scan();
+        display(scanedTag);
+    }
+
+    private void display(Scanable scanedTag) {
+        if (scanedTag == null)
             return;
-        
-        if (isATask(scanned)) {
-            view.appendToLog("\t\t" + scanned.getPayload());
+
+        if (isATask(scanedTag)) {
+            view.appendToLog("\t\t" + scanedTag.getPayload());
         } else {
-            view.appendToLog(scanned.getPayload());            
+            view.appendToLog(scanedTag.getPayload());
         }
     }
 
@@ -47,5 +54,5 @@ public class CapturePresenter {
     public void saveSnapshot() {
         view.clearLog();
     }
-    
+
 }

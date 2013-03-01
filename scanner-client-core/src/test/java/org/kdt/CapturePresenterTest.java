@@ -16,50 +16,63 @@
 package org.kdt;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kdt.model.Cell;
+import org.kdt.model.Scanable;
 import org.kdt.model.Task;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 public class CapturePresenterTest {
-    
+
     private CapturePresenter presenter;
-    
+
     @Mock
     private CaptureView mockView;
-    
+    @Mock
+    private Scanner mockScanner;
+
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new CapturePresenter(mockView);
+        presenter = new CapturePresenter(mockView, mockScanner);
     }
 
     @Test
-    public void displays_name_of_a_scanned_cell__when_a_cell_tag_is_scanned() throws Exception {
-        when.presenter.scanned(new Cell("Swimlane - Queue"));
+    public void displays_name_of_a_scanned_cell__when_a_cell_tag_is_scanned()
+            throws Exception {
+        given.the_scanner_returns(new Cell("Swimlane - Queue"));
+        when.presenter.tryToScanTag();
         then.the_scan_should_be_displayed_as("Swimlane - Queue");
-    }    
-    
+    }
+
     @Test
-    public void displays_name_of_a_scanned_task__when_a_task_tag_is_scanned() throws Exception {
-        when.presenter.scanned(new Task("Do Something"));
+    public void displays_name_of_a_scanned_task__when_a_task_tag_is_scanned()
+            throws Exception {
+        given.the_scanner_returns(new Task("Do Something"));
+        when.presenter.tryToScanTag();
         then.the_scan_should_be_displayed_as("\t\tDo Something");
     }
-    
+
     @Test
     public void ignores_null_scans() throws Exception {
-        when.presenter.scanned(null);
+        given.the_scanner_returns(null);
+        when.presenter.tryToScanTag();
     }
-    
+
     @Test
     public void clears_the_log_when_the_snapshot_is_saved() throws Exception {
         when.presenter.saveSnapshot();
         then.the_scan_log_should_be_cleared();
     }
-    
+
+    private void the_scanner_returns(Scanable scanable) {
+        when(mockScanner.scan()).thenReturn(scanable);
+    }
+
     private void the_scan_log_should_be_cleared() {
         verify(mockView).clearLog();
     }
@@ -69,6 +82,7 @@ public class CapturePresenterTest {
     }
 
     @SuppressWarnings("unused")
-    private CapturePresenterTest given = this, when = this, then = this, and = this, with = this;
+    private CapturePresenterTest given = this, when = this, then = this,
+            and = this, with = this;
 
 }
