@@ -29,7 +29,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-&lt;/p>
-    </string>
+&lt;/p></string>
+    <string name="title_scan_tab">Scan</string>
+    <string name="title_program_tab">Program</string>
+    
+    <string name="title_activity_program_tag">Program Tag</string>
+    <string name="program_tag_instructions">Programming a tag:\n
+\n
+1) Enter the tag data\n
+2) Select which type of tag it is\n
+3) Scan the tag to program</string>
 
 </resources>
