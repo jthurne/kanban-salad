@@ -8,6 +8,10 @@
 	<packaging>apk</packaging>
 	<name>Kanban Data Tracker - Android Scanner Client</name>
 
+    <properties>
+        <jdk.version>1.6</jdk.version>
+    </properties>	
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.google.android</groupId>
@@ -41,6 +45,14 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
