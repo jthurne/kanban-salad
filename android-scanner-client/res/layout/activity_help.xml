@@ -21,6 +21,7 @@
         android:id="@+id/close_help_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:onClick="closeButtonClicked"
         android:text="@string/action_close" />
 
 </LinearLayout>
