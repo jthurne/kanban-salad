@@ -67,6 +67,15 @@ limitations under the License.
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.kdt.ScanActivity" />
         </activity>
+        <activity
+            android:name="org.kdt.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName="org.kdt.ScanActivity"
+            android:theme="@android:style/Theme.Holo.Dialog" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.kdt.ScanActivity" />
+        </activity>
     </application>
 
 </manifest>

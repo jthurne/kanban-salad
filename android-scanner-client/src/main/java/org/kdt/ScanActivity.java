@@ -86,8 +86,17 @@ public class ScanActivity extends Activity implements ScanView {
         presenter.helpMenuItemClicked();
     }
 
+    public void aboutMenuItemClicked(MenuItem item) {
+        presenter.aboutMenuItemClicked();
+    }
+
     public void showHelp() {
         Intent intent = new Intent(this, HelpActivity.class);
+        startActivity(intent);
+    }
+
+    public void showAbout() {
+        Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
     }
 

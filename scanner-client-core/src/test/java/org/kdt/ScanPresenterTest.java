@@ -75,8 +75,18 @@ public class ScanPresenterTest {
         then.the_help_should_be_displayed();
     }
 
+    @Test
+    public void displays_about__when_about_menu_selected() throws Exception {
+        when.presenter.aboutMenuItemClicked();
+        then.about_should_be_displayed();
+    }
+
     private void the_help_should_be_displayed() {
         verify(mockView).showHelp();
+    }
+
+    private void about_should_be_displayed() {
+        verify(mockView).showAbout();
     }
 
     private void the_scanner_returns(Scanable scanable) {

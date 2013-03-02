@@ -26,4 +26,5 @@ public interface ScanView {
 
     public void showHelp();
 
+    public void showAbout();
 }

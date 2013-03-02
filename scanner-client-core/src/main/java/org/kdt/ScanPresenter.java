@@ -59,4 +59,8 @@ public class ScanPresenter {
         view.showHelp();
     }
 
+    public void aboutMenuItemClicked() {
+        view.showAbout();
+    }
+
 }
