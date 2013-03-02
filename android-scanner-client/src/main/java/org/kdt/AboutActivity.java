@@ -44,13 +44,6 @@ public class AboutActivity extends Activity {
         licenseView.setText(licenseText, TextView.BufferType.SPANNABLE);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.about, menu);
-        return true;
-    }
-
     public void closeButtonClicked(View view) {
         NavUtils.navigateUpFromSameTask(this);
     }
