@@ -16,6 +16,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>support-v4</artifactId>
+			<version>r12</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.kdt</groupId>
 			<artifactId>scanner-client-core</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
