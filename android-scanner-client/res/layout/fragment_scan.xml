@@ -11,13 +11,13 @@
     tools:context=".ScanActivity" >
     
     <ListView
-        android:id="@+id/scanLog"
+        android:id="@+id/scanned_tags_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:scrollbars="vertical"
-        android:padding="5sp"        
-        >
+        android:padding="5sp"
+        android:scrollbars="vertical" >
+
     </ListView>
  	
     <Button

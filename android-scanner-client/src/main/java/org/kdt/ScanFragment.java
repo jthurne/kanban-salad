@@ -35,11 +35,11 @@ import android.widget.ListView;
 
 public class ScanFragment extends Fragment {
 
-    private ArrayList<String> scanLogList;
-    private ArrayAdapter<String> scanLog;
+    private ArrayList<String> scannedTagsList;
+    private ArrayAdapter<String> scannedTags;
 
     private View rootView;
-    private ListView scanLogView;
+    private ListView scannedTagsView;
 
     private ActionMode mActionMode;
 
@@ -49,39 +49,49 @@ public class ScanFragment extends Fragment {
         Log.v("ScanFragment", "onCreateView");
         rootView = inflater.inflate(R.layout.fragment_scan, container, false);
 
-        initScanLog();
+        initScannedTagsView();
         return rootView;
     }
 
-    private void initScanLog() {
-        scanLogList = new ArrayList<String>();
-        scanLog = new ArrayAdapter<String>(this.getActivity(),
-                R.layout.scanned_item, scanLogList);
+    private void initScannedTagsView() {
+        scannedTagsView = findScannedTagsView();
 
-        scanLogView = (ListView) rootView.findViewById(R.id.scanLog);
-        scanLogView.setAdapter(scanLog);
+        scannedTagsList = new ArrayList<String>();
+        scannedTags = new ArrayAdapter<String>(this.getActivity(),
+                R.layout.scanned_tag, scannedTagsList);
 
-        enableContextActionBarWhenSelectingScannedItems(scanLogView);
+        scannedTagsView.setAdapter(scannedTags);
+
+        enableContextActionBarWhenSelectingScannedItems(scannedTagsView);
+    }
+
+    private ListView findScannedTagsView() {
+        return (ListView) rootView.findViewById(R.id.scanned_tags_list);
     }
 
     private void enableContextActionBarWhenSelectingScannedItems(
-            ListView scanLogView) {
-        scanLogView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        scanLogView.setOnItemClickListener(new ItemSelectedListener());
+            ListView scannedTagsView) {
+        scannedTagsView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        scannedTagsView.setOnItemClickListener(new ItemSelectedListener());
     }
 
-    public void appendToLog(String textToDisplay) {
-        scanLog.add(textToDisplay);
+    public void appendToScannedTags(String textToDisplay) {
+        scannedTags.add(textToDisplay);
     }
 
-    public void clearLog() {
-        scanLog.clear();
+    public void deleteScannedTag(int logEntryIndex) {
+        scannedTagsList.remove(logEntryIndex);
+        // scannedTags.remove(scanLog.getItem(logEntryIndex));
+    }
+
+    public void clearScannedTags() {
+        scannedTags.clear();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putStringArrayList("scanLog", scanLogList);
+        outState.putStringArrayList("scannedTags", scannedTagsList);
     }
 
     @Override
@@ -90,8 +100,9 @@ public class ScanFragment extends Fragment {
         if (savedInstanceState == null)
             return;
 
-        scanLog.clear();
-        scanLog.addAll(savedInstanceState.getStringArrayList("scanLog"));
+        scannedTags.clear();
+        scannedTags
+                .addAll(savedInstanceState.getStringArrayList("scannedTags"));
     }
 
     @Override
@@ -125,15 +136,15 @@ public class ScanFragment extends Fragment {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.scanned_item, menu);
+            inflater.inflate(R.menu.scanned_tag, menu);
             return true;
         }
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            int selectedItem = scanLogView.getCheckedItemPosition();
+            int selectedItem = scannedTagsView.getCheckedItemPosition();
             mode.setTitle("Tag Selected");
-            mode.setSubtitle(scanLog.getItem(selectedItem));
+            mode.setSubtitle(scannedTags.getItem(selectedItem));
             return true;
         }
 
@@ -141,8 +152,8 @@ public class ScanFragment extends Fragment {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
             case R.id.action_delete_scan:
-                int selectedItem = scanLogView.getCheckedItemPosition();
-                scanLog.remove(scanLog.getItem(selectedItem));
+                int selectedItem = scannedTagsView.getCheckedItemPosition();
+                scannedTags.remove(scannedTags.getItem(selectedItem));
                 mode.finish(); // Action picked, so close the CAB
                 return true;
             case R.id.action_program_scan:
@@ -155,8 +166,8 @@ public class ScanFragment extends Fragment {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            int selectedItem = scanLogView.getCheckedItemPosition();
-            scanLogView.setItemChecked(selectedItem, false);
+            int selectedItem = scannedTagsView.getCheckedItemPosition();
+            scannedTagsView.setItemChecked(selectedItem, false);
             mActionMode = null;
         }
     };

@@ -41,9 +41,9 @@ public class ScanPresenter {
             return;
 
         if (isATask(scannedTag)) {
-            view.appendToLog("\t\t" + scannedTag.getPayload());
+            view.appendToScannedTags("\t\t" + scannedTag.getPayload());
         } else {
-            view.appendToLog(scannedTag.getPayload());
+            view.appendToScannedTags(scannedTag.getPayload());
         }
     }
 
@@ -52,7 +52,7 @@ public class ScanPresenter {
     }
 
     public void saveSnapshot() {
-        view.clearLog();
+        view.clearScannedTags();
     }
 
     public void helpMenuItemClicked() {
@@ -63,4 +63,7 @@ public class ScanPresenter {
         view.showAbout();
     }
 
+    public void deleteScannedTag(int logEntryIndex) {
+        view.deleteScannedTag(logEntryIndex);
+    }
 }

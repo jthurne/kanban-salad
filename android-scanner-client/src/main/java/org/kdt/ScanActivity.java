@@ -181,14 +181,19 @@ public class ScanActivity extends FragmentActivity implements
     }
 
     @Override
-    public void appendToLog(String textToDisplay) {
+    public void appendToScannedTags(String textToDisplay) {
         Log.v("ScanActivity", "appendToLog: " + textToDisplay);
-        getScanFragment().appendToLog(textToDisplay);
+        getScanFragment().appendToScannedTags(textToDisplay);
     }
 
     @Override
-    public void clearLog() {
-        getScanFragment().clearLog();
+    public void deleteScannedTag(int logEntryIndex) {
+        getScanFragment().deleteScannedTag(logEntryIndex);
+    }
+
+    @Override
+    public void clearScannedTags() {
+        getScanFragment().clearScannedTags();
     }
 
     private ScanFragment getScanFragment() {

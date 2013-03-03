@@ -19,10 +19,11 @@ package org.kdt;
  * 
  */
 public interface ScanView {
+    public void appendToScannedTags(String textToDisplay);
 
-    public void appendToLog(String textToDisplay);
+    public void deleteScannedTag(int logEntryIndex);
 
-    public void clearLog();
+    public void clearScannedTags();
 
     public void showHelp();
 
