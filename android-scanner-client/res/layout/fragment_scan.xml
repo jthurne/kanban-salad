@@ -24,7 +24,7 @@
         android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="saveSnapshot"
+        android:onClick="saveClicked"
         android:text="@string/save" />
 
 </LinearLayout>

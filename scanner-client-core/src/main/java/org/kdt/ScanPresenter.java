@@ -51,7 +51,7 @@ public class ScanPresenter {
         return scannedTag instanceof Task;
     }
 
-    public void saveSnapshot() {
+    public void saveClicked() {
         view.clearScannedTags();
     }
 
@@ -63,7 +63,15 @@ public class ScanPresenter {
         view.showAbout();
     }
 
-    public void deleteScannedTag(int logEntryIndex) {
-        view.deleteScannedTag(logEntryIndex);
+    public void tagSelected(int position) {
+
+    }
+
+    public void deleteTagClicked(int position) {
+        view.deleteScannedTag(position);
+    }
+
+    public void programTagClicked(int position) {
+
     }
 }

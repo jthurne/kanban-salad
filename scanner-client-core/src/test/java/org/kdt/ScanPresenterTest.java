@@ -65,7 +65,7 @@ public class ScanPresenterTest {
 
     @Test
     public void clears_the_log_when_the_snapshot_is_saved() throws Exception {
-        when.presenter.saveSnapshot();
+        when.presenter.saveClicked();
         then.the_display_of_scanned_tags_should_be_cleared();
     }
 
@@ -84,21 +84,8 @@ public class ScanPresenterTest {
     @Test
     public void deletes_item_from_scan_log__when_item_is_selected_and_delete_is_pressed()
             throws Exception {
-        when.presenter.deleteScannedTag(2);
+        when.presenter.deleteTagClicked(2);
         then.the_corresponding_tag_should_be_removed_from_the_view(2);
-    }
-
-    private void the_corresponding_tag_should_be_removed_from_the_view(
-            int scannedItemIndex) {
-        verify(mockView).deleteScannedTag(scannedItemIndex);
-    }
-
-    private void the_help_should_be_displayed() {
-        verify(mockView).showHelp();
-    }
-
-    private void about_should_be_displayed() {
-        verify(mockView).showAbout();
     }
 
     private void the_scanner_returns(Scanable scanable) {
@@ -111,6 +98,19 @@ public class ScanPresenterTest {
 
     private void the_scan_should_be_displayed_as(String textToDisplay) {
         verify(mockView).appendToScannedTags(textToDisplay);
+    }
+
+    private void the_help_should_be_displayed() {
+        verify(mockView).showHelp();
+    }
+
+    private void about_should_be_displayed() {
+        verify(mockView).showAbout();
+    }
+
+    private void the_corresponding_tag_should_be_removed_from_the_view(
+            int scannedItemIndex) {
+        verify(mockView).deleteScannedTag(scannedItemIndex);
     }
 
     @SuppressWarnings("unused")

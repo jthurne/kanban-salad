@@ -176,8 +176,23 @@ public class ScanActivity extends FragmentActivity implements
         presenter.aboutMenuItemClicked();
     }
 
-    public void saveSnapshot(View view) {
-        presenter.saveSnapshot();
+    public void saveClicked(View view) {
+        presenter.saveClicked();
+    }
+
+    @Override
+    public void tagSelected(int position) {
+        presenter.tagSelected(position);
+    }
+
+    @Override
+    public void deleteTagClicked(int position) {
+        presenter.deleteTagClicked(position);
+    }
+
+    @Override
+    public void programTagClicked(int position) {
+        presenter.programTagClicked(position);
     }
 
     @Override
@@ -271,37 +286,5 @@ public class ScanActivity extends FragmentActivity implements
             }
             return null;
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.kdt.ScannedTagListener#tagSelected(int)
-     */
-    @Override
-    public void tagSelected(int position) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.kdt.ScannedTagListener#deleteTagClicked()
-     */
-    @Override
-    public void deleteTagClicked(int position) {
-        presenter.deleteTagClicked(position);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.kdt.ScannedTagListener#programTagClicked()
-     */
-    @Override
-    public void programTagClicked(int position) {
-        // TODO Auto-generated method stub
-
     }
 }

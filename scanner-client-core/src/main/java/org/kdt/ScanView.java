@@ -21,7 +21,7 @@ package org.kdt;
 public interface ScanView {
     public void appendToScannedTags(String textToDisplay);
 
-    public void deleteScannedTag(int logEntryIndex);
+    public void deleteScannedTag(int position);
 
     public void clearScannedTags();
 
