@@ -129,18 +129,20 @@ public class ScanFragment extends Fragment {
             return true;
         }
 
-        // Called each time the action mode is shown. Always called after
-        // onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
+            int selectedItem = scanLogView.getCheckedItemPosition();
+            mode.setTitle("Tag Selected");
+            mode.setSubtitle(scanLog.getItem(selectedItem));
+            return true;
         }
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
             case R.id.action_delete_scan:
+                int selectedItem = scanLogView.getCheckedItemPosition();
+                scanLog.remove(scanLog.getItem(selectedItem));
                 mode.finish(); // Action picked, so close the CAB
                 return true;
             case R.id.action_program_scan:
@@ -151,7 +153,6 @@ public class ScanFragment extends Fragment {
             }
         }
 
-        // Called when the user exits the action mode
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             int selectedItem = scanLogView.getCheckedItemPosition();

@@ -2,13 +2,13 @@
     <item
         android:id="@+id/action_delete_scan"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="@string/action_delete_scan"
         />
     
     <item android:id="@+id/action_program_scan" 
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="@string/action_program"
         />
 </menu>
