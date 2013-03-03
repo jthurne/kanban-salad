@@ -34,7 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class ScanActivity extends FragmentActivity implements
-        ActionBar.TabListener, ScanView {
+        ActionBar.TabListener, ScannedTagListener, ScanView {
 
     private NfcForegroundDispatchController nfcDispatchController;
     private final ScanPresenter presenter;
@@ -271,5 +271,37 @@ public class ScanActivity extends FragmentActivity implements
             }
             return null;
         }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.kdt.ScannedTagListener#tagSelected(int)
+     */
+    @Override
+    public void tagSelected(int position) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.kdt.ScannedTagListener#deleteTagClicked()
+     */
+    @Override
+    public void deleteTagClicked(int position) {
+        presenter.deleteTagClicked(position);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.kdt.ScannedTagListener#programTagClicked()
+     */
+    @Override
+    public void programTagClicked(int position) {
+        // TODO Auto-generated method stub
+
     }
 }

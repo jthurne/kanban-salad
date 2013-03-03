@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import org.kdt.kanbandatatracker.R;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -43,6 +44,8 @@ public class ScanFragment extends Fragment {
 
     private ActionMode mActionMode;
 
+    private ScannedTagListener scannedTagListener;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -51,6 +54,17 @@ public class ScanFragment extends Fragment {
 
         initScannedTagsView();
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            scannedTagListener = (ScannedTagListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement ScannedTagListener");
+        }
     }
 
     private void initScannedTagsView() {
@@ -122,6 +136,11 @@ public class ScanFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
+
+            scannedTagListener.tagSelected(position);
+
+            // TODO Make the presenter cause the context action bar (CAB) to be
+            // displayed
             if (mActionMode != null) {
                 return;
             }
@@ -142,22 +161,24 @@ public class ScanFragment extends Fragment {
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            int selectedItem = scannedTagsView.getCheckedItemPosition();
+            int selectedTag = scannedTagsView.getCheckedItemPosition();
             mode.setTitle("Tag Selected");
-            mode.setSubtitle(scannedTags.getItem(selectedItem));
+            mode.setSubtitle(scannedTags.getItem(selectedTag));
             return true;
         }
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            int selectedTag = scannedTagsView.getCheckedItemPosition();
+
             switch (item.getItemId()) {
             case R.id.action_delete_scan:
-                int selectedItem = scannedTagsView.getCheckedItemPosition();
-                scannedTags.remove(scannedTags.getItem(selectedItem));
+                scannedTagListener.deleteTagClicked(selectedTag);
+                // TODO make the presenter cause the CAB to close
                 mode.finish(); // Action picked, so close the CAB
                 return true;
             case R.id.action_program_scan:
-                mode.finish(); // Action picked, so close the CAB
+                scannedTagListener.programTagClicked(selectedTag);
                 return true;
             default:
                 return false;
