@@ -93,9 +93,12 @@ public class ScanFragment extends Fragment {
         scannedTags.add(textToDisplay);
     }
 
+    public void selectScannedTag(int position) {
+        scannedTagsView.performItemClick(null, position, -1);
+    }
+
     public void deleteScannedTag(int logEntryIndex) {
         scannedTagsList.remove(logEntryIndex);
-        // scannedTags.remove(scanLog.getItem(logEntryIndex));
     }
 
     public void clearScannedTags() {

@@ -24,16 +24,21 @@ import org.kdt.model.Task;
 public class ScanPresenter {
 
     private final ScanView view;
+    private final ScanModel model;
     private final Scanner scanner;
 
-    public ScanPresenter(ScanView view, Scanner scanner) {
+    public ScanPresenter(ScanView view, ScanModel model, Scanner scanner) {
         this.view = view;
+        this.model = model;
         this.scanner = scanner;
     }
 
     public void tryToScanTag() {
         Scanable scannedTag = scanner.scan();
+        model.add(scannedTag);
+
         display(scannedTag);
+        view.selectScannedTag(model.getNumScannedTags() - 1);
     }
 
     private void display(Scanable scannedTag) {
@@ -52,6 +57,7 @@ public class ScanPresenter {
     }
 
     public void saveClicked() {
+        model.clearScannedTags();
         view.clearScannedTags();
     }
 
@@ -68,6 +74,7 @@ public class ScanPresenter {
     }
 
     public void deleteTagClicked(int position) {
+        model.remove(position);
         view.deleteScannedTag(position);
     }
 

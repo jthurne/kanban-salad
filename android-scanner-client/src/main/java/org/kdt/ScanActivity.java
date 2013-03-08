@@ -55,12 +55,14 @@ public class ScanActivity extends FragmentActivity implements
     private ViewPager viewPager;
 
     public ScanActivity() {
-        presenter = new ScanPresenter(this, new NfcScanner(this));
+        presenter = new ScanPresenter(this, new ListScanModel(),
+                new NfcScanner(this));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v("ScanActivity", "onCreate");
         setContentView(R.layout.activity_scan);
         nfcDispatchController = new NfcForegroundDispatchController(this);
 
@@ -120,6 +122,7 @@ public class ScanActivity extends FragmentActivity implements
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        Log.v("ScanActivity", "onNewIntent");
         this.setIntent(intent);
         presenter.tryToScanTag();
     }
@@ -204,6 +207,11 @@ public class ScanActivity extends FragmentActivity implements
     @Override
     public void deleteScannedTag(int logEntryIndex) {
         getScanFragment().deleteScannedTag(logEntryIndex);
+    }
+
+    @Override
+    public void selectScannedTag(int logEntryIndex) {
+        getScanFragment().selectScannedTag(logEntryIndex);
     }
 
     @Override

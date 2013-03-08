@@ -15,19 +15,18 @@
  */
 package org.kdt;
 
+import org.kdt.model.Scanable;
+
 /**
  * 
  */
-public interface ScanView {
-    public void appendToScannedTags(String textToDisplay);
+public interface ScanModel {
 
-    public void deleteScannedTag(int position);
+    public void add(Scanable scannedTag);
 
-    public void selectScannedTag(int position);
+    public void remove(int index);
+
+    public int getNumScannedTags();
 
     public void clearScannedTags();
-
-    public void showHelp();
-
-    public void showAbout();
 }

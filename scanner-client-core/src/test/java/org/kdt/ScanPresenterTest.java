@@ -15,9 +15,14 @@
  */
 package org.kdt;
 
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.kdt.model.Cell;
@@ -35,10 +40,13 @@ public class ScanPresenterTest {
     @Mock
     private Scanner mockScanner;
 
+    private ListScanModel model;
+
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new ScanPresenter(mockView, mockScanner);
+        model = new ListScanModel();
+        presenter = new ScanPresenter(mockView, model, mockScanner);
     }
 
     @Test
@@ -58,15 +66,80 @@ public class ScanPresenterTest {
     }
 
     @Test
+    public void adds_scanned_tag_to_the_model() throws Exception {
+        given.the_scanner_returns(new Task("Do Something"));
+        when.presenter.tryToScanTag();
+        then.the_model_should_contain(new Task("Do Something"));
+    }
+
+    @Test
+    public void selects_tag__when_a_task_tag_is_scanned() throws Exception {
+        given.the_scanner_returns(new Task("Do Something"));
+        when.presenter.tryToScanTag();
+        then.it_should_select_tag(0);
+    }
+
+    @Test
+    public void selects_tag__when_a_cell_tag_is_scanned() throws Exception {
+        given.the_scanner_returns(new Cell("Swimlane - Queue"));
+        when.presenter.tryToScanTag();
+        then.it_should_select_tag(0);
+    }
+
+    @Test
+    public void selects_last_scanned_tag__when_more_than_one_tag_is_scanned()
+            throws Exception {
+        given.the_scanner_returns(new Task("Do Something"));
+        when.presenter.tryToScanTag();
+        when.presenter.tryToScanTag();
+        when.presenter.tryToScanTag();
+        then.it_should_select_tag(0);
+        then.it_should_select_tag(1);
+        then.it_should_select_tag(2);
+    }
+
+    @Test
     public void ignores_null_scans() throws Exception {
         given.the_scanner_returns(null);
         when.presenter.tryToScanTag();
     }
 
     @Test
-    public void clears_the_log_when_the_snapshot_is_saved() throws Exception {
+    public void clears_the_view_when_the_snapshot_is_saved() throws Exception {
+        given.some_tags_have_been_scanned();
         when.presenter.saveClicked();
         then.the_display_of_scanned_tags_should_be_cleared();
+    }
+
+    @Test
+    public void clears_the_model_when_the_snapshot_is_saved() throws Exception {
+        given.some_tags_have_been_scanned();
+        when.presenter.saveClicked();
+        then.the_model_should_be_cleared();
+    }
+
+    @Test
+    public void deletes_scanned_tag_from_the_view__when_item_is_selected_and_delete_is_pressed()
+            throws Exception {
+        given.two_tags_have_been_scanned();
+        when.presenter.deleteTagClicked(1);
+        then.the_corresponding_tag_should_be_removed_from_the_view(1);
+    }
+
+    @Test
+    public void deletes_scanned_tag_from_the_model__when_item_is_selected_and_delete_is_pressed()
+            throws Exception {
+        given.scanned_tag(new Task("Do Something"));
+        given.scanned_tag(new Task("Do Something Else"));
+        given.scanned_tag(new Cell("Swimlane - Queue"));
+        when.presenter.deleteTagClicked(1);
+        then.the_model_should_not_contain(new Task("Do Something Else"));
+    }
+
+    private void the_model_should_not_contain(Scanable shouldNotExist) {
+        for (Scanable scanable : model.getScannedTags()) {
+            assertThat(scanable, not(samePropertyValuesAs(shouldNotExist)));
+        }
     }
 
     @Test
@@ -81,15 +154,22 @@ public class ScanPresenterTest {
         then.about_should_be_displayed();
     }
 
-    @Test
-    public void deletes_item_from_scan_log__when_item_is_selected_and_delete_is_pressed()
-            throws Exception {
-        when.presenter.deleteTagClicked(2);
-        then.the_corresponding_tag_should_be_removed_from_the_view(2);
-    }
-
     private void the_scanner_returns(Scanable scanable) {
         when(mockScanner.scan()).thenReturn(scanable);
+    }
+
+    private void some_tags_have_been_scanned() {
+        two_tags_have_been_scanned();
+    }
+
+    private void two_tags_have_been_scanned() {
+        scanned_tag(new Task("Do Something"));
+        scanned_tag(new Cell("Swimlane - Queue"));
+    }
+
+    private void scanned_tag(Scanable scanable) {
+        given.the_scanner_returns(scanable);
+        when.presenter.tryToScanTag();
     }
 
     private void the_display_of_scanned_tags_should_be_cleared() {
@@ -111,6 +191,19 @@ public class ScanPresenterTest {
     private void the_corresponding_tag_should_be_removed_from_the_view(
             int scannedItemIndex) {
         verify(mockView).deleteScannedTag(scannedItemIndex);
+    }
+
+    private void it_should_select_tag(int position) {
+        verify(mockView).selectScannedTag(position);
+    }
+
+    private void the_model_should_contain(Scanable expectedScanable) {
+        assertThat(model.getScannedTags(),
+                contains(samePropertyValuesAs(expectedScanable)));
+    }
+
+    private void the_model_should_be_cleared() {
+        assertThat(model.getScannedTags(), Matchers.is(Matchers.empty()));
     }
 
     @SuppressWarnings("unused")
