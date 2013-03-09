@@ -70,12 +70,13 @@ public class ScanPresenter {
     }
 
     public void tagSelected(int position) {
-
+        view.showScannedTagContextMenu();
     }
 
     public void deleteTagClicked(int position) {
         model.remove(position);
         view.deleteScannedTag(position);
+        view.closeScannedTagContextMenu();
     }
 
     public void programTagClicked(int position) {

@@ -30,4 +30,8 @@ public interface ScanView {
     public void showHelp();
 
     public void showAbout();
+
+    public void showScannedTagContextMenu();
+
+    public void closeScannedTagContextMenu();
 }

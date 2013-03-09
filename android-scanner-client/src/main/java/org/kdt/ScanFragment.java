@@ -105,6 +105,17 @@ public class ScanFragment extends Fragment {
         scannedTags.clear();
     }
 
+    public void showContextActionBar() {
+        if (mActionMode != null) {
+            return;
+        }
+        mActionMode = getActivity().startActionMode(new ActionModeCallback());
+    }
+
+    public void closeContextActionBar() {
+        mActionMode.finish();
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -140,13 +151,6 @@ public class ScanFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
             presenter.tagSelected(position);
-            // TODO Make the presenter cause the context action bar (CAB) to be
-            // displayed
-            if (mActionMode != null) {
-                return;
-            }
-            mActionMode = getActivity().startActionMode(
-                    new ActionModeCallback());
         }
     }
 
@@ -172,8 +176,6 @@ public class ScanFragment extends Fragment {
             switch (item.getItemId()) {
             case R.id.action_delete_scan:
                 presenter.deleteTagClicked(selectedTag);
-                // TODO make the presenter cause the CAB to close
-                mode.finish(); // Action picked, so close the CAB
                 return true;
             default:
                 return false;

@@ -209,14 +209,14 @@ public class ScanActivity extends FragmentActivity implements
         getScanFragment().clearScannedTags();
     }
 
-    private ScanFragment getScanFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        return (ScanFragment) fragmentManager
-                .findFragmentByTag(makeFragmentName(viewPager.getId(), 0));
+    @Override
+    public void showScannedTagContextMenu() {
+        getScanFragment().showContextActionBar();
     }
 
-    private String makeFragmentName(int containerId, int position) {
-        return "android:switcher:" + containerId + ":" + position;
+    @Override
+    public void closeScannedTagContextMenu() {
+        getScanFragment().closeContextActionBar();
     }
 
     @Override
@@ -234,8 +234,6 @@ public class ScanActivity extends FragmentActivity implements
     @Override
     public void onTabSelected(ActionBar.Tab tab,
             FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
         viewPager.setCurrentItem(tab.getPosition());
     }
 
@@ -247,6 +245,16 @@ public class ScanActivity extends FragmentActivity implements
     @Override
     public void onTabReselected(ActionBar.Tab tab,
             FragmentTransaction fragmentTransaction) {
+    }
+
+    private ScanFragment getScanFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        return (ScanFragment) fragmentManager
+                .findFragmentByTag(makeFragmentName(viewPager.getId(), 0));
+    }
+
+    private String makeFragmentName(int containerId, int position) {
+        return "android:switcher:" + containerId + ":" + position;
     }
 
     /**

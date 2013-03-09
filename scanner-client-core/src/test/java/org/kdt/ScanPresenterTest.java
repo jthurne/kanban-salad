@@ -105,6 +105,13 @@ public class ScanPresenterTest {
     }
 
     @Test
+    public void displays_the_scanned_tag_context_menu__when_a_tag_is_selected()
+            throws Exception {
+        when.presenter.tagSelected(1);
+        then.the_scanned_tag_context_menu_should_be_displayed();
+    }
+
+    @Test
     public void clears_the_view_when_the_snapshot_is_saved() throws Exception {
         given.some_tags_have_been_scanned();
         when.presenter.saveClicked();
@@ -116,6 +123,14 @@ public class ScanPresenterTest {
         given.some_tags_have_been_scanned();
         when.presenter.saveClicked();
         then.the_model_should_be_cleared();
+    }
+
+    @Test
+    public void closes_the_context_menu__when_item_is_selected_and_delete_is_pressed()
+            throws Exception {
+        given.two_tags_have_been_scanned();
+        when.presenter.deleteTagClicked(1);
+        then.the_scanned_tag_context_menu_should_be_closed();
     }
 
     @Test
@@ -134,12 +149,6 @@ public class ScanPresenterTest {
         given.scanned_tag(new Cell("Swimlane - Queue"));
         when.presenter.deleteTagClicked(1);
         then.the_model_should_not_contain(new Task("Do Something Else"));
-    }
-
-    private void the_model_should_not_contain(Scanable shouldNotExist) {
-        for (Scanable scanable : model.getScannedTags()) {
-            assertThat(scanable, not(samePropertyValuesAs(shouldNotExist)));
-        }
     }
 
     @Test
@@ -197,6 +206,14 @@ public class ScanPresenterTest {
         verify(mockView).selectScannedTag(position);
     }
 
+    private void the_scanned_tag_context_menu_should_be_displayed() {
+        verify(mockView).showScannedTagContextMenu();
+    }
+
+    private void the_scanned_tag_context_menu_should_be_closed() {
+        verify(mockView).closeScannedTagContextMenu();
+    }
+
     private void the_model_should_contain(Scanable expectedScanable) {
         assertThat(model.getScannedTags(),
                 contains(samePropertyValuesAs(expectedScanable)));
@@ -204,6 +221,12 @@ public class ScanPresenterTest {
 
     private void the_model_should_be_cleared() {
         assertThat(model.getScannedTags(), Matchers.is(Matchers.empty()));
+    }
+
+    private void the_model_should_not_contain(Scanable shouldNotExist) {
+        for (Scanable scanable : model.getScannedTags()) {
+            assertThat(scanable, not(samePropertyValuesAs(shouldNotExist)));
+        }
     }
 
     @SuppressWarnings("unused")
