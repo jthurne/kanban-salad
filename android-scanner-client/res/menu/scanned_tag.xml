@@ -5,10 +5,4 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_delete_scan"
         />
-    
-    <item android:id="@+id/action_program_scan" 
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_program"
-        />
 </menu>

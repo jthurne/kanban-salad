@@ -164,9 +164,6 @@ public class ScanFragment extends Fragment {
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            int selectedTag = scannedTagsView.getCheckedItemPosition();
-            mode.setTitle("Tag Selected");
-            mode.setSubtitle(scannedTags.getItem(selectedTag));
             return true;
         }
 
@@ -179,9 +176,6 @@ public class ScanFragment extends Fragment {
                 scannedTagListener.deleteTagClicked(selectedTag);
                 // TODO make the presenter cause the CAB to close
                 mode.finish(); // Action picked, so close the CAB
-                return true;
-            case R.id.action_program_scan:
-                scannedTagListener.programTagClicked(selectedTag);
                 return true;
             default:
                 return false;
