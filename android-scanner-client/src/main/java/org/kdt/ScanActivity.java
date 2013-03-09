@@ -34,7 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class ScanActivity extends FragmentActivity implements
-        ActionBar.TabListener, ScannedTagListener, ScanView {
+        ActionBar.TabListener, ScanView, HasScanPresenter {
 
     private NfcForegroundDispatchController nfcDispatchController;
     private final ScanPresenter presenter;
@@ -171,6 +171,11 @@ public class ScanActivity extends FragmentActivity implements
         Log.v("ScanActivity", "onPostCreate");
     }
 
+    @Override
+    public ScanPresenter getScanPresenter() {
+        return presenter;
+    }
+
     public void helpMenuItemClicked(MenuItem item) {
         presenter.helpMenuItemClicked();
     }
@@ -181,21 +186,6 @@ public class ScanActivity extends FragmentActivity implements
 
     public void saveClicked(View view) {
         presenter.saveClicked();
-    }
-
-    @Override
-    public void tagSelected(int position) {
-        presenter.tagSelected(position);
-    }
-
-    @Override
-    public void deleteTagClicked(int position) {
-        presenter.deleteTagClicked(position);
-    }
-
-    @Override
-    public void programTagClicked(int position) {
-        presenter.programTagClicked(position);
     }
 
     @Override

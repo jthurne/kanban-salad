@@ -18,12 +18,6 @@ package org.kdt;
 /**
  * 
  */
-public interface ScannedTagListener {
-
-    public void tagSelected(int position);
-
-    public void deleteTagClicked(int position);
-
-    public void programTagClicked(int position);
-
+public interface HasScanPresenter {
+    public ScanPresenter getScanPresenter();
 }

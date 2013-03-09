@@ -44,7 +44,7 @@ public class ScanFragment extends Fragment {
 
     private ActionMode mActionMode;
 
-    private ScannedTagListener scannedTagListener;
+    private ScanPresenter presenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,10 +60,10 @@ public class ScanFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            scannedTagListener = (ScannedTagListener) activity;
+            presenter = ((HasScanPresenter) activity).getScanPresenter();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement ScannedTagListener");
+                    + " must implement HasScanPresenter");
         }
     }
 
@@ -139,9 +139,7 @@ public class ScanFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
-
-            scannedTagListener.tagSelected(position);
-
+            presenter.tagSelected(position);
             // TODO Make the presenter cause the context action bar (CAB) to be
             // displayed
             if (mActionMode != null) {
@@ -173,7 +171,7 @@ public class ScanFragment extends Fragment {
 
             switch (item.getItemId()) {
             case R.id.action_delete_scan:
-                scannedTagListener.deleteTagClicked(selectedTag);
+                presenter.deleteTagClicked(selectedTag);
                 // TODO make the presenter cause the CAB to close
                 mode.finish(); // Action picked, so close the CAB
                 return true;
