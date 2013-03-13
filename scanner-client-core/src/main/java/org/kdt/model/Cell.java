@@ -15,11 +15,50 @@
  */
 package org.kdt.model;
 
-public class Cell extends Scanable {
+public class Cell implements Scanable {
 
-	public Cell(String payload) {
-		super(payload);
-		// TODO Auto-generated constructor stub
-	}
+    private final String swimlane;
+    private final String queue;
 
+    public Cell(String swimlane, String queue) {
+        this.swimlane = swimlane;
+        this.queue = queue;
+    }
+
+    private Cell(Builder builder) {
+        this.swimlane = builder.swimlane;
+        this.queue = builder.queue;
+    }
+
+    public String getSwimlane() {
+        return swimlane;
+    }
+
+    public String getQueue() {
+        return queue;
+    }
+
+    @Override
+    public String toString() {
+        return swimlane + " - " + queue;
+    }
+
+    public static class Builder {
+        private String swimlane;
+        private String queue;
+
+        public Cell build() {
+            return new Cell(this);
+        }
+
+        public Builder swimlane(String swimlane) {
+            this.swimlane = swimlane;
+            return this;
+        }
+
+        public Builder queue(String queue) {
+            this.queue = queue;
+            return this;
+        }
+    }
 }

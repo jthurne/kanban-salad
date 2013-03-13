@@ -15,11 +15,64 @@
  */
 package org.kdt.model;
 
-public class Task extends Scanable {
+public class Task implements Scanable {
 
-	public Task(String payload) {
-		super(payload);
-		// TODO Auto-generated constructor stub
-	}
+    private final String id;
+    private final String name;
+    private final String size;
+
+    public Task(String id, String name, String size) {
+        this.id = id;
+        this.name = name;
+        this.size = size;
+    }
+
+    private Task(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.size = builder.size;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public static class Builder {
+        private String id;
+        private String name;
+        private String size;
+
+        public Task build() {
+            return new Task(this);
+        }
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder size(String size) {
+            this.size = size;
+            return this;
+        }
+    }
 
 }

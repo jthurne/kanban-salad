@@ -15,6 +15,7 @@
  */
 package org.kdt;
 
+import org.kdt.model.Cell;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
 
@@ -45,10 +46,12 @@ public class ScanPresenter {
         if (scannedTag == null)
             return;
 
+        // TODO replace conditional with polymorphism
         if (isATask(scannedTag)) {
-            view.appendToScannedTags("\t\t" + scannedTag.getPayload());
+            view.appendToScannedTags("\t\t" + ((Task) scannedTag).getName());
         } else {
-            view.appendToScannedTags(scannedTag.getPayload());
+            view.appendToScannedTags(((Cell) scannedTag).getSwimlane() + " - "
+                    + ((Cell) scannedTag).getQueue());
         }
     }
 

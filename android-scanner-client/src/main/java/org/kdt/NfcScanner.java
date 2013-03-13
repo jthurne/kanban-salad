@@ -28,48 +28,60 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Parcelable;
 
-
 public class NfcScanner implements Scanner {
-	
-	private final Activity parentActivity;
-	
-	public NfcScanner(Activity parentActivity) {
-		this.parentActivity = parentActivity;
-	}
-	
-	public Scanable scan() {
-	    Intent intent = parentActivity.getIntent();
-		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
-			Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-			return rawToScanable(rawMsgs);
-	    }
-		
-		return null;
-	}
-	
-	private Scanable rawToScanable(Parcelable[] rawMsgs) {
-	    NdefMessage message = (NdefMessage) rawMsgs[0];
-    	return messageToScanable(message);
-	}
-	
-	private Scanable messageToScanable(NdefMessage message) {
-		
-		NdefRecord record = message.getRecords()[0];
-		String text = decodePayload(record.getPayload());
-		
-		String mimeType = decodePayload(record.getType());
 
-		Scanable kanbanArtifact;
-		if (mimeType.endsWith("task")) {
-			kanbanArtifact = new Task(text);
-		} else {
-			kanbanArtifact = new Cell(text);
-		}
-		
-		return kanbanArtifact;
-	}
-	
-	private String decodePayload(byte[] payload) {
-		return new String(payload, Charset.forName("US-ASCII"));
-	}
+    private final Activity parentActivity;
+
+    public NfcScanner(Activity parentActivity) {
+        this.parentActivity = parentActivity;
+    }
+
+    @Override
+    public Scanable scan() {
+        Intent intent = parentActivity.getIntent();
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            Parcelable[] rawMsgs = intent
+                    .getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            return rawToScanable(rawMsgs);
+        }
+
+        return null;
+    }
+
+    private Scanable rawToScanable(Parcelable[] rawMsgs) {
+        NdefMessage message = (NdefMessage) rawMsgs[0];
+        return messageToScanable(message);
+    }
+
+    private Scanable messageToScanable(NdefMessage message) {
+
+        NdefRecord record = message.getRecords()[0];
+        String text = decodePayload(record.getPayload());
+
+        String mimeType = decodePayload(record.getType());
+
+        // TODO replace conditional with polymorphism
+        // TODO pull parsing into a separate, testable component
+        Scanable kanbanArtifact;
+        String[] data = text.split(":");
+        if (mimeType.endsWith("task")) {
+            if (data.length == 3) {
+                kanbanArtifact = new Task(data[0], data[1], data[2]);
+            } else {
+                kanbanArtifact = new Task("", text, "");
+            }
+        } else {
+            if (data.length == 2) {
+                kanbanArtifact = new Cell(data[0], data[1]);
+            } else {
+                kanbanArtifact = new Cell(text, "");
+            }
+        }
+
+        return kanbanArtifact;
+    }
+
+    private String decodePayload(byte[] payload) {
+        return new String(payload, Charset.forName("US-ASCII"));
+    }
 }

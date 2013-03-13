@@ -15,6 +15,12 @@
  */
 package org.kdt.model;
 
-public interface Scanable {
-
+/**
+ * Represents an empty (unprogrammed) tag
+ */
+public class Empty implements Scanable {
+    @Override
+    public String toString() {
+        return "<EMPTY>";
+    }
 }
