@@ -39,7 +39,7 @@ public class Cell implements Scanable {
     }
 
     @Override
-    public String toString() {
+    public String getDisplayName() {
         return swimlane + " - " + queue;
     }
 

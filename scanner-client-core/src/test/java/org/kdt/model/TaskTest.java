@@ -15,7 +15,20 @@
  */
 package org.kdt.model;
 
-public interface Scanable {
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-    public String getDisplayName();
+import org.junit.Test;
+
+/**
+ * 
+ */
+public class TaskTest {
+
+    @Test
+    public void creates_displayName_based_on_name() throws Exception {
+        assertThat(new Task("1234", "Do Something", "2").getDisplayName(),
+                is(equalTo("\t\tDo Something")));
+    }
 }

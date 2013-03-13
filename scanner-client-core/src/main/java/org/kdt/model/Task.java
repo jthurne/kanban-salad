@@ -46,6 +46,11 @@ public class Task implements Scanable {
     }
 
     @Override
+    public String getDisplayName() {
+        return "\t\t" + name;
+    }
+
+    @Override
     public String toString() {
         return name;
     }

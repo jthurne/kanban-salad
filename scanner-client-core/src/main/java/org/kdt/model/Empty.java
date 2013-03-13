@@ -20,7 +20,7 @@ package org.kdt.model;
  */
 public class Empty implements Scanable {
     @Override
-    public String toString() {
+    public String getDisplayName() {
         return "<EMPTY>";
     }
 }

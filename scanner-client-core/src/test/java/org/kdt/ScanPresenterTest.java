@@ -33,6 +33,11 @@ import org.mockito.MockitoAnnotations;
 
 public class ScanPresenterTest {
 
+    /**
+     * 
+     */
+    private static final Cell A_CELL_TAG = new Cell("Swimlane", "Queue");
+
     private ScanPresenter presenter;
 
     @Mock
@@ -50,19 +55,11 @@ public class ScanPresenterTest {
     }
 
     @Test
-    public void displays_name_of_a_scanned_cell__when_a_cell_tag_is_scanned()
+    public void displays_name_of_a_scanned_tag__when_a_tag_is_scanned()
             throws Exception {
-        given.the_scanner_returns(new Cell("Swimlane", "Queue"));
+        given.the_scanner_returns(A_CELL_TAG);
         when.presenter.tryToScanTag();
-        then.the_scan_should_be_displayed_as("Swimlane - Queue");
-    }
-
-    @Test
-    public void displays_name_of_a_scanned_task__when_a_task_tag_is_scanned()
-            throws Exception {
-        given.the_scanner_returns(new Task("1234", "Do Something", "1"));
-        when.presenter.tryToScanTag();
-        then.the_scan_should_be_displayed_as("\t\tDo Something");
+        then.the_scan_should_be_displayed_as(A_CELL_TAG.getDisplayName());
     }
 
     @Test
@@ -81,7 +78,7 @@ public class ScanPresenterTest {
 
     @Test
     public void selects_tag__when_a_cell_tag_is_scanned() throws Exception {
-        given.the_scanner_returns(new Cell("Swimlane", "Queue"));
+        given.the_scanner_returns(A_CELL_TAG);
         when.presenter.tryToScanTag();
         then.it_should_select_tag(0);
     }
@@ -146,7 +143,7 @@ public class ScanPresenterTest {
             throws Exception {
         given.scanned_tag(new Task("1234", "Do Something", "1"));
         given.scanned_tag(new Task("12345", "Do Something Else", "1"));
-        given.scanned_tag(new Cell("Swimlane", "Queue"));
+        given.scanned_tag(A_CELL_TAG);
         when.presenter.deleteTagClicked(1);
         then.the_model_should_not_contain(new Task("12345",
                 "Do Something Else", "1"));
@@ -174,7 +171,7 @@ public class ScanPresenterTest {
 
     private void two_tags_have_been_scanned() {
         scanned_tag(new Task("1234", "Do Something", "1"));
-        scanned_tag(new Cell("Swimlane", "Queue"));
+        scanned_tag(A_CELL_TAG);
     }
 
     private void scanned_tag(Scanable scanable) {
