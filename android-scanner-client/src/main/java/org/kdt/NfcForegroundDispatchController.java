@@ -15,6 +15,8 @@
  */
 package org.kdt;
 
+import org.kdt.model.MimeTypes;
+
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -27,10 +29,6 @@ import android.nfc.tech.Ndef;
  * Manages the NFC Forground Dispatch System.
  */
 public class NfcForegroundDispatchController {
-    private static final String TASK_MIME_TYPE = "application/vnd.kdt.task";
-    private static final String CELL_MIME_TYPE = "application/vnd.kdt.cell";
-    private static final String LEGACY_MIME_TYPE = "application/vnd.kdt";
-
     private final Activity parentActivity;
     private final NfcAdapter nfcAdapter;
     private final PendingIntent nfcPendingIntent;
@@ -62,9 +60,8 @@ public class NfcForegroundDispatchController {
         try {
             IntentFilter ndef = new IntentFilter(
                     NfcAdapter.ACTION_NDEF_DISCOVERED);
-            ndef.addDataType(LEGACY_MIME_TYPE);
-            ndef.addDataType(CELL_MIME_TYPE);
-            ndef.addDataType(TASK_MIME_TYPE);
+            ndef.addDataType(MimeTypes.CELL);
+            ndef.addDataType(MimeTypes.TASK);
             return ndef;
         } catch (MalformedMimeTypeException e) {
             throw new RuntimeException("fail", e);
