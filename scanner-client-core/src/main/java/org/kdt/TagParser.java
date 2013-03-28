@@ -1,0 +1,66 @@
+/**
+ * Copyright 2013 Jim Hurne and Joseph Kramer
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kdt;
+
+import org.kdt.model.Cell;
+import org.kdt.model.Empty;
+import org.kdt.model.IncorrectlyFormatted;
+import org.kdt.model.MimeTypes;
+import org.kdt.model.Scanable;
+import org.kdt.model.Task;
+
+/**
+ * Parses Scanables from strings.
+ */
+public class TagParser {
+
+    /**
+     * Parses a Scanable based on the given MIME Type and data.
+     * 
+     * @param mimeType
+     * @param data
+     * @return If the MIME Type is not recognized, an Empty is returned. If the
+     *         data is incorrectly formatted, and IncorrectlyFormatted is
+     *         returned. Otherwise the appropriate Scanable is returned.
+     */
+    public Scanable parse(String mimeType, String data) {
+        if (MimeTypes.TASK.equals(mimeType)) {
+            return parseTask(data);
+        }
+        if (MimeTypes.CELL.equals(mimeType)) {
+            return parseCell(data);
+        }
+        return new Empty();
+    }
+
+    private Scanable parseTask(String data) {
+        String[] dataTokens = data.split(":");
+
+        if (dataTokens.length < 3)
+            return new IncorrectlyFormatted(data);
+
+        return new Task(dataTokens[0], dataTokens[1], dataTokens[2]);
+    }
+
+    private Scanable parseCell(String data) {
+        String[] dataTokens = data.split(":");
+
+        if (dataTokens.length < 2)
+            return new IncorrectlyFormatted(data);
+
+        return new Cell(dataTokens[0], dataTokens[1]);
+    }
+}

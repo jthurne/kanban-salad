@@ -17,9 +17,7 @@ package org.kdt;
 
 import java.nio.charset.Charset;
 
-import org.kdt.model.Cell;
 import org.kdt.model.Scanable;
-import org.kdt.model.Task;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -54,31 +52,12 @@ public class NfcScanner implements Scanner {
     }
 
     private Scanable messageToScanable(NdefMessage message) {
-
         NdefRecord record = message.getRecords()[0];
         String text = decodePayload(record.getPayload());
 
         String mimeType = decodePayload(record.getType());
 
-        // TODO replace conditional with polymorphism
-        // TODO pull parsing into a separate, testable component
-        Scanable kanbanArtifact;
-        String[] data = text.split(":");
-        if (mimeType.endsWith("task")) {
-            if (data.length == 3) {
-                kanbanArtifact = new Task(data[0], data[1], data[2]);
-            } else {
-                kanbanArtifact = new Task("", text, "");
-            }
-        } else {
-            if (data.length == 2) {
-                kanbanArtifact = new Cell(data[0], data[1]);
-            } else {
-                kanbanArtifact = new Cell(text, "");
-            }
-        }
-
-        return kanbanArtifact;
+        return new TagParser().parse(mimeType, text);
     }
 
     private String decodePayload(byte[] payload) {
