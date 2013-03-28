@@ -37,12 +37,17 @@ public class TagParser {
      *         returned. Otherwise the appropriate Scanable is returned.
      */
     public Scanable parse(String mimeType, String data) {
+        if (data.isEmpty())
+            return new Empty();
+
         if (MimeTypes.TASK.equals(mimeType)) {
             return parseTask(data);
         }
+
         if (MimeTypes.CELL.equals(mimeType)) {
             return parseCell(data);
         }
+
         return new Empty();
     }
 

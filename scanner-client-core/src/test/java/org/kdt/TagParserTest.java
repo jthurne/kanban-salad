@@ -58,6 +58,20 @@ public class TagParserTest {
     }
 
     @Test
+    public void parses_empty_tags__when_data_is_an_empty_string__when_task_mime_type()
+            throws Exception {
+        when.parsedObject = parser.parse(MimeTypes.TASK, "");
+        then.parsedObject_should_be_a(Empty.class);
+    }
+
+    @Test
+    public void parses_empty_tags__when_data_is_an_empty_string__when_cell_mime_type()
+            throws Exception {
+        when.parsedObject = parser.parse(MimeTypes.CELL, "");
+        then.parsedObject_should_be_a(Empty.class);
+    }
+
+    @Test
     public void parses_task_tags__when_the_mime_type_is_a_task()
             throws Exception {
         when.parsedObject = parser.parse(MimeTypes.TASK, "the-id:the-name:3");
