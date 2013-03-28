@@ -19,6 +19,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -150,6 +151,24 @@ public class ScanPresenterTest {
     }
 
     @Test
+    public void selects_previous_tag__when_a_task_tag_is_deleted()
+            throws Exception {
+        given.scanned_tag(new Task("1234", "Do Something", "1"));
+        given.scanned_tag(new Task("12345", "Do Something Else", "1"));
+        given.scanned_tag(A_CELL_TAG);
+
+        when.presenter.deleteTagClicked(2);
+        then.it_should_select_tag(1);
+    }
+
+    @Test
+    public void selects_no_tags__when_a_tag_is_deleted__and_there_are_no_remaining_tags()
+            throws Exception {
+        given.scanned_tag(A_CELL_TAG);
+        when.presenter.deleteTagClicked(0);
+    }
+
+    @Test
     public void displays_help__when_help_menu_selected() throws Exception {
         when.presenter.helpMenuItemClicked();
         then.the_help_should_be_displayed();
@@ -177,6 +196,7 @@ public class ScanPresenterTest {
     private void scanned_tag(Scanable scanable) {
         given.the_scanner_returns(scanable);
         when.presenter.tryToScanTag();
+        reset(mockView);
     }
 
     private void the_display_of_scanned_tags_should_be_cleared() {

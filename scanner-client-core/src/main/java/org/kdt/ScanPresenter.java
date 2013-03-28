@@ -68,6 +68,9 @@ public class ScanPresenter {
         model.remove(position);
         view.deleteScannedTag(position);
         view.closeScannedTagContextMenu();
+
+        if (position > 0)
+            view.selectScannedTag(position - 1);
     }
 
     public void programTagClicked(int position) {
