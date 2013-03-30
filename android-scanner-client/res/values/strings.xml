@@ -40,5 +40,15 @@ limitations under the License.
 2) Select which type of tag it is\n
 3) Scan the tag to program</string>
     <string name="action_delete_scan">Delete</string>
-
+    <string name="swimlane_label">Swimlane</string>
+    <string name="queue_label">Queue</string>
+    <string name="task_id_label">ID</string>
+    <string name="task_name_label">Name</string>
+    <string name="task_size_label">Size</string>
+    <string name="tag_type_label">Type</string>
+    <string name="tag_type_prompt">Select a tag type</string>
+    <string-array name="tag_types_array">
+        <item>Task</item>
+        <item>Cell</item>
+    </string-array>
 </resources>
