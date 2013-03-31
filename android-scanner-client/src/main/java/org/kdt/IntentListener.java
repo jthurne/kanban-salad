@@ -15,9 +15,12 @@
  */
 package org.kdt;
 
+import android.content.Intent;
+
 /**
- * 
+ * Listens for new intents received by the foreground activity.
  */
-public interface HasScanPresenter {
-    public ScanPresenter getScanPresenter();
+public interface IntentListener {
+
+    public void onNewIntent(Intent intent);
 }

@@ -17,6 +17,7 @@ package org.kdt;
 
 import org.kdt.kanbandatatracker.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -25,7 +26,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
-public class ProgramFragment extends Fragment {
+public class ProgramFragment extends Fragment implements IntentListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,11 +69,12 @@ public class ProgramFragment extends Fragment {
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onResume()
+     * @see org.kdt.IntentListener#onNewIntent(android.content.Intent)
      */
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onNewIntent(Intent intent) {
+        // TODO Auto-generated method stub
+
     }
 
 }

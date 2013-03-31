@@ -31,14 +31,12 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 public class ScanActivity extends FragmentActivity implements
-        ActionBar.TabListener, ScanView, NavigationView, HasScanPresenter {
+        ActionBar.TabListener, NavigationView {
 
     private NfcForegroundDispatchController nfcDispatchController;
-    private final ScanPresenter presenter;
-    private final NavigationPresenter navPresenter;
+    private final NavigationPresenter presenter;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -56,9 +54,7 @@ public class ScanActivity extends FragmentActivity implements
     private ViewPager viewPager;
 
     public ScanActivity() {
-        presenter = new ScanPresenter(this, new ListScanModel(),
-                new NfcScanner(this));
-        navPresenter = new NavigationPresenter(this);
+        presenter = new NavigationPresenter(this);
     }
 
     @Override
@@ -109,6 +105,7 @@ public class ScanActivity extends FragmentActivity implements
                 .setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                     @Override
                     public void onPageSelected(int position) {
+                        // TODO Move to presenter?
                         actionBar.setSelectedNavigationItem(position);
                     }
                 });
@@ -124,9 +121,12 @@ public class ScanActivity extends FragmentActivity implements
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.v("ScanActivity", "onNewIntent");
         this.setIntent(intent);
-        presenter.tryToScanTag();
+        // TODO Move into the navigation presenter??
+        Fragment displayedFragment = getDisplayedFragment();
+        if (displayedFragment instanceof IntentListener) {
+            ((IntentListener) displayedFragment).onNewIntent(intent);
+        }
     }
 
     @Override
@@ -138,87 +138,40 @@ public class ScanActivity extends FragmentActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v("ScanActivity", "onResume");
         nfcDispatchController.enableForegroundDispatch();
     }
 
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
-
-        Log.v("ScanActivity", "onAttachFragment: " + fragment);
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        Log.v("ScanActivity", "onPostResume");
     }
 
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        Log.v("ScanActivity", "onResumeFragments");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.v("ScanActivity", "onStart");
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        Log.v("ScanActivity", "onPostCreate");
-    }
-
-    @Override
-    public ScanPresenter getScanPresenter() {
-        return presenter;
     }
 
     public void helpMenuItemClicked(MenuItem item) {
-        navPresenter.helpMenuItemClicked();
+        presenter.helpMenuItemClicked();
     }
 
     public void aboutMenuItemClicked(MenuItem item) {
-        navPresenter.aboutMenuItemClicked();
-    }
-
-    public void saveClicked(View view) {
-        presenter.saveClicked();
-    }
-
-    @Override
-    public void appendToScannedTags(String textToDisplay) {
-        Log.v("ScanActivity", "appendToLog: " + textToDisplay);
-        getScanFragment().appendToScannedTags(textToDisplay);
-    }
-
-    @Override
-    public void deleteScannedTag(int logEntryIndex) {
-        getScanFragment().deleteScannedTag(logEntryIndex);
-    }
-
-    @Override
-    public void selectScannedTag(int logEntryIndex) {
-        getScanFragment().selectScannedTag(logEntryIndex);
-    }
-
-    @Override
-    public void clearScannedTags() {
-        getScanFragment().clearScannedTags();
-    }
-
-    @Override
-    public void showScannedTagContextMenu() {
-        getScanFragment().showContextActionBar();
-    }
-
-    @Override
-    public void closeScannedTagContextMenu() {
-        getScanFragment().closeContextActionBar();
+        presenter.aboutMenuItemClicked();
     }
 
     @Override
@@ -236,6 +189,7 @@ public class ScanActivity extends FragmentActivity implements
     @Override
     public void onTabSelected(ActionBar.Tab tab,
             FragmentTransaction fragmentTransaction) {
+        // TODO Move to presenter?
         viewPager.setCurrentItem(tab.getPosition());
     }
 
@@ -249,10 +203,10 @@ public class ScanActivity extends FragmentActivity implements
             FragmentTransaction fragmentTransaction) {
     }
 
-    private ScanFragment getScanFragment() {
+    private Fragment getDisplayedFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        return (ScanFragment) fragmentManager
-                .findFragmentByTag(makeFragmentName(viewPager.getId(), 0));
+        return fragmentManager.findFragmentByTag(makeFragmentName(
+                viewPager.getId(), viewPager.getCurrentItem()));
     }
 
     private String makeFragmentName(int containerId, int position) {

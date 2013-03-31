@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import org.kdt.kanbandatatracker.R;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -32,9 +33,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
-public class ScanFragment extends Fragment {
+public class ScanFragment extends Fragment implements ScanView, IntentListener {
 
     private ArrayList<String> scannedTagsList;
     private ArrayAdapter<String> scannedTags;
@@ -53,18 +55,19 @@ public class ScanFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_scan, container, false);
 
         initScannedTagsView();
+        initSaveButton();
+
         return rootView;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            presenter = ((HasScanPresenter) activity).getScanPresenter();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement HasScanPresenter");
-        }
+    private void initSaveButton() {
+        Button saveButton = (Button) rootView.findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.saveClicked();
+            }
+        });
     }
 
     private void initScannedTagsView() {
@@ -79,6 +82,18 @@ public class ScanFragment extends Fragment {
         enableContextActionBarWhenSelectingScannedItems(scannedTagsView);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        presenter = new ScanPresenter(this, new ListScanModel(),
+                new NfcScanner(activity));
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        presenter.tryToScanTag();
+    }
+
     private ListView findScannedTagsView() {
         return (ListView) rootView.findViewById(R.id.scanned_tags_list);
     }
@@ -89,30 +104,36 @@ public class ScanFragment extends Fragment {
         scannedTagsView.setOnItemClickListener(new ItemSelectedListener());
     }
 
+    @Override
     public void appendToScannedTags(String textToDisplay) {
         scannedTags.add(textToDisplay);
     }
 
+    @Override
     public void selectScannedTag(int position) {
         scannedTagsView.performItemClick(null, position, -1);
     }
 
+    @Override
     public void deleteScannedTag(int logEntryIndex) {
         scannedTagsList.remove(logEntryIndex);
     }
 
+    @Override
     public void clearScannedTags() {
         scannedTags.clear();
     }
 
-    public void showContextActionBar() {
+    @Override
+    public void showScannedTagContextMenu() {
         if (mActionMode != null) {
             return;
         }
         mActionMode = getActivity().startActionMode(new ActionModeCallback());
     }
 
-    public void closeContextActionBar() {
+    @Override
+    public void closeScannedTagContextMenu() {
         mActionMode.finish();
     }
 
