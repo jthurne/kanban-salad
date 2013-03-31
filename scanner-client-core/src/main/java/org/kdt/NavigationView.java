@@ -18,16 +18,10 @@ package org.kdt;
 /**
  * 
  */
-public interface ScanView {
-    public void appendToScannedTags(String textToDisplay);
+public interface NavigationView {
 
-    public void deleteScannedTag(int position);
+    public void showHelp();
 
-    public void selectScannedTag(int position);
+    public void showAbout();
 
-    public void clearScannedTags();
-
-    public void showScannedTagContextMenu();
-
-    public void closeScannedTagContextMenu();
 }

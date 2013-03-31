@@ -34,10 +34,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class ScanActivity extends FragmentActivity implements
-        ActionBar.TabListener, ScanView, HasScanPresenter {
+        ActionBar.TabListener, ScanView, NavigationView, HasScanPresenter {
 
     private NfcForegroundDispatchController nfcDispatchController;
     private final ScanPresenter presenter;
+    private final NavigationPresenter navPresenter;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -57,6 +58,7 @@ public class ScanActivity extends FragmentActivity implements
     public ScanActivity() {
         presenter = new ScanPresenter(this, new ListScanModel(),
                 new NfcScanner(this));
+        navPresenter = new NavigationPresenter(this);
     }
 
     @Override
@@ -177,11 +179,11 @@ public class ScanActivity extends FragmentActivity implements
     }
 
     public void helpMenuItemClicked(MenuItem item) {
-        presenter.helpMenuItemClicked();
+        navPresenter.helpMenuItemClicked();
     }
 
     public void aboutMenuItemClicked(MenuItem item) {
-        presenter.aboutMenuItemClicked();
+        navPresenter.aboutMenuItemClicked();
     }
 
     public void saveClicked(View view) {

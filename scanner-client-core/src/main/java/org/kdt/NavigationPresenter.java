@@ -16,18 +16,21 @@
 package org.kdt;
 
 /**
- * 
+ * Presenter for overall navigation actions.
  */
-public interface ScanView {
-    public void appendToScannedTags(String textToDisplay);
+public class NavigationPresenter {
 
-    public void deleteScannedTag(int position);
+    private final NavigationView view;
 
-    public void selectScannedTag(int position);
+    public NavigationPresenter(NavigationView view) {
+        this.view = view;
+    }
 
-    public void clearScannedTags();
+    public void helpMenuItemClicked() {
+        view.showHelp();
+    }
 
-    public void showScannedTagContextMenu();
-
-    public void closeScannedTagContextMenu();
+    public void aboutMenuItemClicked() {
+        view.showAbout();
+    }
 }

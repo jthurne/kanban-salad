@@ -52,14 +52,6 @@ public class ScanPresenter {
         view.clearScannedTags();
     }
 
-    public void helpMenuItemClicked() {
-        view.showHelp();
-    }
-
-    public void aboutMenuItemClicked() {
-        view.showAbout();
-    }
-
     public void tagSelected(int position) {
         view.showScannedTagContextMenu();
     }
