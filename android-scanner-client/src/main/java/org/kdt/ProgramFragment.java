@@ -16,7 +16,9 @@
 package org.kdt;
 
 import org.kdt.kanbandatatracker.R;
+import org.kdt.model.TagType;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,7 +28,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
-public class ProgramFragment extends Fragment implements IntentListener {
+public class ProgramFragment extends Fragment implements IntentListener,
+        ProgramView {
+
+    private ProgramPresenter presenter;
+
+    private View taskDetails;
+    private View cellDetails;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,8 +43,8 @@ public class ProgramFragment extends Fragment implements IntentListener {
         View rootView = inflater.inflate(R.layout.fragment_program, container,
                 false);
 
-        final View taskDetails = rootView.findViewById(R.id.task_details);
-        final View cellDetails = rootView.findViewById(R.id.cell_details);
+        taskDetails = rootView.findViewById(R.id.task_details);
+        cellDetails = rootView.findViewById(R.id.cell_details);
 
         final Spinner spinner = (Spinner) rootView
                 .findViewById(R.id.tag_type_spinner);
@@ -46,24 +54,46 @@ public class ProgramFragment extends Fragment implements IntentListener {
             public void onItemSelected(AdapterView<?> parent, View view,
                     int pos, long id) {
                 if ("Task".equals(spinner.getSelectedItem())) {
-                    taskDetails.setVisibility(View.VISIBLE);
-                    cellDetails.setVisibility(View.GONE);
+                    presenter.typeChangedTo(TagType.TASK);
                 }
 
                 if ("Cell".equals(spinner.getSelectedItem())) {
-                    taskDetails.setVisibility(View.GONE);
-                    cellDetails.setVisibility(View.VISIBLE);
+                    presenter.typeChangedTo(TagType.CELL);
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                taskDetails.setVisibility(View.GONE);
-                cellDetails.setVisibility(View.GONE);
+                // taskDetails.setVisibility(View.GONE);
+                // cellDetails.setVisibility(View.GONE);
             }
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        presenter = new ProgramPresenter(this);
+    }
+
+    @Override
+    public void setIsTaskDetailsVisible(boolean isVisible) {
+        if (isVisible) {
+            taskDetails.setVisibility(View.VISIBLE);
+        } else {
+            taskDetails.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setIsCellDetailsVisible(boolean isVisible) {
+        if (isVisible) {
+            cellDetails.setVisibility(View.VISIBLE);
+        } else {
+            cellDetails.setVisibility(View.GONE);
+        }
     }
 
     /*
