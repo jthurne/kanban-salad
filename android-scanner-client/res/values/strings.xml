@@ -34,11 +34,7 @@ limitations under the License.
     <string name="title_program_tab">Program</string>
     
     <string name="title_activity_program_tag">Program Tag</string>
-    <string name="program_tag_instructions">Programming a tag:\n
-\n
-1) Enter the tag data\n
-2) Select which type of tag it is\n
-3) Scan the tag to program</string>
+    <string name="program_tag_instructions">To program a tag, enter desired data above and then scan the tag</string>
     <string name="action_delete_scan">Delete</string>
     <string name="swimlane_label">Swimlane</string>
     <string name="queue_label">Queue</string>

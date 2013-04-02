@@ -51,8 +51,6 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text" >
-
-            <requestFocus />
         </EditText>
 
         <TextView
@@ -88,8 +86,6 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text" >
-
-            <requestFocus />
         </EditText>
 
         <TextView
@@ -118,5 +114,17 @@
             android:ems="10"
             android:inputType="text" />
     </LinearLayout>
+    
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    
+        <TextView
+            android:id="@+id/programming_instructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/program_tag_instructions"
+            />
 
 </LinearLayout>
