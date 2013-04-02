@@ -17,6 +17,8 @@ package org.kdt;
 
 import org.kdt.kanbandatatracker.R;
 import org.kdt.model.TagType;
+import org.kdt.program.ProgramPresenter;
+import org.kdt.program.ProgramView;
 
 import android.app.Activity;
 import android.content.Intent;

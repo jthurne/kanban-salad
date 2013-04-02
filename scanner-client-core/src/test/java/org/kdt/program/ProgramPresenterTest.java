@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kdt;
+package org.kdt.program;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.both;
@@ -25,6 +25,9 @@ import org.junit.Test;
 import org.kdt.model.Cell;
 import org.kdt.model.TagType;
 import org.kdt.model.Task;
+import org.kdt.program.ProgramPresenter;
+import org.kdt.program.ProgramView;
+import org.kdt.program.Programer;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
