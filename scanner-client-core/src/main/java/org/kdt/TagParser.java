@@ -15,12 +15,9 @@
  */
 package org.kdt;
 
-import org.kdt.model.Cell;
 import org.kdt.model.Empty;
-import org.kdt.model.IncorrectlyFormatted;
-import org.kdt.model.MimeTypes;
 import org.kdt.model.Scanable;
-import org.kdt.model.Task;
+import org.kdt.model.TagType;
 
 /**
  * Parses Scanables from strings.
@@ -37,35 +34,10 @@ public class TagParser {
      *         returned. Otherwise the appropriate Scanable is returned.
      */
     public Scanable parse(String mimeType, String data) {
-        if (data.isEmpty())
+        if (data.isEmpty()) {
             return new Empty();
-
-        if (MimeTypes.TASK.equals(mimeType)) {
-            return parseTask(data);
         }
 
-        if (MimeTypes.CELL.equals(mimeType)) {
-            return parseCell(data);
-        }
-
-        return new Empty();
-    }
-
-    private Scanable parseTask(String data) {
-        String[] dataTokens = data.split(":");
-
-        if (dataTokens.length < 3)
-            return new IncorrectlyFormatted(data);
-
-        return new Task(dataTokens[0], dataTokens[1], dataTokens[2]);
-    }
-
-    private Scanable parseCell(String data) {
-        String[] dataTokens = data.split(":");
-
-        if (dataTokens.length < 2)
-            return new IncorrectlyFormatted(data);
-
-        return new Cell(dataTokens[0], dataTokens[1]);
+        return TagType.forMimeType(mimeType).parse(data);
     }
 }

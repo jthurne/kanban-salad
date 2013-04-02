@@ -15,8 +15,8 @@
  */
 package org.kdt;
 
-import org.kdt.model.MimeTypes;
-
+import static org.kdt.model.TagType.CELL;
+import static org.kdt.model.TagType.TASK;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -60,8 +60,8 @@ public class NfcForegroundDispatchController {
         try {
             IntentFilter ndef = new IntentFilter(
                     NfcAdapter.ACTION_NDEF_DISCOVERED);
-            ndef.addDataType(MimeTypes.CELL);
-            ndef.addDataType(MimeTypes.TASK);
+            ndef.addDataType(CELL.mimeType());
+            ndef.addDataType(TASK.mimeType());
             return ndef;
         } catch (MalformedMimeTypeException e) {
             throw new RuntimeException("fail", e);

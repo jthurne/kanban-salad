@@ -16,22 +16,20 @@
 package org.kdt;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.junit.Assert.assertTrue;
+import static org.kdt.model.TagType.CELL;
+import static org.kdt.model.TagType.TASK;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kdt.model.Cell;
 import org.kdt.model.Empty;
 import org.kdt.model.IncorrectlyFormatted;
-import org.kdt.model.MimeTypes;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
 
-/**
- * 
- */
 public class TagParserTest {
 
     private TagParser parser;
@@ -60,27 +58,27 @@ public class TagParserTest {
     @Test
     public void parses_empty_tags__when_data_is_an_empty_string__when_task_mime_type()
             throws Exception {
-        when.parsedObject = parser.parse(MimeTypes.TASK, "");
+        when.parsedObject = parser.parse(TASK.mimeType(), "");
         then.parsedObject_should_be_a(Empty.class);
     }
 
     @Test
     public void parses_empty_tags__when_data_is_an_empty_string__when_cell_mime_type()
             throws Exception {
-        when.parsedObject = parser.parse(MimeTypes.CELL, "");
+        when.parsedObject = parser.parse(CELL.mimeType(), "");
         then.parsedObject_should_be_a(Empty.class);
     }
 
     @Test
     public void parses_task_tags__when_the_mime_type_is_a_task()
             throws Exception {
-        when.parsedObject = parser.parse(MimeTypes.TASK, "the-id:the-name:3");
+        when.parsedObject = parser.parse(TASK.mimeType(), "the-id:the-name:3");
         then.parsedObject_should_be_a(Task.class);
     }
 
     @Test
     public void sets_correct_properties_on_a_task() throws Exception {
-        when.parsedObject = parser.parse(MimeTypes.TASK, "the-id:the-name:3");
+        when.parsedObject = parser.parse(TASK.mimeType(), "the-id:the-name:3");
         then.the_parsedObject_should_have_property("id", "the-id");
         and.the_parsedObject_should_have_property("name", "the-name");
         and.the_parsedObject_should_have_property("size", "3");
@@ -89,14 +87,14 @@ public class TagParserTest {
     @Test
     public void parses_cell_tags__when_the_mime_type_is_a_cell()
             throws Exception {
-        when.parsedObject = parser.parse(MimeTypes.CELL,
+        when.parsedObject = parser.parse(CELL.mimeType(),
                 "the-swimlane:the-queue");
         then.parsedObject_should_be_a(Cell.class);
     }
 
     @Test
     public void sets_correct_properties_on_a_cell() throws Exception {
-        when.parsedObject = parser.parse(MimeTypes.CELL,
+        when.parsedObject = parser.parse(CELL.mimeType(),
                 "the-swimlane:the-queue");
         then.the_parsedObject_should_have_property("swimlane", "the-swimlane");
         and.the_parsedObject_should_have_property("queue", "the-queue");
@@ -104,13 +102,13 @@ public class TagParserTest {
 
     @Test
     public void parses_incorrectly_formatted_task_tag() throws Exception {
-        when.parsedObject = parser.parse(MimeTypes.TASK, "totally-incorrect");
+        when.parsedObject = parser.parse(TASK.mimeType(), "totally-incorrect");
         then.parsedObject_should_be_a(IncorrectlyFormatted.class);
     }
 
     @Test
     public void parses_incorrectly_formatted_cell_tag() throws Exception {
-        when.parsedObject = parser.parse(MimeTypes.CELL, "totally-incorrect");
+        when.parsedObject = parser.parse(CELL.mimeType(), "totally-incorrect");
         then.parsedObject_should_be_a(IncorrectlyFormatted.class);
     }
 
@@ -120,8 +118,8 @@ public class TagParserTest {
     }
 
     private void parsedObject_should_be_a(
-            Class<? extends Scanable> expectedClass) {
-        assertTrue(parsedObject.getClass().equals(expectedClass));
+            @SuppressWarnings("rawtypes") Class expectedClass) {
+        assertThat(parsedObject.getClass(), is(equalTo(expectedClass)));
     }
 
     @SuppressWarnings("unused")
