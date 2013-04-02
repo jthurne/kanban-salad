@@ -32,7 +32,7 @@ public class ScanPresenter {
         this.scanner = scanner;
     }
 
-    public void tryToScanTag() {
+    public void tagScanned() {
         Scanable scannedTag = scanner.scan();
         model.add(scannedTag);
 
@@ -63,9 +63,5 @@ public class ScanPresenter {
 
         if (position > 0)
             view.selectScannedTag(position - 1);
-    }
-
-    public void programTagClicked(int position) {
-
     }
 }

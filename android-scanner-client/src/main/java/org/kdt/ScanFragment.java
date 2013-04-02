@@ -91,7 +91,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
 
     @Override
     public void onNewIntent(Intent intent) {
-        presenter.tryToScanTag();
+        presenter.tagScanned();
     }
 
     private ListView findScannedTagsView() {

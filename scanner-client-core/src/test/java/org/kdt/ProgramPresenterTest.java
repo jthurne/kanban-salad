@@ -37,7 +37,7 @@ public class ProgramPresenterTest {
     private ProgramView mockView;
 
     @Mock
-    private Programmer mockTagProgrammer;
+    private Programer mockTagProgrammer;
 
     @Before
     public void given_a_presenter() throws Exception {

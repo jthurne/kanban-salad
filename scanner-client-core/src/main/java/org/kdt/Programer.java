@@ -20,7 +20,7 @@ import org.kdt.model.Programable;
 /**
  * Programs Tags
  */
-public interface Programmer {
+public interface Programer {
 
     public void programTag(Programable toProgram);
 }

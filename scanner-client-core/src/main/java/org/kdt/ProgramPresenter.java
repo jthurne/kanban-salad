@@ -22,9 +22,9 @@ import org.kdt.model.Task;
 public class ProgramPresenter {
 
     private final ProgramView view;
-    private final Programmer tagProgrammer;
+    private final Programer tagProgrammer;
 
-    public ProgramPresenter(ProgramView view, Programmer tagProgrammer) {
+    public ProgramPresenter(ProgramView view, Programer tagProgrammer) {
         this.view = view;
         this.tagProgrammer = tagProgrammer;
     }

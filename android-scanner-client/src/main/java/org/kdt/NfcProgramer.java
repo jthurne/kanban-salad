@@ -32,12 +32,12 @@ import android.nfc.tech.Ndef;
 /**
  * 
  */
-public class NfcProgrammer implements Programmer {
+public class NfcProgramer implements Programer {
     private static final Charset ASCII = Charset.forName("US-ASCII");
 
     private final Activity parentActivity;
 
-    public NfcProgrammer(Activity parentActivity) {
+    public NfcProgramer(Activity parentActivity) {
         this.parentActivity = parentActivity;
     }
 

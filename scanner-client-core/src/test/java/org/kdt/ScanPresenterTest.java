@@ -55,28 +55,28 @@ public class ScanPresenterTest {
     public void displays_name_of_a_scanned_tag__when_a_tag_is_scanned()
             throws Exception {
         given.the_scanner_returns(A_CELL_TAG);
-        when.presenter.tryToScanTag();
+        when.presenter.tagScanned();
         then.the_scan_should_be_displayed_as(A_CELL_TAG.getDisplayName());
     }
 
     @Test
     public void adds_scanned_tag_to_the_model() throws Exception {
         given.the_scanner_returns(new Task("1234", "Do Something", "1"));
-        when.presenter.tryToScanTag();
+        when.presenter.tagScanned();
         then.the_model_should_contain(new Task("1234", "Do Something", "1"));
     }
 
     @Test
     public void selects_tag__when_a_task_tag_is_scanned() throws Exception {
         given.the_scanner_returns(new Task("1234", "Do Something", "1"));
-        when.presenter.tryToScanTag();
+        when.presenter.tagScanned();
         then.it_should_select_tag(0);
     }
 
     @Test
     public void selects_tag__when_a_cell_tag_is_scanned() throws Exception {
         given.the_scanner_returns(A_CELL_TAG);
-        when.presenter.tryToScanTag();
+        when.presenter.tagScanned();
         then.it_should_select_tag(0);
     }
 
@@ -84,9 +84,9 @@ public class ScanPresenterTest {
     public void selects_last_scanned_tag__when_more_than_one_tag_is_scanned()
             throws Exception {
         given.the_scanner_returns(new Task("1234", "Do Something", "1"));
-        when.presenter.tryToScanTag();
-        when.presenter.tryToScanTag();
-        when.presenter.tryToScanTag();
+        when.presenter.tagScanned();
+        when.presenter.tagScanned();
+        when.presenter.tagScanned();
         then.it_should_select_tag(0);
         then.it_should_select_tag(1);
         then.it_should_select_tag(2);
@@ -95,7 +95,7 @@ public class ScanPresenterTest {
     @Test
     public void ignores_null_scans() throws Exception {
         given.the_scanner_returns(null);
-        when.presenter.tryToScanTag();
+        when.presenter.tagScanned();
     }
 
     @Test
@@ -179,7 +179,7 @@ public class ScanPresenterTest {
 
     private void scanned_tag(Scanable scanable) {
         given.the_scanner_returns(scanable);
-        when.presenter.tryToScanTag();
+        when.presenter.tagScanned();
         reset(mockView);
     }
 

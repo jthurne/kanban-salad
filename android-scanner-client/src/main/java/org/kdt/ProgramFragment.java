@@ -75,7 +75,7 @@ public class ProgramFragment extends Fragment implements IntentListener,
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        presenter = new ProgramPresenter(this, new NfcProgrammer(activity));
+        presenter = new ProgramPresenter(this, new NfcProgramer(activity));
     }
 
     @Override
