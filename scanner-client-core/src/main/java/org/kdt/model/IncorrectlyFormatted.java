@@ -26,14 +26,8 @@ public class IncorrectlyFormatted implements Scanable {
         this.invalidData = invalidData;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.kdt.model.Scanable#getDisplayName()
-     */
     @Override
     public String getDisplayName() {
         return "<INVALID> " + invalidData;
     }
-
 }

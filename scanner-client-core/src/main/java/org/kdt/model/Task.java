@@ -15,7 +15,7 @@
  */
 package org.kdt.model;
 
-public class Task implements Scanable {
+public class Task implements Scanable, Programable {
 
     private final String id;
     private final String name;
@@ -48,6 +48,17 @@ public class Task implements Scanable {
     @Override
     public String getDisplayName() {
         return "\t\t" + name;
+    }
+
+    @Override
+    public String getDataString() {
+        return id + TagType.FIELD_DELIMINATOR + name
+                + TagType.FIELD_DELIMINATOR + size;
+    }
+
+    @Override
+    public String getMimeType() {
+        return TagType.TASK.mimeType();
     }
 
     @Override

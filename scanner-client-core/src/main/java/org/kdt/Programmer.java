@@ -15,29 +15,12 @@
  */
 package org.kdt;
 
-import org.kdt.model.TagType;
+import org.kdt.model.Programable;
 
-public interface ProgramView {
+/**
+ * Programs Tags
+ */
+public interface Programmer {
 
-    public void setIsTaskDetailsVisible(boolean isVisible);
-
-    public void setIsCellDetailsVisible(boolean isVisible);
-
-    public String getSwimlane();
-
-    public String getQueue();
-
-    public TagType getSelectedTagType();
-
-    public String getTaskId();
-
-    public String getTaskName();
-
-    public String getTaskSize();
-
-    public void showMessage(Message message);
-
-    public enum Message {
-        TAG_PROGRAMMED
-    }
+    public void programTag(Programable toProgram);
 }

@@ -15,7 +15,7 @@
  */
 package org.kdt.model;
 
-public class Cell implements Scanable {
+public class Cell implements Scanable, Programable {
 
     private final String swimlane;
     private final String queue;
@@ -41,6 +41,16 @@ public class Cell implements Scanable {
     @Override
     public String getDisplayName() {
         return swimlane + " - " + queue;
+    }
+
+    @Override
+    public String getDataString() {
+        return swimlane + TagType.FIELD_DELIMINATOR + queue;
+    }
+
+    @Override
+    public String getMimeType() {
+        return TagType.CELL.mimeType();
     }
 
     public static class Builder {

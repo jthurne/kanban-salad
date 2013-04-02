@@ -19,7 +19,7 @@ public enum TagType {
     TASK("application/vnd.kdt.task") {
         @Override
         public Scanable parse(String data) {
-            String[] dataTokens = data.split(":");
+            String[] dataTokens = data.split(FIELD_DELIMINATOR);
 
             if (dataTokens.length < 3)
                 return INCORRECTLY_FORMATTED.parse(data);
@@ -31,7 +31,7 @@ public enum TagType {
     CELL("application/vnd.kdt.cell") {
         @Override
         public Scanable parse(String data) {
-            String[] dataTokens = data.split(":");
+            String[] dataTokens = data.split(FIELD_DELIMINATOR);
 
             if (dataTokens.length < 2)
                 return INCORRECTLY_FORMATTED.parse(data);
@@ -53,6 +53,8 @@ public enum TagType {
             return new IncorrectlyFormatted(data);
         }
     };
+
+    public static final String FIELD_DELIMINATOR = ":";
 
     private final String mimeType;
 

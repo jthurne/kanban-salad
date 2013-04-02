@@ -15,14 +15,18 @@
  */
 package org.kdt;
 
+import org.kdt.model.Cell;
 import org.kdt.model.TagType;
+import org.kdt.model.Task;
 
 public class ProgramPresenter {
 
     private final ProgramView view;
+    private final Programmer tagProgrammer;
 
-    public ProgramPresenter(ProgramView view) {
+    public ProgramPresenter(ProgramView view, Programmer tagProgrammer) {
         this.view = view;
+        this.tagProgrammer = tagProgrammer;
     }
 
     public void typeChangedTo(TagType tagType) {
@@ -35,4 +39,23 @@ public class ProgramPresenter {
         }
     }
 
+    public void tagScanned() {
+        TagType selectedTagType = view.getSelectedTagType();
+
+        if (selectedTagType == TagType.TASK) {
+            tagProgrammer.programTag(new Task(
+                    view.getTaskId(),
+                    view.getTaskName(),
+                    view.getTaskSize()));
+        }
+
+        if (selectedTagType == TagType.CELL) {
+            tagProgrammer.programTag(
+                    new Cell(view.getSwimlane(), view.getQueue()));
+        }
+
+        view.showMessage(ProgramView.Message.TAG_PROGRAMMED);
+
+        // TODO Handle exceptions thrown by tagProgrammer
+    }
 }

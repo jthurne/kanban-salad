@@ -15,9 +15,16 @@
  */
 package org.kdt;
 
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.both;
+import static org.hamcrest.CoreMatchers.equalTo;
+
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.kdt.model.Cell;
 import org.kdt.model.TagType;
+import org.kdt.model.Task;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -29,38 +36,118 @@ public class ProgramPresenterTest {
     @Mock
     private ProgramView mockView;
 
+    @Mock
+    private Programmer mockTagProgrammer;
+
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new ProgramPresenter(mockView);
+        presenter = new ProgramPresenter(mockView, mockTagProgrammer);
     }
 
     @Test
     public void shows_cell_fields__when_tag_type_is_set_to_task()
             throws Exception {
         when.presenter.typeChangedTo(TagType.CELL);
-        then.verify().setIsTaskDetailsVisible(false);
-        then.verify().setIsCellDetailsVisible(true);
+        then.verify(mockView).setIsTaskDetailsVisible(false);
+        then.verify(mockView).setIsCellDetailsVisible(true);
     }
 
     @Test
     public void shows_task_fields__when_tag_type_is_set_to_task()
             throws Exception {
         when.presenter.typeChangedTo(TagType.TASK);
-        then.verify().setIsTaskDetailsVisible(true);
-        then.verify().setIsCellDetailsVisible(false);
+        then.verify(mockView).setIsTaskDetailsVisible(true);
+        then.verify(mockView).setIsCellDetailsVisible(false);
     }
 
     @Test
     public void shows_task_fields__when_tag_type_is_anything_else()
             throws Exception {
         when.presenter.typeChangedTo(TagType.EMPTY);
-        then.verify().setIsTaskDetailsVisible(true);
-        then.verify().setIsCellDetailsVisible(false);
+        then.verify(mockView).setIsTaskDetailsVisible(true);
+        then.verify(mockView).setIsCellDetailsVisible(false);
     }
 
-    private ProgramView verify() {
-        return Mockito.verify(mockView);
+    @Test
+    public void programs_a_cell_tag__when_tag_is_scanned() throws Exception {
+        given.the_selected_tag_type_is(TagType.CELL);
+        and.the_swimline_is_set_to("Android App");
+        and.the_queue_is_set_to("Code Review");
+        when.presenter.tagScanned();
+        then.the_tag_is_programmed_using(new Cell("Android App", "Code Review"));
+    }
+
+    @Test
+    public void programs_a_task_tag__when_tag_is_scanned() throws Exception {
+        given.the_selected_tag_type_is(TagType.TASK);
+        and.the_id_is_set_to("1234");
+        and.the_name_is_set_to("User can program a tag");
+        and.the_size_is_set_to("XL");
+        when.presenter.tagScanned();
+        then.the_tag_is_programmed_using(new Task("1234",
+                "User can program a tag", "XL"));
+    }
+
+    @Test
+    public void tells_the_user_when_a_cell_tag_is_successfully_programmed()
+            throws Exception {
+        given.the_selected_tag_type_is(TagType.TASK);
+        when.presenter.tagScanned();
+        then.verify(mockView).showMessage(ProgramView.Message.TAG_PROGRAMMED);
+    }
+
+    private void the_tag_is_programmed_using(Cell cell) {
+        // TODO Pull into a commonly used matcher??
+        Mockito.verify(mockTagProgrammer)
+                .programTag(
+                        Mockito.argThat(both(
+                                Matchers.<Cell> hasProperty("swimlane",
+                                        equalTo(cell.getSwimlane()))).and(
+                                Matchers.<Cell> hasProperty("queue",
+                                        equalTo(cell.getQueue())))));
+    }
+
+    private void the_tag_is_programmed_using(Task task) {
+        // TODO Pull into a commonly used matcher??
+        Mockito.verify(mockTagProgrammer)
+                .programTag(
+                        Mockito.argThat(allOf(
+                                Matchers.<Task> hasProperty("id",
+                                        equalTo(task.getId())),
+                                Matchers.<Task> hasProperty("name",
+                                        equalTo(task.getName())),
+                                Matchers.<Task> hasProperty("size",
+                                        equalTo(task.getSize()))
+                                )));
+    }
+
+    private void the_selected_tag_type_is(TagType type) {
+        Mockito.when(mockView.getSelectedTagType()).thenReturn(type);
+    }
+
+    private void the_swimline_is_set_to(String swimlane) {
+        Mockito.when(mockView.getSwimlane()).thenReturn(swimlane);
+    }
+
+    private void the_queue_is_set_to(String queue) {
+        Mockito.when(mockView.getQueue()).thenReturn(queue);
+    }
+
+    private void the_id_is_set_to(String id) {
+        Mockito.when(mockView.getTaskId()).thenReturn(id);
+    }
+
+    private void the_name_is_set_to(String name) {
+        Mockito.when(mockView.getTaskName()).thenReturn(name);
+    }
+
+    private void the_size_is_set_to(String size) {
+        Mockito.when(mockView.getTaskSize()).thenReturn(size);
+    }
+
+    private <T> T verify(T mock) {
+        return Mockito.verify(mock);
     }
 
     @SuppressWarnings("unused")

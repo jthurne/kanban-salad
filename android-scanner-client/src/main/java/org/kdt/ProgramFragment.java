@@ -26,7 +26,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class ProgramFragment extends Fragment implements IntentListener,
         ProgramView {
@@ -35,39 +37,37 @@ public class ProgramFragment extends Fragment implements IntentListener,
 
     private View taskDetails;
     private View cellDetails;
+    private Spinner tagTypeSpinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_program, container,
+        final View rootView = inflater.inflate(R.layout.fragment_program,
+                container,
                 false);
 
         taskDetails = rootView.findViewById(R.id.task_details);
         cellDetails = rootView.findViewById(R.id.cell_details);
 
-        final Spinner spinner = (Spinner) rootView
+        tagTypeSpinner = (Spinner) rootView
                 .findViewById(R.id.tag_type_spinner);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        tagTypeSpinner
+                .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                    int pos, long id) {
-                if ("Task".equals(spinner.getSelectedItem())) {
-                    presenter.typeChangedTo(TagType.TASK);
-                }
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent,
+                            View view,
+                            int pos, long id) {
+                        presenter.typeChangedTo(getSelectedTagType());
+                    }
 
-                if ("Cell".equals(spinner.getSelectedItem())) {
-                    presenter.typeChangedTo(TagType.CELL);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // taskDetails.setVisibility(View.GONE);
-                // cellDetails.setVisibility(View.GONE);
-            }
-        });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // taskDetails.setVisibility(View.GONE);
+                        // cellDetails.setVisibility(View.GONE);
+                    }
+                });
 
         return rootView;
     }
@@ -75,7 +75,7 @@ public class ProgramFragment extends Fragment implements IntentListener,
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        presenter = new ProgramPresenter(this);
+        presenter = new ProgramPresenter(this, new NfcProgrammer(activity));
     }
 
     @Override
@@ -96,15 +96,63 @@ public class ProgramFragment extends Fragment implements IntentListener,
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.kdt.IntentListener#onNewIntent(android.content.Intent)
-     */
     @Override
     public void onNewIntent(Intent intent) {
-        // TODO Auto-generated method stub
+        presenter.tagScanned();
+    }
 
+    @Override
+    public void showMessage(Message message) {
+        int messageId = stringIdFor(message);
+        Toast.makeText(this.getActivity(),
+                getString(messageId),
+                Toast.LENGTH_LONG).show();
+    }
+
+    private int stringIdFor(Message message) {
+        switch (message) {
+        case TAG_PROGRAMMED:
+            return R.string.tag_programmed;
+        }
+        return -1;
+    }
+
+    @Override
+    public String getSwimlane() {
+        return getTextFrom(cellDetails, R.id.swimlane_edit);
+    }
+
+    @Override
+    public String getQueue() {
+        return getTextFrom(cellDetails, R.id.queue_edit);
+    }
+
+    @Override
+    public TagType getSelectedTagType() {
+        if ("Task".equals(tagTypeSpinner.getSelectedItem())) {
+            return TagType.TASK;
+        }
+
+        return TagType.CELL;
+    }
+
+    @Override
+    public String getTaskId() {
+        return getTextFrom(taskDetails, R.id.task_id_edit);
+    }
+
+    @Override
+    public String getTaskName() {
+        return getTextFrom(taskDetails, R.id.task_name_edit);
+    }
+
+    @Override
+    public String getTaskSize() {
+        return getTextFrom(taskDetails, R.id.task_size_edit);
+    }
+
+    private String getTextFrom(View container, int id) {
+        return ((EditText) container.findViewById(id)).getText().toString();
     }
 
 }

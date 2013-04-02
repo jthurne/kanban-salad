@@ -31,4 +31,12 @@ public class TaskTest {
         assertThat(new Task("1234", "Do Something", "2").getDisplayName(),
                 is(equalTo("\t\tDo Something")));
     }
+
+    @Test
+    public void creates_data_string() throws Exception {
+        assertThat(new Task("1234", "Do Something", "2").getDataString(),
+                is(equalTo("1234" + TagType.FIELD_DELIMINATOR + "Do Something"
+                        + TagType.FIELD_DELIMINATOR + "2")));
+
+    }
 }
