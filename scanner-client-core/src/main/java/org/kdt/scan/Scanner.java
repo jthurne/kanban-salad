@@ -13,20 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kdt;
+package org.kdt.scan;
 
 import org.kdt.model.Scanable;
 
-/**
- * 
- */
-public interface ScanModel {
+public interface Scanner {
+	
+	public Scanable scan();
 
-    public void add(Scanable scannedTag);
-
-    public void remove(int index);
-
-    public int getNumScannedTags();
-
-    public void clearScannedTags();
 }

@@ -18,6 +18,8 @@ package org.kdt;
 import java.nio.charset.Charset;
 
 import org.kdt.model.Scanable;
+import org.kdt.scan.Scanner;
+import org.kdt.scan.TagParser;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kdt;
+package org.kdt.scan;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -29,6 +29,7 @@ import org.kdt.model.Empty;
 import org.kdt.model.IncorrectlyFormatted;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
+import org.kdt.scan.TagParser;
 
 public class TagParserTest {
 

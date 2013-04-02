@@ -18,6 +18,9 @@ package org.kdt;
 import java.util.ArrayList;
 
 import org.kdt.kanbandatatracker.R;
+import org.kdt.scan.ListScanModel;
+import org.kdt.scan.ScanPresenter;
+import org.kdt.scan.ScanView;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kdt;
+package org.kdt.scan;
+
+import org.kdt.model.Scanable;
 
 /**
  * 
  */
-public interface ScanView {
-    public void appendToScannedTags(String textToDisplay);
+public interface ScanModel {
 
-    public void deleteScannedTag(int position);
+    public void add(Scanable scannedTag);
 
-    public void selectScannedTag(int position);
+    public void remove(int index);
+
+    public int getNumScannedTags();
 
     public void clearScannedTags();
-
-    public void showScannedTagContextMenu();
-
-    public void closeScannedTagContextMenu();
 }

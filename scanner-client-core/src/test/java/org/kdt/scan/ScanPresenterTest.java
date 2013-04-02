@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kdt;
+package org.kdt.scan;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.contains;
@@ -29,6 +29,9 @@ import org.junit.Test;
 import org.kdt.model.Cell;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
+import org.kdt.scan.ScanPresenter;
+import org.kdt.scan.ScanView;
+import org.kdt.scan.Scanner;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
