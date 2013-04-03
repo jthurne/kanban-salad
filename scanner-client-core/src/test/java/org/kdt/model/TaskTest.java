@@ -35,8 +35,8 @@ public class TaskTest {
     @Test
     public void creates_data_string() throws Exception {
         assertThat(new Task("1234", "Do Something", "2").getDataString(),
-                is(equalTo("1234" + TagType.FIELD_DELIMINATOR + "Do Something"
-                        + TagType.FIELD_DELIMINATOR + "2")));
+                is(equalTo("1234" + TagType.FIELD_DELIMITER + "Do Something"
+                        + TagType.FIELD_DELIMITER + "2")));
 
     }
 }

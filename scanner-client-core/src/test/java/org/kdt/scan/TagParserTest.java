@@ -29,7 +29,6 @@ import org.kdt.model.Empty;
 import org.kdt.model.IncorrectlyFormatted;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
-import org.kdt.scan.TagParser;
 
 public class TagParserTest {
 
@@ -73,13 +72,15 @@ public class TagParserTest {
     @Test
     public void parses_task_tags__when_the_mime_type_is_a_task()
             throws Exception {
-        when.parsedObject = parser.parse(TASK.mimeType(), "the-id:the-name:3");
+        when.parsedObject = parser
+                .parse(TASK.mimeType(), "the-id\tthe-name\t3");
         then.parsedObject_should_be_a(Task.class);
     }
 
     @Test
     public void sets_correct_properties_on_a_task() throws Exception {
-        when.parsedObject = parser.parse(TASK.mimeType(), "the-id:the-name:3");
+        when.parsedObject = parser
+                .parse(TASK.mimeType(), "the-id\tthe-name\t3");
         then.the_parsedObject_should_have_property("id", "the-id");
         and.the_parsedObject_should_have_property("name", "the-name");
         and.the_parsedObject_should_have_property("size", "3");
@@ -89,14 +90,14 @@ public class TagParserTest {
     public void parses_cell_tags__when_the_mime_type_is_a_cell()
             throws Exception {
         when.parsedObject = parser.parse(CELL.mimeType(),
-                "the-swimlane:the-queue");
+                "the-swimlane\tthe-queue");
         then.parsedObject_should_be_a(Cell.class);
     }
 
     @Test
     public void sets_correct_properties_on_a_cell() throws Exception {
         when.parsedObject = parser.parse(CELL.mimeType(),
-                "the-swimlane:the-queue");
+                "the-swimlane\tthe-queue");
         then.the_parsedObject_should_have_property("swimlane", "the-swimlane");
         and.the_parsedObject_should_have_property("queue", "the-queue");
     }

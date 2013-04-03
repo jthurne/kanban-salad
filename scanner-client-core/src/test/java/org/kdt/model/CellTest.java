@@ -35,7 +35,7 @@ public class CellTest {
     @Test
     public void creates_data_string() throws Exception {
         assertThat(new Cell("Swimlane", "Queue").getDataString(),
-                is(equalTo("Swimlane" + TagType.FIELD_DELIMINATOR + "Queue")));
+                is(equalTo("Swimlane" + TagType.FIELD_DELIMITER + "Queue")));
 
     }
 }

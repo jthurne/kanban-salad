@@ -45,7 +45,7 @@ public class Cell implements Scanable, Programable {
 
     @Override
     public String getDataString() {
-        return swimlane + TagType.FIELD_DELIMINATOR + queue;
+        return swimlane + TagType.FIELD_DELIMITER + queue;
     }
 
     @Override

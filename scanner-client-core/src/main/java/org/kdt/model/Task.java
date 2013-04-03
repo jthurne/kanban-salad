@@ -52,8 +52,8 @@ public class Task implements Scanable, Programable {
 
     @Override
     public String getDataString() {
-        return id + TagType.FIELD_DELIMINATOR + name
-                + TagType.FIELD_DELIMINATOR + size;
+        return id + TagType.FIELD_DELIMITER + name
+                + TagType.FIELD_DELIMITER + size;
     }
 
     @Override
