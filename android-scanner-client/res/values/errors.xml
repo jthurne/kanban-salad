@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="programing_failed_error">Programing failed: %1$s</string>
+    <string name="tag_not_writable_error">Cannot program tag because it is not writable</string>
+    <string name="write_failed_error">Failed to write data to the tag: %1$s</string>
+    <string name="closing_tag_failed_error">Failed to close the tag: %1$s</string>
+</resources>

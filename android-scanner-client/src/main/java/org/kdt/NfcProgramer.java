@@ -18,8 +18,10 @@ package org.kdt;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.kdt.kanbandatatracker.R;
 import org.kdt.model.Programable;
 import org.kdt.program.Programer;
+import org.kdt.program.ProgramingException;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -72,9 +74,9 @@ public class NfcProgramer implements Programer {
             ndefTag.connect();
             ndefTag.writeNdefMessage(createMessage(tag));
         } catch (IOException e) {
-            throw new ProgrammingFailed(e);
+            throw new WriteFailed(e);
         } catch (FormatException e) {
-            throw new ProgrammingFailed(e);
+            throw new WriteFailed(e);
         } finally {
             close(ndefTag);
         }
@@ -108,24 +110,29 @@ public class NfcProgramer implements Programer {
         }
     }
 
-    public static class TagIsNotWritable extends RuntimeException {
-        private static final long serialVersionUID = 1L;
-    }
-
-    public static class ProgrammingFailed extends RuntimeException {
+    public class TagIsNotWritable extends ProgramingException {
         private static final long serialVersionUID = 1L;
 
-        public ProgrammingFailed(Throwable throwable) {
-            super(throwable);
+        public TagIsNotWritable() {
+            super(parentActivity.getString(R.string.tag_not_writable_error));
         }
     }
 
-    public static class ClosingTheTagFailed extends RuntimeException {
+    public class ClosingTheTagFailed extends ProgramingException {
         private static final long serialVersionUID = 1L;
 
         public ClosingTheTagFailed(Throwable throwable) {
-            super(throwable);
+            super(parentActivity.getString(R.string.tag_not_writable_error,
+                    throwable.getMessage()), throwable);
         }
     }
 
+    public class WriteFailed extends ProgramingException {
+        private static final long serialVersionUID = 1L;
+
+        public WriteFailed(Throwable throwable) {
+            super(parentActivity.getString(R.string.write_failed_error,
+                    throwable.getMessage()), throwable);
+        }
+    }
 }

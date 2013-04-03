@@ -18,16 +18,15 @@ package org.kdt.program;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.mockito.Mockito.doThrow;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.kdt.model.Cell;
+import org.kdt.model.Programable;
 import org.kdt.model.TagType;
 import org.kdt.model.Task;
-import org.kdt.program.ProgramPresenter;
-import org.kdt.program.ProgramView;
-import org.kdt.program.Programer;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -40,12 +39,12 @@ public class ProgramPresenterTest {
     private ProgramView mockView;
 
     @Mock
-    private Programer mockTagProgrammer;
+    private Programer mockTagProgramer;
 
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new ProgramPresenter(mockView, mockTagProgrammer);
+        presenter = new ProgramPresenter(mockView, mockTagProgramer);
     }
 
     @Test
@@ -100,9 +99,32 @@ public class ProgramPresenterTest {
         then.verify(mockView).showMessage(ProgramView.Message.TAG_PROGRAMMED);
     }
 
+    @Test
+    public void tells_the_user_when_programing_a_tag_failed() {
+        given.the_selected_tag_type_is(TagType.TASK);
+        and.given.the_programer_throws(an_exception());
+        when.presenter.tagScanned();
+        then.verify(mockView).showException(the_exception());
+
+    }
+
+    private void the_programer_throws(ProgramingException an_exception) {
+        doThrow(an_exception).when(mockTagProgramer).programTag(
+                Mockito.<Programable> any());
+    }
+
+    private ProgramingException an_exception() {
+        testException = new ProgramingException("Something bad");
+        return testException;
+    }
+
+    private ProgramingException the_exception() {
+        return testException;
+    }
+
     private void the_tag_is_programmed_using(Cell cell) {
         // TODO Pull into a commonly used matcher??
-        Mockito.verify(mockTagProgrammer)
+        Mockito.verify(mockTagProgramer)
                 .programTag(
                         Mockito.argThat(both(
                                 Matchers.<Cell> hasProperty("swimlane",
@@ -113,7 +135,7 @@ public class ProgramPresenterTest {
 
     private void the_tag_is_programmed_using(Task task) {
         // TODO Pull into a commonly used matcher??
-        Mockito.verify(mockTagProgrammer)
+        Mockito.verify(mockTagProgramer)
                 .programTag(
                         Mockito.argThat(allOf(
                                 Matchers.<Task> hasProperty("id",
@@ -156,4 +178,6 @@ public class ProgramPresenterTest {
     @SuppressWarnings("unused")
     private ProgramPresenterTest given = this, when = this, then = this,
             and = this, with = this;
+
+    private ProgramingException testException;
 }

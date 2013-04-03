@@ -15,31 +15,25 @@
  */
 package org.kdt.program;
 
-import org.kdt.model.TagType;
+/**
+ * Thrown when a problem occurs with programming a tag
+ */
+public class ProgramingException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
 
-public interface ProgramView {
+    public ProgramingException() {
+        super();
+    }
 
-    public void setIsTaskDetailsVisible(boolean isVisible);
+    public ProgramingException(String arg0, Throwable arg1) {
+        super(arg0, arg1);
+    }
 
-    public void setIsCellDetailsVisible(boolean isVisible);
+    public ProgramingException(String arg0) {
+        super(arg0);
+    }
 
-    public String getSwimlane();
-
-    public String getQueue();
-
-    public TagType getSelectedTagType();
-
-    public String getTaskId();
-
-    public String getTaskName();
-
-    public String getTaskSize();
-
-    public void showMessage(Message message);
-
-    public void showException(Exception exception);
-
-    public enum Message {
-        TAG_PROGRAMMED
+    public ProgramingException(Throwable arg0) {
+        super(arg0);
     }
 }

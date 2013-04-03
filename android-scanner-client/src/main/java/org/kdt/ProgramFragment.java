@@ -120,6 +120,13 @@ public class ProgramFragment extends Fragment implements IntentListener,
     }
 
     @Override
+    public void showException(Exception e) {
+        Toast.makeText(this.getActivity(),
+                e.getMessage(),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public String getSwimlane() {
         return getTextFrom(cellDetails, R.id.swimlane_edit);
     }

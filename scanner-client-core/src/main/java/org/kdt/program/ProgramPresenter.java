@@ -40,6 +40,14 @@ public class ProgramPresenter {
     }
 
     public void tagScanned() {
+        try {
+            attemptToProgramTag();
+        } catch (ProgramingException e) {
+            view.showException(e);
+        }
+    }
+
+    private void attemptToProgramTag() {
         TagType selectedTagType = view.getSelectedTagType();
 
         if (selectedTagType == TagType.TASK) {
@@ -55,7 +63,5 @@ public class ProgramPresenter {
         }
 
         view.showMessage(ProgramView.Message.TAG_PROGRAMMED);
-
-        // TODO Handle exceptions thrown by tagProgrammer
     }
 }
