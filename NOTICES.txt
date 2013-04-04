@@ -1,0 +1,5 @@
+This software uses the event bus provided by the Otto library package,
+which is open source software licensed under the Apache v2.0 License
+(see LICENSE.txt) and is copyright by Square, Inc. and Google, Inc.
+The original software is available from:
+   http://square.github.com/otto/
