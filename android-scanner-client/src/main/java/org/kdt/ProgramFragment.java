@@ -32,6 +32,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 public class ProgramFragment extends Fragment implements IntentListener,
         ProgramView {
 
@@ -77,7 +79,15 @@ public class ProgramFragment extends Fragment implements IntentListener,
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        presenter = new ProgramPresenter(this, new NfcProgramer(activity));
+        presenter = new ProgramPresenter(this, ModelProvider.getInstance(),
+                new NfcProgramer(activity));
+        EventBusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -164,4 +174,59 @@ public class ProgramFragment extends Fragment implements IntentListener,
         return ((EditText) container.findViewById(id)).getText().toString();
     }
 
+    @Override
+    public void setSelectedTagType(TagType type) {
+        switch (type) {
+        case TASK:
+            tagTypeSpinner.setSelection(0);
+            break;
+        case CELL:
+            tagTypeSpinner.setSelection(1);
+            break;
+        default:
+            throw new InvalidTagTypeProvided(type);
+        }
+    }
+
+    private static class InvalidTagTypeProvided extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+
+        public InvalidTagTypeProvided(TagType tagType) {
+            super("Invalid TagType provided: " + tagType);
+        }
+    }
+
+    @Override
+    public void setTaskId(String id) {
+        setTextOn(taskDetails, R.id.task_id_edit, id);
+    }
+
+    @Override
+    public void setTaskName(String name) {
+        setTextOn(taskDetails, R.id.task_name_edit, name);
+    }
+
+    @Override
+    public void setTaskSize(String size) {
+        setTextOn(taskDetails, R.id.task_size_edit, size);
+    }
+
+    @Override
+    public void setSwimlane(String swimlane) {
+        setTextOn(cellDetails, R.id.swimlane_edit, swimlane);
+    }
+
+    @Override
+    public void setQueue(String queue) {
+        setTextOn(cellDetails, R.id.queue_edit, queue);
+    }
+
+    @Subscribe
+    public void tagSelected(TagSelectedEvent event) {
+        presenter.tagSelected(event.getPosition());
+    }
+
+    private void setTextOn(View container, int id, String text) {
+        ((EditText) container.findViewById(id)).setText(text);
+    }
 }

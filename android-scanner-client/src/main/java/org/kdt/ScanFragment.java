@@ -18,7 +18,6 @@ package org.kdt;
 import java.util.ArrayList;
 
 import org.kdt.kanbandatatracker.R;
-import org.kdt.scan.ListScanModel;
 import org.kdt.scan.ScanPresenter;
 import org.kdt.scan.ScanView;
 
@@ -39,6 +38,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.squareup.otto.Bus;
+
 public class ScanFragment extends Fragment implements ScanView, IntentListener {
 
     private ArrayList<String> scannedTagsList;
@@ -50,6 +51,8 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     private ActionMode mActionMode;
 
     private ScanPresenter presenter;
+
+    private final Bus eventBus = EventBusProvider.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,7 +91,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        presenter = new ScanPresenter(this, new ListScanModel(),
+        presenter = new ScanPresenter(this, ModelProvider.getInstance(),
                 new NfcScanner(activity));
     }
 
@@ -175,6 +178,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
             presenter.tagSelected(position);
+            eventBus.post(new TagSelectedEvent(position));
         }
     }
 

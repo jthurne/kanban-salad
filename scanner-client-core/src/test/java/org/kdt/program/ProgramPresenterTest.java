@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kdt.model.Cell;
 import org.kdt.model.Programable;
+import org.kdt.model.Scanable;
 import org.kdt.model.TagType;
 import org.kdt.model.Task;
 import org.mockito.Mock;
@@ -41,10 +42,13 @@ public class ProgramPresenterTest {
     @Mock
     private Programer mockTagProgramer;
 
+    @Mock
+    private ProgramModel mockModel;
+
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new ProgramPresenter(mockView, mockTagProgramer);
+        presenter = new ProgramPresenter(mockView, mockModel, mockTagProgramer);
     }
 
     @Test
@@ -106,6 +110,32 @@ public class ProgramPresenterTest {
         when.presenter.tagScanned();
         then.verify(mockView).showException(the_exception());
 
+    }
+
+    @Test
+    public void updates_view_with_task_details__when_task_tag_selected()
+            throws Exception {
+        given.the_model_has_a_tag(1, new Task("1234", "User can program a tag",
+                "XL"));
+        when.presenter.tagSelected(1);
+        then.verify(mockView).setSelectedTagType(TagType.TASK);
+        then.verify(mockView).setTaskId("1234");
+        then.verify(mockView).setTaskName("User can program a tag");
+        then.verify(mockView).setTaskSize("XL");
+    }
+
+    @Test
+    public void updates_view_with_cell_details__when_cell_tag_selected()
+            throws Exception {
+        given.the_model_has_a_tag(1, new Cell("Android App", "Code Review"));
+        when.presenter.tagSelected(1);
+        then.verify(mockView).setSelectedTagType(TagType.CELL);
+        then.verify(mockView).setSwimlane("Android App");
+        then.verify(mockView).setQueue("Code Review");
+    }
+
+    private void the_model_has_a_tag(int position, Scanable tag) {
+        Mockito.when(mockModel.getTagAt(position)).thenReturn(tag);
     }
 
     private void the_programer_throws(ProgramingException an_exception) {

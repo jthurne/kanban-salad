@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.kdt.ListModel;
 import org.kdt.model.Cell;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
@@ -45,12 +46,12 @@ public class ScanPresenterTest {
     @Mock
     private Scanner mockScanner;
 
-    private ListScanModel model;
+    private ListModel model;
 
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
-        model = new ListScanModel();
+        model = new ListModel();
         presenter = new ScanPresenter(mockView, model, mockScanner);
     }
 

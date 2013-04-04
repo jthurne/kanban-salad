@@ -18,6 +18,9 @@ package org.kdt.program;
 import org.kdt.model.TagType;
 
 public interface ProgramView {
+    public enum Message {
+        TAG_PROGRAMMED
+    }
 
     public void setIsTaskDetailsVisible(boolean isVisible);
 
@@ -39,7 +42,16 @@ public interface ProgramView {
 
     public void showException(Exception exception);
 
-    public enum Message {
-        TAG_PROGRAMMED
-    }
+    public void setSelectedTagType(TagType type);
+
+    public void setTaskId(String id);
+
+    public void setTaskName(String name);
+
+    public void setTaskSize(String size);
+
+    public void setSwimlane(String swimlane);
+
+    public void setQueue(String queue);
+
 }

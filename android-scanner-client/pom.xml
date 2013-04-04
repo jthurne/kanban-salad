@@ -27,6 +27,11 @@
       <systemPath>${basedir}/libs/android-support-v4.jar</systemPath>
     </dependency>
     <dependency>
+      <groupId>com.squareup</groupId>
+      <artifactId>otto</artifactId>
+      <version>1.3.3</version>
+    </dependency>
+    <dependency>
       <groupId>org.kdt</groupId>
       <artifactId>scanner-client-core</artifactId>
       <version>1.0.0-SNAPSHOT</version>
