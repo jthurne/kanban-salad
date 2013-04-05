@@ -58,6 +58,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Log.v("ScanFragment", "onCreateView");
+        this.setHasOptionsMenu(true);
         rootView = inflater.inflate(R.layout.fragment_scan, container, false);
 
         initScannedTagsView();
@@ -86,6 +87,12 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         scannedTagsView.setAdapter(scannedTags);
 
         enableContextActionBarWhenSelectingScannedItems(scannedTagsView);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.scan_tag, menu);
     }
 
     @Override
@@ -135,7 +142,8 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         if (actionMode != null) {
             return;
         }
-        actionMode = getActivity().startActionMode(new ActionModeCallback());
+        actionMode = getActivity().startActionMode(
+                new ScannedTagActionModeCallback());
     }
 
     @Override
@@ -161,16 +169,22 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
+        // TODO Should this event be handled by the presenter?
+
         Log.v("ScanFragment", "onResume");
         if (scannedTagsView.getCheckedItemPosition() > -1) {
             showScannedTagContextMenu();
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        // TODO Handle in the presenter
+        if (!isVisibleToUser && actionMode != null) {
+            actionMode.finish();
         }
     }
 
@@ -185,7 +199,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         }
     }
 
-    private class ActionModeCallback implements ActionMode.Callback {
+    private class ScannedTagActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {

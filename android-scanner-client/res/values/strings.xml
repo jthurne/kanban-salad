@@ -48,4 +48,6 @@ limitations under the License.
         <item>Task</item>
         <item>Cell</item>
     </string-array>
+        <string name="action_clear">Clear</string>
+        <string name="replace_last_scanned">Replace last scanned tag</string>
 </resources>
