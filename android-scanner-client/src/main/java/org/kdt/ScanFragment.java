@@ -48,7 +48,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     private View rootView;
     private ListView scannedTagsView;
 
-    private ActionMode mActionMode;
+    private ActionMode actionMode;
 
     private ScanPresenter presenter;
 
@@ -132,15 +132,15 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
 
     @Override
     public void showScannedTagContextMenu() {
-        if (mActionMode != null) {
+        if (actionMode != null) {
             return;
         }
-        mActionMode = getActivity().startActionMode(new ActionModeCallback());
+        actionMode = getActivity().startActionMode(new ActionModeCallback());
     }
 
     @Override
     public void closeScannedTagContextMenu() {
-        mActionMode.finish();
+        actionMode.finish();
     }
 
     @Override
@@ -169,6 +169,9 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     public void onResume() {
         super.onResume();
         Log.v("ScanFragment", "onResume");
+        if (scannedTagsView.getCheckedItemPosition() > -1) {
+            showScannedTagContextMenu();
+        }
     }
 
     private class ItemSelectedListener implements
@@ -184,7 +187,6 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
 
     private class ActionModeCallback implements ActionMode.Callback {
 
-        // Called when the action mode is created; startActionMode() was called
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflater = mode.getMenuInflater();
@@ -214,7 +216,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         public void onDestroyActionMode(ActionMode mode) {
             int selectedItem = scannedTagsView.getCheckedItemPosition();
             scannedTagsView.setItemChecked(selectedItem, false);
-            mActionMode = null;
+            actionMode = null;
         }
     };
 }
