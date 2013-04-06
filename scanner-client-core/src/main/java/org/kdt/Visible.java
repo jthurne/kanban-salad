@@ -13,30 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kdt.scan;
+package org.kdt;
 
-import org.kdt.model.Scanable;
+public enum Visible {
+    VISIBLE, HIDDEN;
 
-/**
- * 
- */
-public interface ScanModel {
-
-    public void add(Scanable scannedTag);
-
-    public void remove(int index);
-
-    public int getNumScannedTags();
-
-    public void clearScannedTags();
-
-    public void setSelectedTag(int index);
-
-    /**
-     * Gets the index of the currently selected tag. Returns -1 if no tag is
-     * selected.
-     * 
-     * @return
-     */
-    public int getSelectedTagIndex();
+    public static final Visible valueOf(boolean isVisible) {
+        if (isVisible)
+            return VISIBLE;
+        return HIDDEN;
+    }
 }

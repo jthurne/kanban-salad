@@ -15,28 +15,37 @@
  */
 package org.kdt.scan;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertThat;
+import static org.kdt.Visible.HIDDEN;
+import static org.kdt.Visible.VISIBLE;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.kdt.ListModel;
+import org.kdt.Visible;
 import org.kdt.model.Cell;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
-import org.kdt.scan.ScanPresenter;
-import org.kdt.scan.ScanView;
-import org.kdt.scan.Scanner;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 public class ScanPresenterTest {
+    /**
+     * 
+     */
+    private static final int NONE = -1;
+
     private static final Cell A_CELL_TAG = new Cell("Swimlane", "Queue");
 
     private ScanPresenter presenter;
@@ -110,6 +119,45 @@ public class ScanPresenterTest {
     }
 
     @Test
+    public void informs_the_model_a_tag_was_selected__when_a_tag_is_selected()
+            throws Exception {
+        when.presenter.tagSelected(1);
+        then.it_should_tell_the_model_what_tag_was_selected(1);
+    }
+
+    @Test
+    public void closes_the_scanned_tag_context_menu__when_the_view_is_hidden__if_the_context_menu_was_showing()
+            throws Exception {
+        given.the_context_menu_is(VISIBLE);
+        when.presenter.visibilityChanged(HIDDEN);
+        then.the_scanned_tag_context_menu_should_be_closed();
+    }
+
+    @Test
+    public void does_not_close_the_scanned_tag_context_menu__when_the_view_is_hidden__if_the_context_menu_was_already_not_showing()
+            throws Exception {
+        given.the_context_menu_is(HIDDEN);
+        when.presenter.visibilityChanged(HIDDEN);
+        then.it_should_not_try_to_close_the_context_menu();
+    }
+
+    @Test
+    public void selects_previously_selected_tag__when_the_view_is_shown()
+            throws Exception {
+        given.model.setSelectedTag(2);
+        when.presenter.visibilityChanged(VISIBLE);
+        then.it_should_select_tag(2);
+    }
+
+    @Test
+    public void does_not_select_previously_selected_tag__when_the_view_is_shown_but_the_model_indicates_no_tag_is_selected()
+            throws Exception {
+        given.model.setSelectedTag(NONE);
+        when.presenter.visibilityChanged(VISIBLE);
+        then.it_should_not_select_a_tag();
+    }
+
+    @Test
     public void clears_the_view_when_the_snapshot_is_saved() throws Exception {
         given.some_tags_have_been_scanned();
         when.presenter.saveClicked();
@@ -168,6 +216,28 @@ public class ScanPresenterTest {
         when.presenter.deleteTagClicked(0);
     }
 
+    @Test
+    public void unselects_tag_in_the_model__when_a_tag_is_unselected_in_the_view__and_the_view_is_visible()
+            throws Exception {
+        given.model.setSelectedTag(2);
+        and.the_view_is(VISIBLE);
+        when.presenter.tagUnselected();
+        then.it_should_tell_the_model_what_tag_was_selected(NONE);
+    }
+
+    @Test
+    public void does_not_unselect_tag_in_the_model__when_a_tag_is_unselected_in_the_view__and_the_view_is_NOT_visible()
+            throws Exception {
+        given.model.setSelectedTag(2);
+        and.the_view_is(HIDDEN);
+        when.presenter.tagUnselected();
+        then.it_should_tell_the_model_what_tag_was_selected(2);
+    }
+
+    private void the_view_is(Visible visible) {
+        when(mockView.getVisisble()).thenReturn(visible);
+    }
+
     private void the_scanner_returns(Scanable scanable) {
         when(mockScanner.scan()).thenReturn(scanable);
     }
@@ -204,6 +274,10 @@ public class ScanPresenterTest {
         verify(mockView).selectScannedTag(position);
     }
 
+    private void it_should_not_select_a_tag() {
+        verifyNoMoreInteractions(mockView);
+    }
+
     private void the_scanned_tag_context_menu_should_be_displayed() {
         verify(mockView).showScannedTagContextMenu();
     }
@@ -218,13 +292,26 @@ public class ScanPresenterTest {
     }
 
     private void the_model_should_be_cleared() {
-        assertThat(model.getScannedTags(), Matchers.is(Matchers.empty()));
+        assertThat(model.getScannedTags(), is(empty()));
     }
 
     private void the_model_should_not_contain(Scanable shouldNotExist) {
         for (Scanable scanable : model.getScannedTags()) {
             assertThat(scanable, not(samePropertyValuesAs(shouldNotExist)));
         }
+    }
+
+    private void it_should_tell_the_model_what_tag_was_selected(
+            int expectedIndex) {
+        assertThat(model.getSelectedTagIndex(), is(equalTo(expectedIndex)));
+    }
+
+    private void the_context_menu_is(Visible visible) {
+        when(mockView.getContextMenuVisible()).thenReturn(visible);
+    }
+
+    private void it_should_not_try_to_close_the_context_menu() {
+        verify(mockView, times(0)).closeScannedTagContextMenu();
     }
 
     @SuppressWarnings("unused")

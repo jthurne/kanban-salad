@@ -15,13 +15,14 @@
  */
 package org.kdt.scan;
 
+import static org.kdt.Visible.VISIBLE;
+
+import org.kdt.Visible;
 import org.kdt.model.Scanable;
 
-/**
- * 
- */
 public class ScanPresenter {
 
+    private static final int NONE = -1;
     private final ScanView view;
     private final ScanModel model;
     private final Scanner scanner;
@@ -54,6 +55,7 @@ public class ScanPresenter {
 
     public void tagSelected(int position) {
         view.showScannedTagContextMenu();
+        model.setSelectedTag(position);
     }
 
     public void deleteTagClicked(int position) {
@@ -63,5 +65,32 @@ public class ScanPresenter {
 
         if (position > 0)
             view.selectScannedTag(position - 1);
+    }
+
+    public void visibilityChanged(Visible visible) {
+        if (visible == VISIBLE) {
+            restoreViewOfSelectedTag();
+        } else {
+            closeContextMenuIfVisible();
+        }
+    }
+
+    /**
+     * 
+     */
+    private void closeContextMenuIfVisible() {
+        if (view.getContextMenuVisible() == VISIBLE)
+            view.closeScannedTagContextMenu();
+    }
+
+    private void restoreViewOfSelectedTag() {
+        if (model.getSelectedTagIndex() > NONE) {
+            view.selectScannedTag(model.getSelectedTagIndex());
+        }
+    }
+
+    public void tagUnselected() {
+        if (view.getVisisble() == VISIBLE)
+            model.setSelectedTag(NONE);
     }
 }

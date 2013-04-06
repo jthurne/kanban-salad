@@ -124,18 +124,6 @@ public class ProgramFragment extends Fragment implements IntentListener,
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onResume()
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        // actionMode = getActivity().startActionMode(
-        // new ProgramTagActionModeCallback());
-    }
-
     @Override
     public void setIsCellDetailsVisible(boolean isVisible) {
         if (isVisible) {

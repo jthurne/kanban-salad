@@ -138,6 +138,16 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     }
 
     @Override
+    public Visible getVisisble() {
+        return Visible.valueOf(this.getUserVisibleHint());
+    }
+
+    @Override
+    public Visible getContextMenuVisible() {
+        return Visible.valueOf(actionMode != null);
+    }
+
+    @Override
     public void showScannedTagContextMenu() {
         if (actionMode != null) {
             return;
@@ -171,9 +181,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     @Override
     public void onResume() {
         super.onResume();
-        // TODO Should this event be handled by the presenter?
-
-        Log.v("ScanFragment", "onResume");
+        // TODO Move to presenter
         if (scannedTagsView.getCheckedItemPosition() > -1) {
             showScannedTagContextMenu();
         }
@@ -182,10 +190,8 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        // TODO Handle in the presenter
-        if (!isVisibleToUser && actionMode != null) {
-            actionMode.finish();
-        }
+        if (presenter != null)
+            presenter.visibilityChanged(Visible.valueOf(isVisibleToUser));
     }
 
     private class ItemSelectedListener implements
@@ -228,6 +234,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
+            presenter.tagUnselected();
             int selectedItem = scannedTagsView.getCheckedItemPosition();
             scannedTagsView.setItemChecked(selectedItem, false);
             actionMode = null;

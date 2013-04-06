@@ -15,6 +15,9 @@
  */
 package org.kdt;
 
+// TODO Should we really have a singleton of the model??
+// Good: the model doesn't actually need to be persistent
+// Possibly Bad: the model will take more memory 
 public class ModelProvider {
     private static final ListModel INSTANCE = new ListModel();
 

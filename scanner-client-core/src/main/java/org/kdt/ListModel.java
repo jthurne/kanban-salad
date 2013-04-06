@@ -25,6 +25,7 @@ import org.kdt.scan.ScanModel;
 public class ListModel implements ScanModel, ProgramModel {
 
     private final List<Scanable> scannedTags;
+    private int selectedTagIndex = -1;
 
     public ListModel() {
         scannedTags = new ArrayList<Scanable>();
@@ -77,5 +78,15 @@ public class ListModel implements ScanModel, ProgramModel {
 
     public List<Scanable> getScannedTags() {
         return scannedTags;
+    }
+
+    @Override
+    public void setSelectedTag(int index) {
+        this.selectedTagIndex = index;
+    }
+
+    @Override
+    public int getSelectedTagIndex() {
+        return selectedTagIndex;
     }
 }

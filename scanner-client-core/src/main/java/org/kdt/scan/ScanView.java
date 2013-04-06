@@ -15,6 +15,8 @@
  */
 package org.kdt.scan;
 
+import org.kdt.Visible;
+
 /**
  * 
  */
@@ -30,4 +32,8 @@ public interface ScanView {
     public void showScannedTagContextMenu();
 
     public void closeScannedTagContextMenu();
+
+    public Visible getVisisble();
+
+    public Visible getContextMenuVisible();
 }
