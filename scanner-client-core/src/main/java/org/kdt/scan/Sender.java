@@ -16,29 +16,7 @@
 package org.kdt.scan;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.kdt.model.Scanable;
-
-public interface ScanModel {
-
-    public void add(Scanable scannedTag);
-
-    public void remove(int index);
-
-    public int getNumScannedTags();
-
-    public void clearScannedTags();
-
-    public void setSelectedTag(int index);
-
-    /**
-     * Gets the index of the currently selected tag. Returns -1 if no tag is
-     * selected.
-     * 
-     * @return
-     */
-    public int getSelectedTagIndex();
-
-    public File dumpToCsv() throws IOException;
+public interface Sender {
+    public void send(File file);
 }

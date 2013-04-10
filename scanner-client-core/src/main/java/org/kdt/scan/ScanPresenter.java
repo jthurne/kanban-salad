@@ -17,6 +17,9 @@ package org.kdt.scan;
 
 import static org.kdt.Visible.VISIBLE;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.kdt.Visible;
 import org.kdt.model.Scanable;
 
@@ -26,11 +29,14 @@ public class ScanPresenter {
     private final ScanView view;
     private final ScanModel model;
     private final Scanner scanner;
+    private final Sender sender;
 
-    public ScanPresenter(ScanView view, ScanModel model, Scanner scanner) {
+    public ScanPresenter(ScanView view, ScanModel model, Scanner scanner,
+            Sender sender) {
         this.view = view;
         this.model = model;
         this.scanner = scanner;
+        this.sender = sender;
     }
 
     public void tagScanned() {
@@ -48,9 +54,15 @@ public class ScanPresenter {
         view.appendToScannedTags(scannedTag.getDisplayName());
     }
 
-    public void saveClicked() {
-        model.clearScannedTags();
-        view.clearScannedTags();
+    public void sendClicked() {
+        try {
+            File csvFile = model.dumpToCsv();
+            sender.send(csvFile);
+            model.clearScannedTags();
+            view.clearScannedTags();
+        } catch (IOException e) {
+            view.showException(e);
+        }
     }
 
     public void tagSelected(int position) {
@@ -75,9 +87,6 @@ public class ScanPresenter {
         }
     }
 
-    /**
-     * 
-     */
     private void closeContextMenuIfVisible() {
         if (view.getContextMenuVisible() == VISIBLE)
             view.closeScannedTagContextMenu();

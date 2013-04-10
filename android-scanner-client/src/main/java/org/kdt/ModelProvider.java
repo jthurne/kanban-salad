@@ -15,16 +15,28 @@
  */
 package org.kdt;
 
+import java.io.File;
+
+import android.os.Environment;
+
 // TODO Should we really have a singleton of the model??
 // Good: the model doesn't actually need to be persistent
 // Possibly Bad: the model will take more memory 
 public class ModelProvider {
-    private static final ListModel INSTANCE = new ListModel();
+    private static final ListModel INSTANCE = new ListModel(
+            createCsvFilenameTemplate());
 
     private ModelProvider() {
     }
 
     public static ListModel getInstance() {
         return INSTANCE;
+    }
+
+    private static String createCsvFilenameTemplate() {
+        String externalStoragePath = Environment.getExternalStorageDirectory()
+                .getAbsolutePath();
+        return new File(externalStoragePath, "kanban-snapshot-%tF-%<tH%<tM.csv")
+                .toString();
     }
 }

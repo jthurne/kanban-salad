@@ -15,20 +15,28 @@
  */
 package org.kdt;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.kdt.model.Cell;
 import org.kdt.model.Scanable;
+import org.kdt.model.Task;
 import org.kdt.program.ProgramModel;
 import org.kdt.scan.ScanModel;
 
 public class ListModel implements ScanModel, ProgramModel {
 
+    private final String filenameTemplate;
     private final List<Scanable> scannedTags;
     private int selectedTagIndex = -1;
 
-    public ListModel() {
+    public ListModel(String filenameTemplate) {
         scannedTags = new ArrayList<Scanable>();
+        this.filenameTemplate = filenameTemplate;
     }
 
     /*
@@ -88,5 +96,56 @@ public class ListModel implements ScanModel, ProgramModel {
     @Override
     public int getSelectedTagIndex() {
         return selectedTagIndex;
+    }
+
+    @Override
+    public File dumpToCsv() throws IOException {
+        return dumpToCsv(new Date());
+    }
+
+    public File dumpToCsv(Date snapshotDate) throws IOException {
+        File csvFile = generateFileFrom(snapshotDate);
+
+        PrintWriter writer = new PrintWriter(csvFile);
+        try {
+            writeHeader(writer);
+            writeBody(snapshotDate, writer);
+        } finally {
+            writer.close();
+        }
+
+        return csvFile;
+    }
+
+    private File generateFileFrom(Date snapshotDate) {
+        File csvFile = new File(String.format(filenameTemplate, snapshotDate));
+        return csvFile;
+    }
+
+    private void writeHeader(PrintWriter writer) {
+        writer.println("Date\tTime\tSwimlane\tQueue\tID\tName\tSize");
+    }
+
+    private void writeBody(Date snapshotDate, PrintWriter writer) {
+        Cell cell = null;
+        for (Scanable tag : scannedTags) {
+            if (tag instanceof Cell) {
+                cell = (Cell) tag;
+            } else {
+                Task task = (Task) tag;
+                writeRecord(snapshotDate, cell, task, writer);
+            }
+        }
+    }
+
+    private void writeRecord(Date snapshotDate, Cell cell, Task task,
+            PrintWriter writer) {
+        writer.printf("%tF\t%<tR\t%s\t%s\t%s\t%s\t%s%n",
+                snapshotDate,
+                cell.getSwimlane(),
+                cell.getQueue(),
+                task.getId(),
+                task.getName(),
+                task.getSize());
     }
 }

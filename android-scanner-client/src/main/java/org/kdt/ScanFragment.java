@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 
@@ -72,7 +73,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.saveClicked();
+                presenter.sendClicked();
             }
         });
     }
@@ -99,7 +100,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         presenter = new ScanPresenter(this, ModelProvider.getInstance(),
-                new NfcScanner(activity));
+                new NfcScanner(activity), new EmailSender(this.getActivity()));
     }
 
     @Override
@@ -176,6 +177,14 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         scannedTags.clear();
         scannedTags
                 .addAll(savedInstanceState.getStringArrayList("scannedTags"));
+    }
+
+    @Override
+    public void showException(Exception e) {
+        // TODO we might want to show a dialog box instead
+        Toast.makeText(this.getActivity(),
+                e.getMessage(),
+                Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -24,11 +24,16 @@ import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertThat;
 import static org.kdt.Visible.HIDDEN;
 import static org.kdt.Visible.VISIBLE;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+
+import java.io.File;
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,30 +43,37 @@ import org.kdt.model.Cell;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class ScanPresenterTest {
-    /**
-     * 
-     */
     private static final int NONE = -1;
-
     private static final Cell A_CELL_TAG = new Cell("Swimlane", "Queue");
 
     private ScanPresenter presenter;
 
     @Mock
     private ScanView mockView;
+
     @Mock
     private Scanner mockScanner;
 
+    @Mock
+    private Sender mockSender;
+
     private ListModel model;
+    private Exception anException;
 
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
-        model = new ListModel();
-        presenter = new ScanPresenter(mockView, model, mockScanner);
+        model = Mockito.spy(new ListModel(
+                "does-not-matter-because-it-is-not-used.csv"));
+
+        doReturn(new File("does-not-matter-because-it-is-not-used.csv")).when(
+                model).dumpToCsv();
+
+        presenter = new ScanPresenter(mockView, model, mockScanner, mockSender);
     }
 
     @Test
@@ -158,20 +170,6 @@ public class ScanPresenterTest {
     }
 
     @Test
-    public void clears_the_view_when_the_snapshot_is_saved() throws Exception {
-        given.some_tags_have_been_scanned();
-        when.presenter.saveClicked();
-        then.the_display_of_scanned_tags_should_be_cleared();
-    }
-
-    @Test
-    public void clears_the_model_when_the_snapshot_is_saved() throws Exception {
-        given.some_tags_have_been_scanned();
-        when.presenter.saveClicked();
-        then.the_model_should_be_cleared();
-    }
-
-    @Test
     public void closes_the_context_menu__when_item_is_selected_and_delete_is_pressed()
             throws Exception {
         given.two_tags_have_been_scanned();
@@ -234,6 +232,71 @@ public class ScanPresenterTest {
         then.it_should_tell_the_model_what_tag_was_selected(2);
     }
 
+    @Test
+    public void sends_csv_file__when_send_button_clicked()
+            throws Exception {
+        given.the_model_dumps_to_csv_file("test.csv");
+        when.presenter.sendClicked();
+        then.it_should_send_the_csv_file("test.csv");
+    }
+
+    @Test
+    public void clears_the_view__when_send_button_clicked() throws Exception {
+        given.some_tags_have_been_scanned();
+        when.presenter.sendClicked();
+        then.the_display_of_scanned_tags_should_be_cleared();
+    }
+
+    @Test
+    public void clears_the_model__when_send_button_clicked() throws Exception {
+        given.some_tags_have_been_scanned();
+        when.presenter.sendClicked();
+        then.the_model_should_be_cleared();
+    }
+
+    @Test
+    public void displays_error_message__if_dumping_to_csv_fails()
+            throws Exception {
+        given.dumping_to_csv_throws_an_exception();
+        when.presenter.sendClicked();
+        then.it_should_show_the_exception_to_the_user();
+    }
+
+    @Test
+    public void does_not_clear_the_view__when_exception_generated_when_dumping_to_csv()
+            throws Exception {
+        given.some_tags_have_been_scanned();
+        and.dumping_to_csv_throws_an_exception();
+        when.presenter.sendClicked();
+        then.the_display_of_scanned_tags_should_NOT_be_cleared();
+    }
+
+    @Test
+    public void does_not_clear_the_model__when_exception_generated_when_dumping_to_csv()
+            throws Exception {
+        given.some_tags_have_been_scanned();
+        and.dumping_to_csv_throws_an_exception();
+        when.presenter.sendClicked();
+        then.the_model_should_NOT_be_cleared();
+    }
+
+    private void it_should_show_the_exception_to_the_user() {
+        verify(mockView).showException(anException);
+    }
+
+    private void dumping_to_csv_throws_an_exception() throws Exception {
+        anException = new IOException("I can't do that Dave");
+        doThrow(anException).when(model).dumpToCsv();
+    }
+
+    private void the_model_dumps_to_csv_file(String filename) throws Exception {
+        doReturn(new File(filename)).when(model).dumpToCsv();
+    }
+
+    private void it_should_send_the_csv_file(String filename) {
+        verify(mockSender).send(new File(filename));
+    }
+
     private void the_view_is(Visible visible) {
         when(mockView.getVisisble()).thenReturn(visible);
     }
@@ -259,6 +322,10 @@ public class ScanPresenterTest {
 
     private void the_display_of_scanned_tags_should_be_cleared() {
         verify(mockView).clearScannedTags();
+    }
+
+    private void the_display_of_scanned_tags_should_NOT_be_cleared() {
+        verify(mockView, times(0)).clearScannedTags();
     }
 
     private void the_scan_should_be_displayed_as(String textToDisplay) {
@@ -293,6 +360,10 @@ public class ScanPresenterTest {
 
     private void the_model_should_be_cleared() {
         assertThat(model.getScannedTags(), is(empty()));
+    }
+
+    private void the_model_should_NOT_be_cleared() {
+        assertThat(model.getScannedTags(), is(not(empty())));
     }
 
     private void the_model_should_not_contain(Scanable shouldNotExist) {

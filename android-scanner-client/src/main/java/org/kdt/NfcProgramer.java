@@ -31,6 +31,7 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
+import android.util.Log;
 
 /**
  * 
@@ -85,6 +86,16 @@ public class NfcProgramer implements Programer {
     private NdefMessage createMessage(Programable tag) {
         NdefRecord mimeRecord = createMimeRecord(tag);
         NdefRecord appRecord = createAppRecord();
+
+        Log.d("NfcProgrammer", "mimeRecord size: "
+                + mimeRecord.getPayload().length);
+        Log.d("NfcProgrammer", "appRecord size: "
+                + appRecord.getPayload().length);
+        Log.d("NfcProgrammer",
+                "total size: "
+                        + (mimeRecord.getPayload().length + appRecord
+                                .getPayload().length));
+
         return new NdefMessage(new NdefRecord[] { mimeRecord, appRecord });
     }
 

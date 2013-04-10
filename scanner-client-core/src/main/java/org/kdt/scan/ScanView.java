@@ -36,4 +36,6 @@ public interface ScanView {
     public Visible getVisisble();
 
     public Visible getContextMenuVisible();
+
+    public void showException(Exception exception);
 }

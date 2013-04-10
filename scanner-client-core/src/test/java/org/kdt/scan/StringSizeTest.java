@@ -15,30 +15,17 @@
  */
 package org.kdt.scan;
 
-import java.io.File;
-import java.io.IOException;
+import java.nio.charset.Charset;
 
-import org.kdt.model.Scanable;
+import org.junit.Test;
 
-public interface ScanModel {
+public class StringSizeTest {
+    private static final Charset ASCII = Charset.forName("US-ASCII");
 
-    public void add(Scanable scannedTag);
-
-    public void remove(int index);
-
-    public int getNumScannedTags();
-
-    public void clearScannedTags();
-
-    public void setSelectedTag(int index);
-
-    /**
-     * Gets the index of the currently selected tag. Returns -1 if no tag is
-     * selected.
-     * 
-     * @return
-     */
-    public int getSelectedTagIndex();
-
-    public File dumpToCsv() throws IOException;
+    @Test
+    public void output_size_in_bytes() throws Exception {
+        String toTest = "550e8400-e29b-41d4-a716-446655440000\tConnector developer can use an API to throttle a connector\t8";
+        byte[] asBytes = toTest.getBytes(ASCII);
+        System.out.println("Num bytes: " + asBytes.length);
+    }
 }
