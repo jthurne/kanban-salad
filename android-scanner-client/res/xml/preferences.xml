@@ -4,6 +4,9 @@
         android:key="email_address"
         android:title="@string/title_email_address" 
         android:dialogTitle="@string/title_email_address"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"        
         />
     
     
