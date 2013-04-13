@@ -32,6 +32,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.kdt.model.Cell;
+import org.kdt.model.Empty;
+import org.kdt.model.IncorrectlyFormatted;
 import org.kdt.model.Scanable;
 import org.kdt.model.Task;
 
@@ -125,6 +127,42 @@ public class ListModelTest {
                 new Cell("Empty", "No Tasks"),
                 new Cell("Wings", "Review"),
                 new Task("12345", "John can move the flap", "2"),
+                new Task("54321", "Jane can fill the wing with gas", "8")
+                );
+
+        when.model_dumped_to_csv_with(date_april_12_2013_at_13_23());
+        then.line(1)
+                .should_be_equal_to(
+                        "2013-04-12\t13:23\tWings\tReview\t12345\tJohn can move the flap\t2");
+        then.line(2)
+                .should_be_equal_to(
+                        "2013-04-12\t13:23\tWings\tReview\t54321\tJane can fill the wing with gas\t8");
+    }
+
+    @Test
+    public void ignores_empty_tags() throws Exception {
+        given.the_model_contains(
+                new Cell("Wings", "Review"),
+                new Task("12345", "John can move the flap", "2"),
+                new Empty(),
+                new Task("54321", "Jane can fill the wing with gas", "8")
+                );
+
+        when.model_dumped_to_csv_with(date_april_12_2013_at_13_23());
+        then.line(1)
+                .should_be_equal_to(
+                        "2013-04-12\t13:23\tWings\tReview\t12345\tJohn can move the flap\t2");
+        then.line(2)
+                .should_be_equal_to(
+                        "2013-04-12\t13:23\tWings\tReview\t54321\tJane can fill the wing with gas\t8");
+    }
+
+    @Test
+    public void ignores_incorrectly_formatted_tags() throws Exception {
+        given.the_model_contains(
+                new Cell("Wings", "Review"),
+                new Task("12345", "John can move the flap", "2"),
+                new IncorrectlyFormatted("bad data"),
                 new Task("54321", "Jane can fill the wing with gas", "8")
                 );
 

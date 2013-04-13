@@ -62,6 +62,11 @@ public class Task implements Scanable, Programable {
     }
 
     @Override
+    public boolean isValid() {
+        return true;
+    }
+
+    @Override
     public String toString() {
         return name;
     }

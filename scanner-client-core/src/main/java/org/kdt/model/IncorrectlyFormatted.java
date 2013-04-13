@@ -30,4 +30,14 @@ public class IncorrectlyFormatted implements Scanable {
     public String getDisplayName() {
         return "<INVALID> " + invalidData;
     }
+
+    @Override
+    public boolean isValid() {
+        return false;
+    }
+
+    @Override
+    public String getDataString() {
+        return "";
+    }
 }

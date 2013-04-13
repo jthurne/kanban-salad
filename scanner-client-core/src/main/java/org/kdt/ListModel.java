@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.kdt.model.Cell;
 import org.kdt.model.Scanable;
-import org.kdt.model.Task;
 import org.kdt.program.ProgramModel;
 import org.kdt.scan.ScanModel;
 
@@ -127,25 +126,21 @@ public class ListModel implements ScanModel, ProgramModel {
     }
 
     private void writeBody(Date snapshotDate, PrintWriter writer) {
-        Cell cell = null;
+        Scanable cell = null;
         for (Scanable tag : scannedTags) {
             if (tag instanceof Cell) {
-                cell = (Cell) tag;
-            } else {
-                Task task = (Task) tag;
-                writeRecord(snapshotDate, cell, task, writer);
+                cell = tag;
+            } else if (tag.isValid()) {
+                writeRecord(snapshotDate, cell, tag, writer);
             }
         }
     }
 
-    private void writeRecord(Date snapshotDate, Cell cell, Task task,
+    private void writeRecord(Date snapshotDate, Scanable cell, Scanable task,
             PrintWriter writer) {
-        writer.printf("%tF\t%<tR\t%s\t%s\t%s\t%s\t%s%n",
+        writer.printf("%tF\t%<tR\t%s\t%s%n",
                 snapshotDate,
-                cell.getSwimlane(),
-                cell.getQueue(),
-                task.getId(),
-                task.getName(),
-                task.getSize());
+                cell.getDataString(),
+                task.getDataString());
     }
 }

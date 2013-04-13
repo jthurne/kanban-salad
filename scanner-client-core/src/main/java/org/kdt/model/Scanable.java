@@ -18,4 +18,8 @@ package org.kdt.model;
 public interface Scanable {
 
     public String getDisplayName();
+
+    public String getDataString();
+
+    public boolean isValid();
 }

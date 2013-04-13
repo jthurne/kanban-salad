@@ -23,4 +23,14 @@ public class Empty implements Scanable {
     public String getDisplayName() {
         return "<EMPTY>";
     }
+
+    @Override
+    public boolean isValid() {
+        return false;
+    }
+
+    @Override
+    public String getDataString() {
+        return "";
+    }
 }

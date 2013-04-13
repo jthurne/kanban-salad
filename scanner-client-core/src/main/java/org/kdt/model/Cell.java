@@ -53,6 +53,11 @@ public class Cell implements Scanable, Programable {
         return TagType.CELL.mimeType();
     }
 
+    @Override
+    public boolean isValid() {
+        return true;
+    }
+
     public static class Builder {
         private String swimlane;
         private String queue;
