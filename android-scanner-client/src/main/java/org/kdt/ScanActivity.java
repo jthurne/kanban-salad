@@ -174,6 +174,10 @@ public class ScanActivity extends FragmentActivity implements
         presenter.aboutMenuItemClicked();
     }
 
+    public void settingsMenuItemClicked(MenuItem item) {
+        presenter.settingsMenuItemClicked();
+    }
+
     @Override
     public void showHelp() {
         Intent intent = new Intent(this, HelpActivity.class);
@@ -183,6 +187,12 @@ public class ScanActivity extends FragmentActivity implements
     @Override
     public void showAbout() {
         Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

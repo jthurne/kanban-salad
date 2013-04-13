@@ -47,12 +47,23 @@ public class NavigationPresenterTest {
         then.about_should_be_displayed();
     }
 
+    @Test
+    public void displays_settings__when_settings_menu_selected()
+            throws Exception {
+        when.presenter.settingsMenuItemClicked();
+        then.settings_should_be_displayed();
+    }
+
     private void the_help_should_be_displayed() {
         verify(mockView).showHelp();
     }
 
     private void about_should_be_displayed() {
         verify(mockView).showAbout();
+    }
+
+    private void settings_should_be_displayed() {
+        verify(mockView).showSettings();
     }
 
     @SuppressWarnings("unused")

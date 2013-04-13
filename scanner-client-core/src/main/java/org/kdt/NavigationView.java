@@ -24,4 +24,6 @@ public interface NavigationView {
 
     public void showAbout();
 
+    public void showSettings();
+
 }

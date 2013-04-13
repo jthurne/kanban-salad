@@ -33,4 +33,8 @@ public class NavigationPresenter {
     public void aboutMenuItemClicked() {
         view.showAbout();
     }
+
+    public void settingsMenuItemClicked() {
+        view.showSettings();
+    }
 }

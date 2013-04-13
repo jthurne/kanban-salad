@@ -15,6 +15,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_close">Close</string>
     <string name="title_activity_about">About</string>
+    <string name="title_activity_settings">Settings</string>
     <string name="version">Version 1.0.0-SNAPSHOT</string>
     <string name="license">Copyright 2013 Jim Hurne and Joseph Kramer&lt;/p>
 &lt;p>
