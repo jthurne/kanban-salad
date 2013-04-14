@@ -49,7 +49,7 @@ public class EmailSender implements Sender {
         intent.putExtra(Intent.EXTRA_EMAIL, getEmailAddress());
         intent.putExtra(Intent.EXTRA_SUBJECT, getSubject(file));
         intent.putExtra(Intent.EXTRA_TEXT, getBody());
-        intent.setType("text/plain");
+        intent.setType("message/rfc822");
 
         Uri csvFileUri = Uri.fromFile(file);
         intent.putExtra(Intent.EXTRA_STREAM, csvFileUri);
