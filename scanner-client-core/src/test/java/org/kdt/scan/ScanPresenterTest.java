@@ -255,6 +255,14 @@ public class ScanPresenterTest {
     }
 
     @Test
+    public void closes_the_context_menu__when_send_button_clicked()
+            throws Exception {
+        given.some_tags_have_been_scanned();
+        when.presenter.sendClicked();
+        then.the_scanned_tag_context_menu_should_be_closed();
+    }
+
+    @Test
     public void displays_error_message__if_dumping_to_csv_fails()
             throws Exception {
         given.dumping_to_csv_throws_an_exception();

@@ -28,6 +28,7 @@ import org.kdt.program.ProgramModel;
 import org.kdt.scan.ScanModel;
 
 public class ListModel implements ScanModel, ProgramModel {
+    private static final int NONE = -1;
 
     private final String filenameTemplate;
     private final List<Scanable> scannedTags;
@@ -66,6 +67,7 @@ public class ListModel implements ScanModel, ProgramModel {
     @Override
     public void clearScannedTags() {
         scannedTags.clear();
+        selectedTagIndex = NONE;
     }
 
     /*

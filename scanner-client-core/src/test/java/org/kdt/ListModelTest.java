@@ -38,6 +38,8 @@ import org.kdt.model.Scanable;
 import org.kdt.model.Task;
 
 public class ListModelTest {
+    private static final int NONE = -1;
+
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
@@ -64,10 +66,6 @@ public class ListModelTest {
     public void uses_date_in_resulting_file_name() throws Exception {
         when.model_dumped_to_csv_with(date_april_12_2013_at_13_23());
         then.the_generated_file_name_should_contain("2013-04-12-1323");
-    }
-
-    private void the_generated_file_name_should_contain(String dateString) {
-        assertThat(csvFile.toString(), containsString(dateString));
     }
 
     @Test
@@ -175,6 +173,26 @@ public class ListModelTest {
                         "2013-04-12\t13:23\tWings\tReview\t54321\tJane can fill the wing with gas\t8");
     }
 
+    @Test
+    public void resets_the_selected_tag__when_the_model_is_cleared()
+            throws Exception {
+        given.the_model_contains(
+                new Task("12345", "John can move the flap", "2"),
+                new Task("54321", "Jane can fill the wing with gas", "8")
+                );
+        and.the_selected_tag_is(1);
+        when.model.clearScannedTags();
+        then.the_selected_tag_should_be(NONE);
+    }
+
+    private void the_selected_tag_should_be(int expected) {
+        assertThat(model.getSelectedTagIndex(), is(equalTo(expected)));
+    }
+
+    private void the_selected_tag_is(int selectedTagIndex) {
+        model.setSelectedTag(selectedTagIndex);
+    }
+
     private void the_model_contains(Scanable... scanables) {
         for (Scanable scanable : scanables) {
             model.add(scanable);
@@ -198,6 +216,10 @@ public class ListModelTest {
     private void should_be_equal_to(String expectedContent) throws Exception {
         List<String> lines = FileUtils.readLines(csvFile);
         assertThat(lines.get(lineIndex), is(equalTo(expectedContent)));
+    }
+
+    private void the_generated_file_name_should_contain(String dateString) {
+        assertThat(csvFile.toString(), containsString(dateString));
     }
 
     private ListModelTest line(int i) {

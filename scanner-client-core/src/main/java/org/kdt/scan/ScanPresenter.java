@@ -56,6 +56,7 @@ public class ScanPresenter {
 
     public void sendClicked() {
         try {
+            view.closeScannedTagContextMenu();
             File csvFile = model.dumpToCsv();
             sender.send(csvFile);
             model.clearScannedTags();
