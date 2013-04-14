@@ -17,11 +17,14 @@ package org.kdt;
 
 import java.io.File;
 
+import org.kdt.kanbandatatracker.R;
 import org.kdt.scan.Sender;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 
 /**
  * 
@@ -43,10 +46,9 @@ public class EmailSender implements Sender {
     public void send(File file) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_EMAIL,
-                new String[] { "hurne_jim@yahoo.com" });
-        intent.putExtra(Intent.EXTRA_SUBJECT, "NFC Tag Scan");
-        intent.putExtra(Intent.EXTRA_TEXT, "Scanned NFC Tag Data");
+        intent.putExtra(Intent.EXTRA_EMAIL, getEmailAddress());
+        intent.putExtra(Intent.EXTRA_SUBJECT, getSubject(file));
+        intent.putExtra(Intent.EXTRA_TEXT, getBody());
         intent.setType("text/plain");
 
         Uri csvFileUri = Uri.fromFile(file);
@@ -55,4 +57,21 @@ public class EmailSender implements Sender {
         parentActivity.startActivity(intent);
     }
 
+    private String[] getEmailAddress() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(parentActivity);
+
+        return new String[] { preferences.getString(SettingKeys.EMAIL_ADDRESS,
+                "") };
+    }
+
+    private String getSubject(File file) {
+        return parentActivity.getResources().getString(
+                R.string.snapshot_email_subject, file.getName());
+    }
+
+    private String getBody() {
+        return parentActivity.getResources().getString(
+                R.string.snapshot_email_body);
+    }
 }

@@ -42,7 +42,8 @@ public class SettingsActivity extends Activity {
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.preferences);
 
-            Preference emailAddressPref = this.findPreference("email_address");
+            Preference emailAddressPref = this
+                    .findPreference(SettingKeys.EMAIL_ADDRESS);
             emailAddressPref
                     .setOnPreferenceChangeListener(new EditTextPreferenceChangeListener());
 
