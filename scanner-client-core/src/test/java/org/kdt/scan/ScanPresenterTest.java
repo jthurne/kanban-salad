@@ -288,6 +288,30 @@ public class ScanPresenterTest {
         then.the_model_should_NOT_be_cleared();
     }
 
+    @Test
+    public void clears_the_view__when_clear_menu_item_clicked()
+            throws Exception {
+        given.some_tags_have_been_scanned();
+        when.presenter.clearClicked();
+        then.the_display_of_scanned_tags_should_be_cleared();
+    }
+
+    @Test
+    public void clears_the_model__when_clear_menu_item_clicked()
+            throws Exception {
+        given.some_tags_have_been_scanned();
+        when.presenter.clearClicked();
+        then.the_model_should_be_cleared();
+    }
+
+    @Test
+    public void closes_the_context_menu__when_clear_menu_item_clicked()
+            throws Exception {
+        given.some_tags_have_been_scanned();
+        when.presenter.clearClicked();
+        then.the_scanned_tag_context_menu_should_be_closed();
+    }
+
     private void it_should_show_the_exception_to_the_user() {
         verify(mockView).showException(anException);
     }

@@ -56,19 +56,18 @@ public class ScanPresenter {
 
     public void sendClicked() {
         try {
-            view.closeScannedTagContextMenu();
             File csvFile = model.dumpToCsv();
             sender.send(csvFile);
-            model.clearScannedTags();
-            view.clearScannedTags();
+            clearClicked();
         } catch (IOException e) {
             view.showException(e);
         }
     }
 
-    public void tagSelected(int position) {
-        view.showScannedTagContextMenu();
-        model.setSelectedTag(position);
+    public void clearClicked() {
+        view.closeScannedTagContextMenu();
+        model.clearScannedTags();
+        view.clearScannedTags();
     }
 
     public void deleteTagClicked(int position) {
@@ -78,6 +77,11 @@ public class ScanPresenter {
 
         if (position > 0)
             view.selectScannedTag(position - 1);
+    }
+
+    public void tagSelected(int position) {
+        view.showScannedTagContextMenu();
+        model.setSelectedTag(position);
     }
 
     public void visibilityChanged(Visible visible) {

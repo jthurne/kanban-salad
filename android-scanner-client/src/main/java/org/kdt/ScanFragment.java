@@ -108,6 +108,17 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         presenter.tagScanned();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.action_clear:
+            presenter.clearClicked();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
     private ListView findScannedTagsView() {
         return (ListView) rootView.findViewById(R.id.scanned_tags_list);
     }
@@ -159,7 +170,8 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
 
     @Override
     public void closeScannedTagContextMenu() {
-        actionMode.finish();
+        if (actionMode != null)
+            actionMode.finish();
     }
 
     @Override
