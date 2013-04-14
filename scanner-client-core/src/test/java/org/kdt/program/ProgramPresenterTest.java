@@ -19,6 +19,8 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -28,6 +30,7 @@ import org.kdt.model.Programable;
 import org.kdt.model.Scanable;
 import org.kdt.model.TagType;
 import org.kdt.model.Task;
+import org.kdt.program.Programer.ThereWas;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -99,6 +102,7 @@ public class ProgramPresenterTest {
     public void tells_the_user_when_a_cell_tag_is_successfully_programmed()
             throws Exception {
         given.the_selected_tag_type_is(TagType.TASK);
+        and.the_programer_returns(ThereWas.A_TAG_TO_PROGRAM);
         when.presenter.tagScanned();
         then.verify(mockView).showMessage(ProgramView.Message.TAG_PROGRAMMED);
     }
@@ -110,6 +114,14 @@ public class ProgramPresenterTest {
         when.presenter.tagScanned();
         then.verify(mockView).showException(the_exception());
 
+    }
+
+    @Test
+    public void does_tells_the_user_when_a_tag_is_programmed__if_there_was_no_tag_to_program()
+            throws Exception {
+        given.the_programer_returns(ThereWas.NO_TAG_TO_PROGRAM);
+        when.presenter.tagScanned();
+        then.the_programed_tag_message_should_not_be_shown();
     }
 
     @Test
@@ -203,6 +215,16 @@ public class ProgramPresenterTest {
 
     private <T> T verify(T mock) {
         return Mockito.verify(mock);
+    }
+
+    private void the_programed_tag_message_should_not_be_shown() {
+        Mockito.verify(mockView, times(0)).showMessage(
+                ProgramView.Message.TAG_PROGRAMMED);
+    }
+
+    private void the_programer_returns(ThereWas whatThereWas) {
+        when(mockTagProgramer.programTag(Mockito.any(Programable.class)))
+                .thenReturn(whatThereWas);
     }
 
     @SuppressWarnings("unused")

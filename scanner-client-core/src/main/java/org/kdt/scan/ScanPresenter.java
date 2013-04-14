@@ -41,6 +41,9 @@ public class ScanPresenter {
 
     public void tagScanned() {
         Scanable scannedTag = scanner.scan();
+        if (scannedTag == null)
+            return;
+
         model.add(scannedTag);
 
         display(scannedTag);
@@ -48,9 +51,6 @@ public class ScanPresenter {
     }
 
     private void display(Scanable scannedTag) {
-        if (scannedTag == null)
-            return;
-
         view.appendToScannedTags(scannedTag.getDisplayName());
     }
 

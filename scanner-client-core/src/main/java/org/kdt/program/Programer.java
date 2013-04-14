@@ -22,5 +22,9 @@ import org.kdt.model.Programable;
  */
 public interface Programer {
 
-    public void programTag(Programable toProgram);
+    public ThereWas programTag(Programable toProgram);
+
+    public enum ThereWas {
+        A_TAG_TO_PROGRAM, NO_TAG_TO_PROGRAM
+    }
 }

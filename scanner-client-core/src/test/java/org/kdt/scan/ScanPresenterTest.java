@@ -118,9 +118,27 @@ public class ScanPresenterTest {
     }
 
     @Test
-    public void ignores_null_scans() throws Exception {
+    public void does_not_select_last_scanned_tag__on_null_scan()
+            throws Exception {
         given.the_scanner_returns(null);
         when.presenter.tagScanned();
+        then.it_should_not_select_a_tag();
+    }
+
+    @Test
+    public void does_not_add_tag_to_model__on_null_scan()
+            throws Exception {
+        given.the_scanner_returns(null);
+        when.presenter.tagScanned();
+        then.the_model_should_be_empty();
+    }
+
+    @Test
+    public void does_not_display_tag__on_null_scan()
+            throws Exception {
+        given.the_scanner_returns(null);
+        when.presenter.tagScanned();
+        then.the_scan_should_NOT_be_displayed();
     }
 
     @Test
@@ -364,6 +382,10 @@ public class ScanPresenterTest {
         verify(mockView).appendToScannedTags(textToDisplay);
     }
 
+    private void the_scan_should_NOT_be_displayed() {
+        verify(mockView, times(0)).appendToScannedTags(Mockito.anyString());
+    }
+
     private void the_corresponding_tag_should_be_removed_from_the_view(
             int scannedItemIndex) {
         verify(mockView).deleteScannedTag(scannedItemIndex);
@@ -391,6 +413,10 @@ public class ScanPresenterTest {
     }
 
     private void the_model_should_be_cleared() {
+        assertThat(model.getScannedTags(), is(empty()));
+    }
+
+    private void the_model_should_be_empty() {
         assertThat(model.getScannedTags(), is(empty()));
     }
 

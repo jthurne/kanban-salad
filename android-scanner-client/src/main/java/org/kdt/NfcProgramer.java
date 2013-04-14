@@ -46,7 +46,7 @@ public class NfcProgramer implements Programer {
     }
 
     @Override
-    public void programTag(Programable tag) {
+    public ThereWas programTag(Programable tag) {
         Intent intent = parentActivity.getIntent();
 
         if (aTagWeCanHandleWasScanned(intent)) {
@@ -57,7 +57,10 @@ public class NfcProgramer implements Programer {
             }
 
             program(ndefTag, tag);
+            return ThereWas.A_TAG_TO_PROGRAM;
         }
+
+        return ThereWas.NO_TAG_TO_PROGRAM;
     }
 
     private boolean aTagWeCanHandleWasScanned(Intent intent) {

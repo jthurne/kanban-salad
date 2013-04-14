@@ -16,9 +16,11 @@
 package org.kdt.program;
 
 import org.kdt.model.Cell;
+import org.kdt.model.Programable;
 import org.kdt.model.Scanable;
 import org.kdt.model.TagType;
 import org.kdt.model.Task;
+import org.kdt.program.Programer.ThereWas;
 
 public class ProgramPresenter {
 
@@ -54,19 +56,22 @@ public class ProgramPresenter {
     private void attemptToProgramTag() {
         TagType selectedTagType = view.getSelectedTagType();
 
+        Programable tag = createTag(selectedTagType);
+        ThereWas thereWas = tagProgrammer.programTag(tag);
+
+        if (thereWas == ThereWas.A_TAG_TO_PROGRAM)
+            view.showMessage(ProgramView.Message.TAG_PROGRAMMED);
+    }
+
+    private Programable createTag(TagType selectedTagType) {
         if (selectedTagType == TagType.TASK) {
-            tagProgrammer.programTag(new Task(
+            return new Task(
                     view.getTaskId(),
                     view.getTaskName(),
-                    view.getTaskSize()));
+                    view.getTaskSize());
         }
 
-        if (selectedTagType == TagType.CELL) {
-            tagProgrammer.programTag(
-                    new Cell(view.getSwimlane(), view.getQueue()));
-        }
-
-        view.showMessage(ProgramView.Message.TAG_PROGRAMMED);
+        return new Cell(view.getSwimlane(), view.getQueue());
     }
 
     public void tagSelected(int position) {
