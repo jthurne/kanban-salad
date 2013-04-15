@@ -12,6 +12,7 @@
         android:id="@+id/action_clear"
         android:orderInCategory="10"
         android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_menu_clear_playlist"        
         android:title="@string/action_clear"
         />    
 </menu>

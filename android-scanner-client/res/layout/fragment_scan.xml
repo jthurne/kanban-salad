@@ -20,10 +20,12 @@
 
     </ListView>
  	
-    <Button
+    <ImageButton
         android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/send" />
-
+        android:text="@string/send"
+        android:contentDescription="@string/send"
+        android:src="@drawable/ic_menu_upload"  />
+    
 </LinearLayout>
