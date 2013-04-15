@@ -4,5 +4,6 @@
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:title="@string/action_delete_scan"
+        android:icon="@drawable/ic_menu_delete"
         />
 </menu>
