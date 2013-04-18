@@ -17,6 +17,7 @@ package org.kdt;
 
 import java.nio.charset.Charset;
 
+import org.kdt.model.Empty;
 import org.kdt.model.Scanable;
 import org.kdt.scan.Scanner;
 import org.kdt.scan.TagParser;
@@ -43,6 +44,10 @@ public class NfcScanner implements Scanner {
             Parcelable[] rawMsgs = intent
                     .getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             return rawToScanable(rawMsgs);
+        }
+
+        if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
+            return new Empty();
         }
 
         return null;
