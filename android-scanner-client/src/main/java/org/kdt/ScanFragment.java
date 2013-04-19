@@ -15,9 +15,8 @@
  */
 package org.kdt;
 
-import java.util.ArrayList;
-
 import org.kdt.kanbandatatracker.R;
+import org.kdt.model.Scanable;
 import org.kdt.scan.ScanPresenter;
 import org.kdt.scan.ScanView;
 
@@ -34,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -43,8 +41,7 @@ import com.squareup.otto.Bus;
 
 public class ScanFragment extends Fragment implements ScanView, IntentListener {
 
-    private ArrayList<String> scannedTagsList;
-    private ArrayAdapter<String> scannedTags;
+    private ScanModelAdaptor scannedTagsAdaptor;
 
     private View rootView;
     private ListView scannedTagsView;
@@ -82,11 +79,10 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     private void initScannedTagsView() {
         scannedTagsView = findScannedTagsView();
 
-        scannedTagsList = new ArrayList<String>();
-        scannedTags = new ArrayAdapter<String>(this.getActivity(),
-                R.layout.scanned_tag, scannedTagsList);
+        scannedTagsAdaptor = new ScanModelAdaptor(this.getActivity(),
+                ModelProvider.getInstance());
 
-        scannedTagsView.setAdapter(scannedTags);
+        scannedTagsView.setAdapter(scannedTagsAdaptor);
 
         enableContextActionBarWhenSelectingScannedItems(scannedTagsView);
     }
@@ -131,23 +127,36 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     }
 
     @Override
-    public void appendToScannedTags(String textToDisplay) {
-        scannedTags.add(textToDisplay);
-    }
-
-    @Override
     public void selectScannedTag(int position) {
         scannedTagsView.performItemClick(null, position, -1);
     }
 
     @Override
+    public void appendToScannedTags(Scanable tag) {
+        // We don't actually need to add the tag because the adaptor is backed
+        // by the same model as the presenter (the adaptor displays whatever is
+        // in the model).
+        // But we do need to notify the adaptor that its data has changed
+        scannedTagsAdaptor.notifyDataSetChanged();
+    }
+
+    @Override
     public void deleteScannedTag(int logEntryIndex) {
-        scannedTagsList.remove(logEntryIndex);
+        // We don't actually need to delete the tag because the adaptor is
+        // backed
+        // by the same model as the presenter (the adaptor displays whatever is
+        // in the model).
+        // But we do need to notify the adaptor that its data has changed
+        scannedTagsAdaptor.notifyDataSetChanged();
     }
 
     @Override
     public void clearScannedTags() {
-        scannedTags.clear();
+        // We don't actually need to clear because the adaptor is backed
+        // by the same model as the presenter (the adaptor displays whatever is
+        // in the model).
+        // But we do need to notify the adaptor that its data has changed
+        scannedTagsAdaptor.notifyDataSetChanged();
     }
 
     @Override
@@ -178,7 +187,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putStringArrayList("scannedTags", scannedTagsList);
+        // outState.putStringArrayList("scannedTags", scannedTagsList);
     }
 
     @Override
@@ -187,9 +196,9 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         if (savedInstanceState == null)
             return;
 
-        scannedTags.clear();
-        scannedTags
-                .addAll(savedInstanceState.getStringArrayList("scannedTags"));
+        // scannedTags.clear();
+        // scannedTags
+        // .addAll(savedInstanceState.getStringArrayList("scannedTags"));
     }
 
     @Override

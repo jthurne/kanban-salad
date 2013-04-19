@@ -41,4 +41,6 @@ public interface ScanModel {
     public int getSelectedTagIndex();
 
     public File dumpToCsv() throws IOException;
+
+    public Scanable getTagAt(int position);
 }

@@ -51,7 +51,7 @@ public class ScanPresenter {
     }
 
     private void display(Scanable scannedTag) {
-        view.appendToScannedTags(scannedTag.getDisplayName());
+        view.appendToScannedTags(scannedTag);
     }
 
     public void sendClicked() {
@@ -80,8 +80,8 @@ public class ScanPresenter {
     }
 
     public void tagSelected(int position) {
-        view.showScannedTagContextMenu();
         model.setSelectedTag(position);
+        view.showScannedTagContextMenu();
     }
 
     public void visibilityChanged(Visible visible) {

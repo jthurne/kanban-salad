@@ -16,12 +16,13 @@
 package org.kdt.scan;
 
 import org.kdt.Visible;
+import org.kdt.model.Scanable;
 
 /**
  * 
  */
 public interface ScanView {
-    public void appendToScannedTags(String textToDisplay);
+    public void appendToScannedTags(Scanable tag);
 
     public void deleteScannedTag(int position);
 

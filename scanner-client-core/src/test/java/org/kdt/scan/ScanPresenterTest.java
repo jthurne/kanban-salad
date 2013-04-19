@@ -77,11 +77,11 @@ public class ScanPresenterTest {
     }
 
     @Test
-    public void displays_name_of_a_scanned_tag__when_a_tag_is_scanned()
+    public void adds_a_scanned_tag_to_the_view__when_a_tag_is_scanned()
             throws Exception {
         given.the_scanner_returns(A_CELL_TAG);
         when.presenter.tagScanned();
-        then.the_scan_should_be_displayed_as(A_CELL_TAG.getDisplayName());
+        then.it_should_add_to_the_view(A_CELL_TAG);
     }
 
     @Test
@@ -378,12 +378,13 @@ public class ScanPresenterTest {
         verify(mockView, times(0)).clearScannedTags();
     }
 
-    private void the_scan_should_be_displayed_as(String textToDisplay) {
-        verify(mockView).appendToScannedTags(textToDisplay);
+    private void it_should_add_to_the_view(Scanable toDisplay) {
+        verify(mockView).appendToScannedTags(toDisplay);
     }
 
     private void the_scan_should_NOT_be_displayed() {
-        verify(mockView, times(0)).appendToScannedTags(Mockito.anyString());
+        verify(mockView, times(0)).appendToScannedTags(
+                Mockito.any(Scanable.class));
     }
 
     private void the_corresponding_tag_should_be_removed_from_the_view(
