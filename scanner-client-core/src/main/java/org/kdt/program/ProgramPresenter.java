@@ -72,14 +72,14 @@ public class ProgramPresenter {
 
     private Programable createTag() {
         TagType selectedTagType = view.getSelectedTagType();
-    
+
         if (selectedTagType == TASK) {
             return new Task(
                     view.getTaskId(),
                     view.getTaskName(),
                     view.getTaskSize());
         }
-    
+
         return new Cell(view.getSwimlane(), view.getQueue());
     }
 
@@ -109,7 +109,7 @@ public class ProgramPresenter {
 
     private Scanable getSelectedTag() {
         int selectedTag = model.getSelectedTagIndex();
-        if (selectedTag > -1)
+        if (selectedTag != NONE)
             return model.get(selectedTag);
 
         return null;

@@ -15,6 +15,8 @@
  */
 package org.kdt.program;
 
+import static org.kdt.CommonConstants.NONE;
+
 import org.kdt.IntentListener;
 import org.kdt.ModelProvider;
 import org.kdt.Visible;
@@ -154,7 +156,7 @@ public class ProgramFragment extends Fragment implements IntentListener,
         case TAG_PROGRAMMED:
             return R.string.tag_programmed;
         }
-        return -1;
+        return NONE;
     }
 
     @Override

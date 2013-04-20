@@ -15,6 +15,7 @@
  */
 package org.kdt.scan;
 
+import static org.kdt.CommonConstants.NONE;
 import static org.kdt.Visible.VISIBLE;
 
 import java.io.File;
@@ -24,8 +25,6 @@ import org.kdt.Visible;
 import org.kdt.tag.Scanable;
 
 public class ScanPresenter {
-
-    private static final int NONE = -1;
     private final ScanView view;
     private final ScanModel model;
     private final Scanner scanner;
@@ -99,7 +98,7 @@ public class ScanPresenter {
     }
 
     private void restoreViewOfSelectedTag() {
-        if (model.getSelectedTagIndex() > NONE) {
+        if (model.getSelectedTagIndex() != NONE) {
             view.selectTag(model.getSelectedTagIndex());
         }
     }

@@ -15,6 +15,8 @@
  */
 package org.kdt;
 
+import static org.kdt.CommonConstants.NONE;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,7 +32,7 @@ import org.kdt.tag.Scanable;
 public class ListModel implements ScanModel, ProgramModel {
     private final String filenameTemplate;
     private final List<Scanable> scannedTags;
-    private int selectedTagIndex = -1;
+    private int selectedTagIndex = NONE;
 
     public ListModel(String filenameTemplate) {
         scannedTags = new ArrayList<Scanable>();
