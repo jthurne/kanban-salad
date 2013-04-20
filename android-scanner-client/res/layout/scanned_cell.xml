@@ -19,16 +19,28 @@
         />
     
     <TextView
+        android:id="@+id/seperator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/swimlane"
+        android:layout_alignBottom="@+id/swimlane"
+        android:layout_toRightOf="@+id/swimlane"
+        android:text="@string/swimlane_queue_seperator"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <TextView
         android:id="@+id/queue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="5dip"
-        android:typeface="sans"
+        android:layout_alignBaseline="@+id/swimlane"
+        android:layout_alignBottom="@+id/swimlane"
+        android:layout_toRightOf="@+id/seperator"
         android:textSize="14sp"
         android:textStyle="bold"
+        android:typeface="sans"
         android:text="Ready for QA" 
         />
-    
     
 </RelativeLayout>

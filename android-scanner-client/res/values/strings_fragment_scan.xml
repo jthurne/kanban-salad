@@ -5,4 +5,6 @@
     <string name="snapshot_email_body">Attached is a kanban board snapshot data file.</string>
     
     <string name="send">Send</string>
+    
+    <string name="swimlane_queue_seperator">" -- "</string>
 </resources>
