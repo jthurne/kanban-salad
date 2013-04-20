@@ -15,8 +15,8 @@
  */
 package org.kdt;
 
-import static org.kdt.model.TagType.CELL;
-import static org.kdt.model.TagType.TASK;
+import static org.kdt.tag.TagType.CELL;
+import static org.kdt.tag.TagType.TASK;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;

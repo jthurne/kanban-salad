@@ -18,7 +18,7 @@ package org.kdt.scan;
 import java.io.File;
 import java.io.IOException;
 
-import org.kdt.model.Scanable;
+import org.kdt.tag.Scanable;
 
 public interface ScanModel {
 

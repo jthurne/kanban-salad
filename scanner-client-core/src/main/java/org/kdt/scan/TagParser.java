@@ -15,9 +15,9 @@
  */
 package org.kdt.scan;
 
-import org.kdt.model.Empty;
-import org.kdt.model.Scanable;
-import org.kdt.model.TagType;
+import org.kdt.tag.Empty;
+import org.kdt.tag.Scanable;
+import org.kdt.tag.TagType;
 
 /**
  * Parses Scanables from strings.

@@ -16,9 +16,9 @@
 package org.kdt;
 
 import org.kdt.kanbandatatracker.R;
-import org.kdt.model.Scanable;
 import org.kdt.scan.ScanPresenter;
 import org.kdt.scan.ScanView;
+import org.kdt.tag.Scanable;
 
 import android.app.Activity;
 import android.content.Intent;

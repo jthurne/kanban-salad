@@ -15,12 +15,12 @@
  */
 package org.kdt.program;
 
-import org.kdt.model.Cell;
-import org.kdt.model.Programable;
-import org.kdt.model.Scanable;
-import org.kdt.model.TagType;
-import org.kdt.model.Task;
 import org.kdt.program.Programer.ThereWas;
+import org.kdt.tag.Cell;
+import org.kdt.tag.Programable;
+import org.kdt.tag.Scanable;
+import org.kdt.tag.TagType;
+import org.kdt.tag.Task;
 
 public class ProgramPresenter {
 

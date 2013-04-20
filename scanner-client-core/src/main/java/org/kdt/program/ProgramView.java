@@ -15,7 +15,7 @@
  */
 package org.kdt.program;
 
-import org.kdt.model.TagType;
+import org.kdt.tag.TagType;
 
 public interface ProgramView {
     public enum Message {

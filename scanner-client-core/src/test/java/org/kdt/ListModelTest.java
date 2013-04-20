@@ -31,11 +31,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.kdt.model.Cell;
-import org.kdt.model.Empty;
-import org.kdt.model.IncorrectlyFormatted;
-import org.kdt.model.Scanable;
-import org.kdt.model.Task;
+import org.kdt.tag.Cell;
+import org.kdt.tag.Empty;
+import org.kdt.tag.IncorrectlyFormatted;
+import org.kdt.tag.Scanable;
+import org.kdt.tag.Task;
 
 public class ListModelTest {
     private static final int NONE = -1;

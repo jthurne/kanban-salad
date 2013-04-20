@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import org.kdt.kanbandatatracker.R;
-import org.kdt.model.Programable;
 import org.kdt.program.Programer;
 import org.kdt.program.ProgramingException;
+import org.kdt.tag.Programable;
 
 import android.app.Activity;
 import android.content.Intent;

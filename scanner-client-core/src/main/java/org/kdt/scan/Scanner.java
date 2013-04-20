@@ -15,7 +15,7 @@
  */
 package org.kdt.scan;
 
-import org.kdt.model.Scanable;
+import org.kdt.tag.Scanable;
 
 public interface Scanner {
 	

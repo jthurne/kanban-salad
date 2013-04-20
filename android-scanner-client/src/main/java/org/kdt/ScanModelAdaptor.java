@@ -16,10 +16,10 @@
 package org.kdt;
 
 import org.kdt.kanbandatatracker.R;
-import org.kdt.model.Cell;
-import org.kdt.model.Scanable;
-import org.kdt.model.Task;
 import org.kdt.scan.ScanModel;
+import org.kdt.tag.Cell;
+import org.kdt.tag.Scanable;
+import org.kdt.tag.Task;
 
 import android.content.Context;
 import android.view.LayoutInflater;

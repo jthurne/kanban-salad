@@ -19,16 +19,16 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.kdt.model.TagType.CELL;
-import static org.kdt.model.TagType.TASK;
+import static org.kdt.tag.TagType.CELL;
+import static org.kdt.tag.TagType.TASK;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kdt.model.Cell;
-import org.kdt.model.Empty;
-import org.kdt.model.IncorrectlyFormatted;
-import org.kdt.model.Scanable;
-import org.kdt.model.Task;
+import org.kdt.tag.Cell;
+import org.kdt.tag.Empty;
+import org.kdt.tag.IncorrectlyFormatted;
+import org.kdt.tag.Scanable;
+import org.kdt.tag.Task;
 
 public class TagParserTest {
 

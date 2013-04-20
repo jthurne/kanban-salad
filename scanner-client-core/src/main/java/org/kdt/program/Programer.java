@@ -15,7 +15,7 @@
  */
 package org.kdt.program;
 
-import org.kdt.model.Programable;
+import org.kdt.tag.Programable;
 
 /**
  * Programs Tags

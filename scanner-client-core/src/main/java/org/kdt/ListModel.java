@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.kdt.model.Cell;
-import org.kdt.model.Scanable;
 import org.kdt.program.ProgramModel;
 import org.kdt.scan.ScanModel;
+import org.kdt.tag.Cell;
+import org.kdt.tag.Scanable;
 
 public class ListModel implements ScanModel, ProgramModel {
     private static final int NONE = -1;

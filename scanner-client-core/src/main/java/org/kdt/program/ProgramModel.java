@@ -15,7 +15,7 @@
  */
 package org.kdt.program;
 
-import org.kdt.model.Scanable;
+import org.kdt.tag.Scanable;
 
 public interface ProgramModel {
 

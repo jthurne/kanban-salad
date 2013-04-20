@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kdt.model;
+package org.kdt.tag;
 
-public interface Programable {
+public interface Scanable {
+
+    public String getDisplayName();
 
     public String getDataString();
 
-    public String getMimeType();
+    public boolean isValid();
 }

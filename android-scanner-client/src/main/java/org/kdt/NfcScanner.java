@@ -17,10 +17,10 @@ package org.kdt;
 
 import java.nio.charset.Charset;
 
-import org.kdt.model.Empty;
-import org.kdt.model.Scanable;
 import org.kdt.scan.Scanner;
 import org.kdt.scan.TagParser;
+import org.kdt.tag.Empty;
+import org.kdt.tag.Scanable;
 
 import android.app.Activity;
 import android.content.Intent;

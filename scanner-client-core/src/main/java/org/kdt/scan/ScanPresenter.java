@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.kdt.Visible;
-import org.kdt.model.Scanable;
+import org.kdt.tag.Scanable;
 
 public class ScanPresenter {
 

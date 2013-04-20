@@ -13,15 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kdt.model;
+package org.kdt.tag;
 
 /**
- * Represents an empty (unprogrammed) tag
+ * 
  */
-public class Empty implements Scanable {
+public class IncorrectlyFormatted implements Scanable {
+
+    private final String invalidData;
+
+    public IncorrectlyFormatted(String invalidData) {
+        this.invalidData = invalidData;
+    }
+
     @Override
     public String getDisplayName() {
-        return "<EMPTY>";
+        return "<INVALID> " + invalidData;
     }
 
     @Override
