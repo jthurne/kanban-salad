@@ -15,6 +15,7 @@
  */
 package org.kdt.program;
 
+import org.kdt.Visible;
 import org.kdt.program.Programer.ThereWas;
 import org.kdt.tag.Cell;
 import org.kdt.tag.Programable;
@@ -74,23 +75,44 @@ public class ProgramPresenter {
         return new Cell(view.getSwimlane(), view.getQueue());
     }
 
-    public void tagSelected(int position) {
-        Scanable tag = model.get(position);
+    public void visibilityChanged(Visible visible) {
+        Scanable tag = getSelectedTag();
 
         // TODO Another instanceof test...hmm
         if (tag instanceof Task) {
-            Task task = (Task) tag;
-            view.setSelectedTagType(TagType.TASK);
-            view.setTaskId(task.getId());
-            view.setTaskName(task.getName());
-            view.setTaskSize(task.getSize());
+            resetViewForTask((Task) tag);
+        } else if (tag instanceof Cell) {
+            resetViewForCell((Cell) tag);
+        } else {
+            clearView();
         }
+    }
 
-        if (tag instanceof Cell) {
-            Cell cell = (Cell) tag;
-            view.setSelectedTagType(TagType.CELL);
-            view.setSwimlane(cell.getSwimlane());
-            view.setQueue(cell.getQueue());
-        }
+    private Scanable getSelectedTag() {
+        int selectedTag = model.getSelectedTagIndex();
+        if (selectedTag > -1)
+            return model.get(selectedTag);
+
+        return null;
+    }
+
+    private void resetViewForTask(Task task) {
+        view.setSelectedTagType(TagType.TASK);
+        view.setTaskId(task.getId());
+        view.setTaskName(task.getName());
+        view.setTaskSize(task.getSize());
+    }
+
+    private void resetViewForCell(Cell cell) {
+        view.setSelectedTagType(TagType.CELL);
+        view.setSwimlane(cell.getSwimlane());
+        view.setQueue(cell.getQueue());
+    }
+
+    private void clearView() {
+        view.setSelectedTagType(TagType.TASK);
+        view.setTaskId("");
+        view.setTaskName("");
+        view.setTaskSize("");
     }
 }

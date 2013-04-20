@@ -15,14 +15,10 @@
  */
 package org.kdt.scan;
 
-import org.kdt.EventBusProvider;
 import org.kdt.IntentListener;
 import org.kdt.ModelProvider;
-import org.kdt.TagSelectedEvent;
 import org.kdt.Visible;
 import org.kdt.kanbandatatracker.R;
-import org.kdt.scan.ScanPresenter;
-import org.kdt.scan.ScanView;
 import org.kdt.tag.Scanable;
 
 import android.app.Activity;
@@ -42,8 +38,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.squareup.otto.Bus;
-
 public class ScanFragment extends Fragment implements ScanView, IntentListener {
 
     private ScanModelAdaptor scannedTagsAdaptor;
@@ -54,8 +48,6 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     private ActionMode actionMode;
 
     private ScanPresenter presenter;
-
-    private final Bus eventBus = EventBusProvider.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -237,7 +229,6 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
             presenter.tagSelected(position);
-            eventBus.post(new TagSelectedEvent(position));
         }
     }
 

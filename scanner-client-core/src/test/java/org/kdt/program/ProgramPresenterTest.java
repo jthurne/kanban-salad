@@ -18,6 +18,7 @@ package org.kdt.program;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.kdt.Visible.VISIBLE;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
@@ -27,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kdt.program.Programer.ThereWas;
 import org.kdt.tag.Cell;
+import org.kdt.tag.Empty;
 import org.kdt.tag.Programable;
 import org.kdt.tag.Scanable;
 import org.kdt.tag.TagType;
@@ -55,7 +57,7 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void shows_cell_fields__when_tag_type_is_set_to_task()
+    public void shows_cell_fields__when_tag_type_is_set_to_cell()
             throws Exception {
         when.presenter.typeChangedTo(TagType.CELL);
         then.verify(mockView).setIsTaskDetailsVisible(false);
@@ -79,7 +81,7 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void programs_a_cell_tag__when_tag_is_scanned() throws Exception {
+    public void programs_a_cell_tag__when_tag_is_tapped() throws Exception {
         given.the_selected_tag_type_is(TagType.CELL);
         and.the_swimline_is_set_to("Android App");
         and.the_queue_is_set_to("Code Review");
@@ -88,7 +90,7 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void programs_a_task_tag__when_tag_is_scanned() throws Exception {
+    public void programs_a_task_tag__when_tag_is_tapped() throws Exception {
         given.the_selected_tag_type_is(TagType.TASK);
         and.the_id_is_set_to("1234");
         and.the_name_is_set_to("User can program a tag");
@@ -125,11 +127,12 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void updates_view_with_task_details__when_task_tag_selected()
+    public void updates_view_with_task_details__if_task_selected_when_the_view_is_made_visible()
             throws Exception {
         given.the_model_has_a_tag(1, new Task("1234", "User can program a tag",
                 "XL"));
-        when.presenter.tagSelected(1);
+        and.the_selected_tag_is(1);
+        when.presenter.visibilityChanged(VISIBLE);
         then.verify(mockView).setSelectedTagType(TagType.TASK);
         then.verify(mockView).setTaskId("1234");
         then.verify(mockView).setTaskName("User can program a tag");
@@ -137,17 +140,43 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void updates_view_with_cell_details__when_cell_tag_selected()
+    public void updates_view_with_cell_details__if_cell_selected_when_the_view_is_made_visible()
             throws Exception {
         given.the_model_has_a_tag(1, new Cell("Android App", "Code Review"));
-        when.presenter.tagSelected(1);
+        and.the_selected_tag_is(1);
+        when.presenter.visibilityChanged(VISIBLE);
         then.verify(mockView).setSelectedTagType(TagType.CELL);
         then.verify(mockView).setSwimlane("Android App");
         then.verify(mockView).setQueue("Code Review");
     }
 
+    @Test
+    public void clears_view__if_an_invalid_tag_selected_when_the_view_is_made_visible()
+            throws Exception {
+        given.the_model_has_a_tag(1, new Empty());
+        and.the_selected_tag_is(1);
+        when.presenter.visibilityChanged(VISIBLE);
+        then.the_view_should_be_cleared_and_task_type_should_be_selected();
+    }
+
+    @Test
+    public void clears_view__if_no_tag_selected_when_the_view_is_made_visible()
+            throws Exception {
+        given.the_selected_tag_is(-1);
+        when.presenter.visibilityChanged(VISIBLE);
+        then.the_view_should_be_cleared_and_task_type_should_be_selected();
+    }
+
     private void the_model_has_a_tag(int position, Scanable tag) {
-        Mockito.when(mockModel.get(position)).thenReturn(tag);
+        when(mockModel.get(position)).thenReturn(tag);
+    }
+
+    private void the_selected_tag_is(int position) {
+        when(mockModel.getSelectedTagIndex()).thenReturn(position);
+        if (position < 0) {
+            when(mockModel.get(position)).thenThrow(
+                    new IndexOutOfBoundsException());
+        }
     }
 
     private void the_programer_throws(ProgramingException an_exception) {
@@ -225,6 +254,13 @@ public class ProgramPresenterTest {
     private void the_programer_returns(ThereWas whatThereWas) {
         when(mockTagProgramer.programTag(Mockito.any(Programable.class)))
                 .thenReturn(whatThereWas);
+    }
+
+    private void the_view_should_be_cleared_and_task_type_should_be_selected() {
+        verify(mockView).setSelectedTagType(TagType.TASK);
+        verify(mockView).setTaskId("");
+        verify(mockView).setTaskName("");
+        verify(mockView).setTaskSize("");
     }
 
     @SuppressWarnings("unused")

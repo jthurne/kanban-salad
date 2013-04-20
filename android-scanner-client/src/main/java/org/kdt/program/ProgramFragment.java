@@ -15,13 +15,10 @@
  */
 package org.kdt.program;
 
-import org.kdt.EventBusProvider;
 import org.kdt.IntentListener;
 import org.kdt.ModelProvider;
-import org.kdt.TagSelectedEvent;
+import org.kdt.Visible;
 import org.kdt.kanbandatatracker.R;
-import org.kdt.program.ProgramPresenter;
-import org.kdt.program.ProgramView;
 import org.kdt.tag.TagType;
 
 import android.app.Activity;
@@ -38,8 +35,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.squareup.otto.Subscribe;
 
 public class ProgramFragment extends Fragment implements IntentListener,
         ProgramView {
@@ -110,13 +105,13 @@ public class ProgramFragment extends Fragment implements IntentListener,
         super.onAttach(activity);
         presenter = new ProgramPresenter(this, ModelProvider.getInstance(),
                 new NfcProgramer(activity));
-        EventBusProvider.getInstance().register(this);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        EventBusProvider.getInstance().unregister(this);
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (presenter != null)
+            presenter.visibilityChanged(Visible.valueOf(isVisibleToUser));
     }
 
     @Override
@@ -248,11 +243,6 @@ public class ProgramFragment extends Fragment implements IntentListener,
     @Override
     public void setQueue(String queue) {
         setTextOn(cellDetails, R.id.queue_edit, queue);
-    }
-
-    @Subscribe
-    public void tagSelected(TagSelectedEvent event) {
-        presenter.tagSelected(event.getPosition());
     }
 
     private void setTextOn(View container, int id, String text) {
