@@ -16,7 +16,6 @@
 package org.kdt.scan;
 
 import org.kdt.kanbandatatracker.R;
-import org.kdt.scan.ScanModel;
 import org.kdt.tag.Cell;
 import org.kdt.tag.Scanable;
 import org.kdt.tag.Task;
@@ -29,7 +28,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class ScanModelAdaptor extends BaseAdapter {
-
+    private static final int NUM_VIEW_TYPES = 3;
     private static final int TASK_VIEW_TYPE = 0;
     private static final int CELL_VIEW_TYPE = 1;
     private static final int OTHER_VIEW_TYPE = 2;
@@ -40,6 +39,98 @@ public class ScanModelAdaptor extends BaseAdapter {
     public ScanModelAdaptor(Context context, ScanModel model) {
         this.context = context;
         this.model = model;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.widget.BaseAdapter#getItemViewType(int)
+     */
+    @Override
+    public int getItemViewType(int position) {
+        Scanable tag = this.getItem(position);
+
+        // TODO ANOTHER InstanceOf check...
+        if (tag instanceof Cell) {
+            return CELL_VIEW_TYPE;
+        }
+        if (tag instanceof Task) {
+            return TASK_VIEW_TYPE;
+        }
+
+        return OTHER_VIEW_TYPE;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.widget.BaseAdapter#getViewTypeCount()
+     */
+    @Override
+    public int getViewTypeCount() {
+        return NUM_VIEW_TYPES;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        Scanable tag = this.getItem(position);
+
+        int viewType = getItemViewType(position);
+        switch (viewType) {
+        case CELL_VIEW_TYPE:
+            return getViewForCell((Cell) tag, convertView, parent);
+        case TASK_VIEW_TYPE:
+            return getViewForTask((Task) tag, convertView, parent);
+        default:
+            return getViewForOtherTag(tag, convertView, parent);
+        }
+    }
+
+    private View getViewForCell(Cell cell, View convertView, ViewGroup parent) {
+        View row = createOrReuse(convertView, R.layout.scanned_cell, parent);
+
+        updateText(row, R.id.swimlane, cell.getSwimlane());
+        updateText(row, R.id.queue, cell.getQueue());
+
+        return row;
+    }
+
+    private View getViewForTask(Task task, View convertView, ViewGroup parent) {
+        View row = createOrReuse(convertView, R.layout.scanned_task, parent);
+
+        updateText(row, R.id.task_id, task.getId());
+        updateText(row, R.id.task_name, task.getName());
+        updateText(row, R.id.task_size, task.getSize());
+
+        return row;
+    }
+
+    private View getViewForOtherTag(Scanable tag, View convertView,
+            ViewGroup parent) {
+        View row = createOrReuse(convertView, R.layout.scanned_tag, parent);
+
+        ((TextView) row).setText(tag.getDisplayName());
+
+        return row;
+    }
+
+    private View createOrReuse(View row, int layoutId, ViewGroup parent) {
+        if (row == null) {
+            return this.getInflator().inflate(layoutId, parent,
+                    false);
+        }
+
+        return row;
+    }
+
+    private LayoutInflater getInflator() {
+        return (LayoutInflater) context.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    private void updateText(View row, int id, String text) {
+        TextView textView = (TextView) row.findViewById(id);
+        textView.setText(text);
     }
 
     /*
@@ -71,102 +162,4 @@ public class ScanModelAdaptor extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.widget.BaseAdapter#getItemViewType(int)
-     */
-    @Override
-    public int getItemViewType(int position) {
-        Scanable tag = this.getItem(position);
-
-        // TODO ANOTHER InstanceOf check...
-        if (tag instanceof Cell) {
-            return CELL_VIEW_TYPE;
-        }
-        if (tag instanceof Task) {
-            return TASK_VIEW_TYPE;
-        }
-
-        return OTHER_VIEW_TYPE;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.widget.BaseAdapter#getViewTypeCount()
-     */
-    @Override
-    public int getViewTypeCount() {
-        return 3;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Scanable tag = this.getItem(position);
-
-        int viewType = getItemViewType(position);
-        switch (viewType) {
-        case CELL_VIEW_TYPE:
-            return getViewForCell((Cell) tag, convertView, parent);
-        case TASK_VIEW_TYPE:
-            return getViewForTask((Task) tag, convertView, parent);
-        default:
-            return getViewForOtherTag(tag, convertView, parent);
-        }
-    }
-
-    private View getViewForCell(Cell cell, View convertView, ViewGroup parent) {
-        View row = convertView;
-        if (row == null) {
-            row = this.getInflator().inflate(R.layout.scanned_cell, parent,
-                    false);
-        }
-
-        TextView swimlaneView = (TextView) row.findViewById(R.id.swimlane);
-        TextView queueView = (TextView) row.findViewById(R.id.queue);
-
-        swimlaneView.setText(cell.getSwimlane());
-        queueView.setText(cell.getQueue());
-
-        return row;
-    }
-
-    private View getViewForTask(Task task, View convertView, ViewGroup parent) {
-        View row = convertView;
-        if (row == null) {
-            row = this.getInflator().inflate(R.layout.scanned_task, parent,
-                    false);
-        }
-
-        TextView taskIdView = (TextView) row.findViewById(R.id.task_id);
-        TextView taskNameView = (TextView) row.findViewById(R.id.task_name);
-        TextView taskSizeView = (TextView) row.findViewById(R.id.task_size);
-
-        taskIdView.setText(task.getId());
-        taskNameView.setText(task.getName());
-        taskSizeView.setText(task.getSize());
-
-        return row;
-    }
-
-    private View getViewForOtherTag(Scanable tag, View convertView,
-            ViewGroup parent) {
-        View row = convertView;
-        if (row == null) {
-            row = this.getInflator().inflate(R.layout.scanned_tag, parent,
-                    false);
-        }
-
-        ((TextView) row).setText(tag.getDisplayName());
-
-        return row;
-    }
-
-    private LayoutInflater getInflator() {
-        return (LayoutInflater) context.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
-    }
-
 }
