@@ -45,7 +45,7 @@ public class ProgramPresenter {
         }
     }
 
-    public void tagScanned() {
+    public void tagTapped() {
         try {
             attemptToProgramTag();
         } catch (ProgramingException e) {
@@ -75,7 +75,7 @@ public class ProgramPresenter {
     }
 
     public void tagSelected(int position) {
-        Scanable tag = model.getTagAt(position);
+        Scanable tag = model.get(position);
 
         // TODO Another instanceof test...hmm
         if (tag instanceof Task) {

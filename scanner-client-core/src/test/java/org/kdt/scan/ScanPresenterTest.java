@@ -80,28 +80,28 @@ public class ScanPresenterTest {
     public void adds_a_scanned_tag_to_the_view__when_a_tag_is_scanned()
             throws Exception {
         given.the_scanner_returns(A_CELL_TAG);
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.it_should_add_to_the_view(A_CELL_TAG);
     }
 
     @Test
     public void adds_scanned_tag_to_the_model() throws Exception {
         given.the_scanner_returns(new Task("1234", "Do Something", "1"));
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.the_model_should_contain(new Task("1234", "Do Something", "1"));
     }
 
     @Test
     public void selects_tag__when_a_task_tag_is_scanned() throws Exception {
         given.the_scanner_returns(new Task("1234", "Do Something", "1"));
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.it_should_select_tag(0);
     }
 
     @Test
     public void selects_tag__when_a_cell_tag_is_scanned() throws Exception {
         given.the_scanner_returns(A_CELL_TAG);
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.it_should_select_tag(0);
     }
 
@@ -109,9 +109,9 @@ public class ScanPresenterTest {
     public void selects_last_scanned_tag__when_more_than_one_tag_is_scanned()
             throws Exception {
         given.the_scanner_returns(new Task("1234", "Do Something", "1"));
-        when.presenter.tagScanned();
-        when.presenter.tagScanned();
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
+        when.presenter.tagTapped();
+        when.presenter.tagTapped();
         then.it_should_select_tag(0);
         then.it_should_select_tag(1);
         then.it_should_select_tag(2);
@@ -121,7 +121,7 @@ public class ScanPresenterTest {
     public void does_not_select_last_scanned_tag__on_null_scan()
             throws Exception {
         given.the_scanner_returns(null);
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.it_should_not_select_a_tag();
     }
 
@@ -129,7 +129,7 @@ public class ScanPresenterTest {
     public void does_not_add_tag_to_model__on_null_scan()
             throws Exception {
         given.the_scanner_returns(null);
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.the_model_should_be_empty();
     }
 
@@ -137,7 +137,7 @@ public class ScanPresenterTest {
     public void does_not_display_tag__on_null_scan()
             throws Exception {
         given.the_scanner_returns(null);
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.the_scan_should_NOT_be_displayed();
     }
 
@@ -366,34 +366,34 @@ public class ScanPresenterTest {
 
     private void scanned_tag(Scanable scanable) {
         given.the_scanner_returns(scanable);
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         reset(mockView);
     }
 
     private void the_display_of_scanned_tags_should_be_cleared() {
-        verify(mockView).clearScannedTags();
+        verify(mockView).clearTags();
     }
 
     private void the_display_of_scanned_tags_should_NOT_be_cleared() {
-        verify(mockView, times(0)).clearScannedTags();
+        verify(mockView, times(0)).clearTags();
     }
 
     private void it_should_add_to_the_view(Scanable toDisplay) {
-        verify(mockView).appendToScannedTags(toDisplay);
+        verify(mockView).appendToTags(toDisplay);
     }
 
     private void the_scan_should_NOT_be_displayed() {
-        verify(mockView, times(0)).appendToScannedTags(
+        verify(mockView, times(0)).appendToTags(
                 Mockito.any(Scanable.class));
     }
 
     private void the_corresponding_tag_should_be_removed_from_the_view(
             int scannedItemIndex) {
-        verify(mockView).deleteScannedTag(scannedItemIndex);
+        verify(mockView).deleteTag(scannedItemIndex);
     }
 
     private void it_should_select_tag(int position) {
-        verify(mockView).selectScannedTag(position);
+        verify(mockView).selectTag(position);
     }
 
     private void it_should_not_select_a_tag() {
@@ -401,11 +401,11 @@ public class ScanPresenterTest {
     }
 
     private void the_scanned_tag_context_menu_should_be_displayed() {
-        verify(mockView).showScannedTagContextMenu();
+        verify(mockView).showTagContextMenu();
     }
 
     private void the_scanned_tag_context_menu_should_be_closed() {
-        verify(mockView).closeScannedTagContextMenu();
+        verify(mockView).closeTagContextMenu();
     }
 
     private void the_model_should_contain(Scanable expectedScanable) {
@@ -441,7 +441,7 @@ public class ScanPresenterTest {
     }
 
     private void it_should_not_try_to_close_the_context_menu() {
-        verify(mockView, times(0)).closeScannedTagContextMenu();
+        verify(mockView, times(0)).closeTagContextMenu();
     }
 
     @SuppressWarnings("unused")

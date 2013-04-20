@@ -83,7 +83,7 @@ public class ProgramPresenterTest {
         given.the_selected_tag_type_is(TagType.CELL);
         and.the_swimline_is_set_to("Android App");
         and.the_queue_is_set_to("Code Review");
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.the_tag_is_programmed_using(new Cell("Android App", "Code Review"));
     }
 
@@ -93,7 +93,7 @@ public class ProgramPresenterTest {
         and.the_id_is_set_to("1234");
         and.the_name_is_set_to("User can program a tag");
         and.the_size_is_set_to("XL");
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.the_tag_is_programmed_using(new Task("1234",
                 "User can program a tag", "XL"));
     }
@@ -103,7 +103,7 @@ public class ProgramPresenterTest {
             throws Exception {
         given.the_selected_tag_type_is(TagType.TASK);
         and.the_programer_returns(ThereWas.A_TAG_TO_PROGRAM);
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.verify(mockView).showMessage(ProgramView.Message.TAG_PROGRAMMED);
     }
 
@@ -111,7 +111,7 @@ public class ProgramPresenterTest {
     public void tells_the_user_when_programing_a_tag_failed() {
         given.the_selected_tag_type_is(TagType.TASK);
         and.given.the_programer_throws(an_exception());
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.verify(mockView).showException(the_exception());
 
     }
@@ -120,7 +120,7 @@ public class ProgramPresenterTest {
     public void does_tells_the_user_when_a_tag_is_programmed__if_there_was_no_tag_to_program()
             throws Exception {
         given.the_programer_returns(ThereWas.NO_TAG_TO_PROGRAM);
-        when.presenter.tagScanned();
+        when.presenter.tagTapped();
         then.the_programed_tag_message_should_not_be_shown();
     }
 
@@ -147,7 +147,7 @@ public class ProgramPresenterTest {
     }
 
     private void the_model_has_a_tag(int position, Scanable tag) {
-        Mockito.when(mockModel.getTagAt(position)).thenReturn(tag);
+        Mockito.when(mockModel.get(position)).thenReturn(tag);
     }
 
     private void the_programer_throws(ProgramingException an_exception) {

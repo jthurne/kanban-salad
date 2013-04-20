@@ -135,7 +135,7 @@ public class ProgramFragment extends Fragment implements IntentListener,
 
     @Override
     public void onNewIntent(Intent intent) {
-        presenter.tagScanned();
+        presenter.tagTapped();
     }
 
     @Override

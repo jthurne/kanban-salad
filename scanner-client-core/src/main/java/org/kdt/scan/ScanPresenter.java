@@ -39,7 +39,7 @@ public class ScanPresenter {
         this.sender = sender;
     }
 
-    public void tagScanned() {
+    public void tagTapped() {
         Scanable scannedTag = scanner.scan();
         if (scannedTag == null)
             return;
@@ -47,11 +47,11 @@ public class ScanPresenter {
         model.add(scannedTag);
 
         display(scannedTag);
-        view.selectScannedTag(model.getNumScannedTags() - 1);
+        view.selectTag(model.getCount() - 1);
     }
 
     private void display(Scanable scannedTag) {
-        view.appendToScannedTags(scannedTag);
+        view.appendToTags(scannedTag);
     }
 
     public void sendClicked() {
@@ -65,23 +65,23 @@ public class ScanPresenter {
     }
 
     public void clearClicked() {
-        view.closeScannedTagContextMenu();
-        model.clearScannedTags();
-        view.clearScannedTags();
+        view.closeTagContextMenu();
+        model.clear();
+        view.clearTags();
     }
 
     public void deleteTagClicked(int position) {
         model.remove(position);
-        view.deleteScannedTag(position);
-        view.closeScannedTagContextMenu();
+        view.deleteTag(position);
+        view.closeTagContextMenu();
 
         if (position > 0)
-            view.selectScannedTag(position - 1);
+            view.selectTag(position - 1);
     }
 
     public void tagSelected(int position) {
         model.setSelectedTag(position);
-        view.showScannedTagContextMenu();
+        view.showTagContextMenu();
     }
 
     public void visibilityChanged(Visible visible) {
@@ -94,12 +94,12 @@ public class ScanPresenter {
 
     private void closeContextMenuIfVisible() {
         if (view.getContextMenuVisible() == VISIBLE)
-            view.closeScannedTagContextMenu();
+            view.closeTagContextMenu();
     }
 
     private void restoreViewOfSelectedTag() {
         if (model.getSelectedTagIndex() > NONE) {
-            view.selectScannedTag(model.getSelectedTagIndex());
+            view.selectTag(model.getSelectedTagIndex());
         }
     }
 

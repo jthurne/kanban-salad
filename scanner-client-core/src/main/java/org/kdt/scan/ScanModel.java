@@ -26,9 +26,11 @@ public interface ScanModel {
 
     public void remove(int index);
 
-    public int getNumScannedTags();
+    public Scanable get(int position);
 
-    public void clearScannedTags();
+    public int getCount();
+
+    public void clear();
 
     public void setSelectedTag(int index);
 
@@ -41,6 +43,4 @@ public interface ScanModel {
     public int getSelectedTagIndex();
 
     public File dumpToCsv() throws IOException;
-
-    public Scanable getTagAt(int position);
 }

@@ -49,7 +49,7 @@ public class ScanModelAdaptor extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return model.getNumScannedTags();
+        return model.getCount();
     }
 
     /*
@@ -59,7 +59,7 @@ public class ScanModelAdaptor extends BaseAdapter {
      */
     @Override
     public Scanable getItem(int position) {
-        return model.getTagAt(position);
+        return model.get(position);
     }
 
     /*

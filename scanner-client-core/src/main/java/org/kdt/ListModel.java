@@ -65,7 +65,7 @@ public class ListModel implements ScanModel, ProgramModel {
      * @see org.kdt.ScanModel#clearScannedTags()
      */
     @Override
-    public void clearScannedTags() {
+    public void clear() {
         scannedTags.clear();
         selectedTagIndex = NONE;
     }
@@ -76,12 +76,12 @@ public class ListModel implements ScanModel, ProgramModel {
      * @see org.kdt.ScanModel#getNumScannedTags()
      */
     @Override
-    public int getNumScannedTags() {
+    public int getCount() {
         return scannedTags.size();
     }
 
     @Override
-    public Scanable getTagAt(int position) {
+    public Scanable get(int position) {
         return scannedTags.get(position);
     }
 

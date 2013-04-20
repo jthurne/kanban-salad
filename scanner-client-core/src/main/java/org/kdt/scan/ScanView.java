@@ -22,17 +22,17 @@ import org.kdt.model.Scanable;
  * 
  */
 public interface ScanView {
-    public void appendToScannedTags(Scanable tag);
+    public void appendToTags(Scanable tag);
 
-    public void deleteScannedTag(int position);
+    public void deleteTag(int position);
 
-    public void selectScannedTag(int position);
+    public void selectTag(int position);
 
-    public void clearScannedTags();
+    public void clearTags();
 
-    public void showScannedTagContextMenu();
+    public void showTagContextMenu();
 
-    public void closeScannedTagContextMenu();
+    public void closeTagContextMenu();
 
     public Visible getVisisble();
 

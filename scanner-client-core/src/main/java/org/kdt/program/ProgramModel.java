@@ -19,6 +19,6 @@ import org.kdt.model.Scanable;
 
 public interface ProgramModel {
 
-    public Scanable getTagAt(int position);
+    public Scanable get(int position);
 
 }

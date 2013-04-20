@@ -102,7 +102,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
 
     @Override
     public void onNewIntent(Intent intent) {
-        presenter.tagScanned();
+        presenter.tagTapped();
     }
 
     @Override
@@ -127,12 +127,12 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     }
 
     @Override
-    public void selectScannedTag(int position) {
+    public void selectTag(int position) {
         scannedTagsView.performItemClick(null, position, -1);
     }
 
     @Override
-    public void appendToScannedTags(Scanable tag) {
+    public void appendToTags(Scanable tag) {
         // We don't actually need to add the tag because the adaptor is backed
         // by the same model as the presenter (the adaptor displays whatever is
         // in the model).
@@ -141,7 +141,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     }
 
     @Override
-    public void deleteScannedTag(int logEntryIndex) {
+    public void deleteTag(int logEntryIndex) {
         // We don't actually need to delete the tag because the adaptor is
         // backed
         // by the same model as the presenter (the adaptor displays whatever is
@@ -151,7 +151,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     }
 
     @Override
-    public void clearScannedTags() {
+    public void clearTags() {
         // We don't actually need to clear because the adaptor is backed
         // by the same model as the presenter (the adaptor displays whatever is
         // in the model).
@@ -170,7 +170,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     }
 
     @Override
-    public void showScannedTagContextMenu() {
+    public void showTagContextMenu() {
         if (actionMode != null) {
             return;
         }
@@ -179,7 +179,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     }
 
     @Override
-    public void closeScannedTagContextMenu() {
+    public void closeTagContextMenu() {
         if (actionMode != null)
             actionMode.finish();
     }
@@ -214,7 +214,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         super.onResume();
         // TODO Move to presenter
         if (scannedTagsView.getCheckedItemPosition() > -1) {
-            showScannedTagContextMenu();
+            showTagContextMenu();
         }
     }
 

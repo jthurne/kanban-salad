@@ -181,7 +181,7 @@ public class ListModelTest {
                 new Task("54321", "Jane can fill the wing with gas", "8")
                 );
         and.the_selected_tag_is(1);
-        when.model.clearScannedTags();
+        when.model.clear();
         then.the_selected_tag_should_be(NONE);
     }
 
