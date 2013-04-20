@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kdt;
+package org.kdt.scan;
 
 import java.io.File;
 
+import org.kdt.SettingKeys;
 import org.kdt.kanbandatatracker.R;
 import org.kdt.scan.Sender;
 

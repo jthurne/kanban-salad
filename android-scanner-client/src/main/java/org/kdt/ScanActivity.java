@@ -18,6 +18,8 @@ package org.kdt;
 import java.util.Locale;
 
 import org.kdt.kanbandatatracker.R;
+import org.kdt.program.ProgramFragment;
+import org.kdt.scan.ScanFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;

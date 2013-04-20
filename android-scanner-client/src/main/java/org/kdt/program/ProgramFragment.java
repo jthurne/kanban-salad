@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kdt;
+package org.kdt.program;
 
+import org.kdt.EventBusProvider;
+import org.kdt.IntentListener;
+import org.kdt.ModelProvider;
+import org.kdt.TagSelectedEvent;
 import org.kdt.kanbandatatracker.R;
 import org.kdt.program.ProgramPresenter;
 import org.kdt.program.ProgramView;
