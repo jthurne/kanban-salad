@@ -134,7 +134,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         // by the same model as the presenter (the adaptor displays whatever is
         // in the model).
         // But we do need to notify the adaptor that its data has changed
-        scannedTagsAdaptor.notifyDataSetChanged();
+        refreshTags();
     }
 
     @Override
@@ -144,7 +144,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         // by the same model as the presenter (the adaptor displays whatever is
         // in the model).
         // But we do need to notify the adaptor that its data has changed
-        scannedTagsAdaptor.notifyDataSetChanged();
+        refreshTags();
     }
 
     @Override
@@ -153,7 +153,18 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         // by the same model as the presenter (the adaptor displays whatever is
         // in the model).
         // But we do need to notify the adaptor that its data has changed
-        scannedTagsAdaptor.notifyDataSetChanged();
+        refreshTags();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.kdt.scan.ScanView#refreshTagListView()
+     */
+    @Override
+    public void refreshTags() {
+        if (scannedTagsAdaptor != null)
+            scannedTagsAdaptor.notifyDataSetChanged();
     }
 
     @Override

@@ -18,9 +18,16 @@ package org.kdt.program;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.kdt.CommonConstants.NONE;
 import static org.kdt.Visible.VISIBLE;
+import static org.kdt.program.ProgramView.Message.TAG_PROGRAMMED;
+import static org.kdt.program.Programer.ThereWas.A_TAG_TO_PROGRAM;
+import static org.kdt.program.Programer.ThereWas.NO_TAG_TO_PROGRAM;
+import static org.kdt.tag.TagType.CELL;
+import static org.kdt.tag.TagType.TASK;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.hamcrest.Matchers;
@@ -60,68 +67,69 @@ public class ProgramPresenterTest {
     public void shows_cell_fields__when_tag_type_is_set_to_cell()
             throws Exception {
         when.presenter.typeChangedTo(TagType.CELL);
-        then.verify(mockView).setIsTaskDetailsVisible(false);
-        then.verify(mockView).setIsCellDetailsVisible(true);
+        then.it_should_call(mockView).setIsTaskDetailsVisible(false);
+        then.it_should_call(mockView).setIsCellDetailsVisible(true);
     }
 
     @Test
     public void shows_task_fields__when_tag_type_is_set_to_task()
             throws Exception {
         when.presenter.typeChangedTo(TagType.TASK);
-        then.verify(mockView).setIsTaskDetailsVisible(true);
-        then.verify(mockView).setIsCellDetailsVisible(false);
+        then.it_should_call(mockView).setIsTaskDetailsVisible(true);
+        then.it_should_call(mockView).setIsCellDetailsVisible(false);
     }
 
     @Test
     public void shows_task_fields__when_tag_type_is_anything_else()
             throws Exception {
         when.presenter.typeChangedTo(TagType.EMPTY);
-        then.verify(mockView).setIsTaskDetailsVisible(true);
-        then.verify(mockView).setIsCellDetailsVisible(false);
+        then.it_should_call(mockView).setIsTaskDetailsVisible(true);
+        then.it_should_call(mockView).setIsCellDetailsVisible(false);
     }
 
     @Test
     public void programs_a_cell_tag__when_tag_is_tapped() throws Exception {
-        given.the_selected_tag_type_is(TagType.CELL);
+        given.the_tag_type_is(TagType.CELL);
         and.the_swimline_is_set_to("Android App");
         and.the_queue_is_set_to("Code Review");
         when.presenter.tagTapped();
-        then.the_tag_is_programmed_using(new Cell("Android App", "Code Review"));
+        then.the_tag_should_be_programmed_using(new Cell("Android App",
+                "Code Review"));
     }
 
     @Test
     public void programs_a_task_tag__when_tag_is_tapped() throws Exception {
-        given.the_selected_tag_type_is(TagType.TASK);
+        given.the_tag_type_is(TagType.TASK);
         and.the_id_is_set_to("1234");
         and.the_name_is_set_to("User can program a tag");
         and.the_size_is_set_to("XL");
         when.presenter.tagTapped();
-        then.the_tag_is_programmed_using(new Task("1234",
+        then.the_tag_should_be_programmed_using(new Task("1234",
                 "User can program a tag", "XL"));
     }
 
     @Test
     public void tells_the_user_when_a_cell_tag_is_successfully_programmed()
             throws Exception {
-        given.the_selected_tag_type_is(TagType.TASK);
-        and.the_programer_returns(ThereWas.A_TAG_TO_PROGRAM);
+        given.the_tag_type_is(TASK);
+        and.the_programer_returns(A_TAG_TO_PROGRAM);
         when.presenter.tagTapped();
-        then.verify(mockView).showMessage(ProgramView.Message.TAG_PROGRAMMED);
+        then.it_should_call(mockView).showMessage(TAG_PROGRAMMED);
     }
 
     @Test
     public void tells_the_user_when_programing_a_tag_failed() {
-        given.the_selected_tag_type_is(TagType.TASK);
-        and.given.the_programer_throws(an_exception());
+        given.the_tag_type_is(TASK);
+        and.the_programer_throws(an_exception());
         when.presenter.tagTapped();
-        then.verify(mockView).showException(the_exception());
+        then.it_should_call(mockView).showException(the_exception());
 
     }
 
     @Test
-    public void does_tells_the_user_when_a_tag_is_programmed__if_there_was_no_tag_to_program()
+    public void does_not_tell_the_user_when_a_tag_is_programmed__if_there_was_no_tag_to_program()
             throws Exception {
-        given.the_programer_returns(ThereWas.NO_TAG_TO_PROGRAM);
+        given.the_programer_returns(NO_TAG_TO_PROGRAM);
         when.presenter.tagTapped();
         then.the_programed_tag_message_should_not_be_shown();
     }
@@ -133,10 +141,10 @@ public class ProgramPresenterTest {
                 "XL"));
         and.the_selected_tag_is(1);
         when.presenter.visibilityChanged(VISIBLE);
-        then.verify(mockView).setSelectedTagType(TagType.TASK);
-        then.verify(mockView).setTaskId("1234");
-        then.verify(mockView).setTaskName("User can program a tag");
-        then.verify(mockView).setTaskSize("XL");
+        then.it_should_call(mockView).setSelectedTagType(TASK);
+        then.it_should_call(mockView).setTaskId("1234");
+        then.it_should_call(mockView).setTaskName("User can program a tag");
+        then.it_should_call(mockView).setTaskSize("XL");
     }
 
     @Test
@@ -145,9 +153,9 @@ public class ProgramPresenterTest {
         given.the_model_has_a_tag(1, new Cell("Android App", "Code Review"));
         and.the_selected_tag_is(1);
         when.presenter.visibilityChanged(VISIBLE);
-        then.verify(mockView).setSelectedTagType(TagType.CELL);
-        then.verify(mockView).setSwimlane("Android App");
-        then.verify(mockView).setQueue("Code Review");
+        then.it_should_call(mockView).setSelectedTagType(CELL);
+        then.it_should_call(mockView).setSwimlane("Android App");
+        then.it_should_call(mockView).setQueue("Code Review");
     }
 
     @Test
@@ -165,6 +173,85 @@ public class ProgramPresenterTest {
         given.the_selected_tag_is(-1);
         when.presenter.visibilityChanged(VISIBLE);
         then.the_view_should_be_cleared_and_task_type_should_be_selected();
+    }
+
+    @Test
+    public void replaces_selected_tag__when_tag_programmed__and_replacing_selected_tag_is_enabled()
+            throws Exception {
+        given.the_selected_tag_is(3);
+        and.replacing_the_selected_tag_is_enabled(true);
+
+        // TODO the following setup is duplicated on several tests
+        and.the_tag_type_is(TagType.CELL);
+        and.the_swimline_is_set_to("Android App");
+        and.the_queue_is_set_to("Code Review");
+        and.the_programer_returns(A_TAG_TO_PROGRAM);
+
+        when.presenter.tagTapped();
+
+        then.the_selected_tag_should_be_replaced_with(3, new Cell(
+                "Android App",
+                "Code Review"));
+    }
+
+    @Test
+    public void does_not_replace_selected_tag__when_tag_programmed__and_replacing_selected_tag_disabled()
+            throws Exception {
+        given.replacing_the_selected_tag_is_enabled(false);
+        and.the_programer_returns(A_TAG_TO_PROGRAM);
+
+        when.presenter.tagTapped();
+
+        then.the_selected_tag_should_NOT_be_replaced();
+    }
+
+    @Test
+    public void does_not_replace_selected_tag__when_programing_a_tag_throws_an_exception__and_replacing_selected_tag_enabled()
+            throws Exception {
+        given.replacing_the_selected_tag_is_enabled(true);
+        and.the_programer_throws(an_exception());
+
+        when.presenter.tagTapped();
+
+        then.the_selected_tag_should_NOT_be_replaced();
+    }
+
+    @Test
+    public void does_not_replace_selected_tag__when_there_was_no_tag_to_program__and_replacing_selected_tag_enabled()
+            throws Exception {
+        given.replacing_the_selected_tag_is_enabled(true);
+        and.the_programer_returns(NO_TAG_TO_PROGRAM);
+
+        when.presenter.tagTapped();
+
+        then.the_selected_tag_should_NOT_be_replaced();
+    }
+
+    @Test
+    public void does_not_replace_selected_tag__when_no_tag_is_selected__and_replacing_selected_tag_enabled()
+            throws Exception {
+        given.the_selected_tag_is(NONE);
+        and.replacing_the_selected_tag_is_enabled(true);
+        and.the_programer_returns(A_TAG_TO_PROGRAM);
+
+        when.presenter.tagTapped();
+
+        then.the_selected_tag_should_NOT_be_replaced();
+    }
+
+    private void the_selected_tag_should_NOT_be_replaced() {
+        verify(mockModel, times(0)).replace(
+                Mockito.anyInt(),
+                Mockito.any(Scanable.class));
+    }
+
+    private void the_selected_tag_should_be_replaced_with(int position,
+            Scanable tag) {
+        verify(mockModel).replace(Mockito.eq(3), Mockito.refEq(tag));
+    }
+
+    private void replacing_the_selected_tag_is_enabled(boolean isEnabled) {
+        when(mockView.isReplacingSelectedTagEnabled()).thenReturn(isEnabled);
     }
 
     private void the_model_has_a_tag(int position, Scanable tag) {
@@ -193,7 +280,7 @@ public class ProgramPresenterTest {
         return testException;
     }
 
-    private void the_tag_is_programmed_using(Cell cell) {
+    private void the_tag_should_be_programmed_using(Cell cell) {
         // TODO Pull into a commonly used matcher??
         Mockito.verify(mockTagProgramer)
                 .programTag(
@@ -204,7 +291,7 @@ public class ProgramPresenterTest {
                                         equalTo(cell.getQueue())))));
     }
 
-    private void the_tag_is_programmed_using(Task task) {
+    private void the_tag_should_be_programmed_using(Task task) {
         // TODO Pull into a commonly used matcher??
         Mockito.verify(mockTagProgramer)
                 .programTag(
@@ -218,7 +305,7 @@ public class ProgramPresenterTest {
                                 )));
     }
 
-    private void the_selected_tag_type_is(TagType type) {
+    private void the_tag_type_is(TagType type) {
         Mockito.when(mockView.getSelectedTagType()).thenReturn(type);
     }
 
@@ -242,7 +329,7 @@ public class ProgramPresenterTest {
         Mockito.when(mockView.getTaskSize()).thenReturn(size);
     }
 
-    private <T> T verify(T mock) {
+    private <T> T it_should_call(T mock) {
         return Mockito.verify(mock);
     }
 
@@ -257,10 +344,10 @@ public class ProgramPresenterTest {
     }
 
     private void the_view_should_be_cleared_and_task_type_should_be_selected() {
-        verify(mockView).setSelectedTagType(TagType.TASK);
-        verify(mockView).setTaskId("");
-        verify(mockView).setTaskName("");
-        verify(mockView).setTaskSize("");
+        it_should_call(mockView).setSelectedTagType(TagType.TASK);
+        it_should_call(mockView).setTaskId("");
+        it_should_call(mockView).setTaskName("");
+        it_should_call(mockView).setTaskSize("");
     }
 
     @SuppressWarnings("unused")

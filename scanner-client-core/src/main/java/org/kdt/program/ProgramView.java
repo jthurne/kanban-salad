@@ -54,4 +54,6 @@ public interface ProgramView {
 
     public void setQueue(String queue);
 
+    public boolean isReplacingSelectedTagEnabled();
+
 }

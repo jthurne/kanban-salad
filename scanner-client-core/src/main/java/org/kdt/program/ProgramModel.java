@@ -22,4 +22,6 @@ public interface ProgramModel {
     public Scanable get(int position);
 
     public int getSelectedTagIndex();
+
+    public void replace(int position, Scanable tag);
 }

@@ -45,6 +45,8 @@ public class ProgramFragment extends Fragment implements IntentListener,
     private View cellDetails;
     private Spinner tagTypeSpinner;
 
+    private MenuItem replaceSelectedTag;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -84,12 +86,14 @@ public class ProgramFragment extends Fragment implements IntentListener,
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.program_tag, menu);
+
+        replaceSelectedTag = menu.findItem(R.id.replace_selected_tag);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.replace_last_scanned_tag:
+        case R.id.replace_selected_tag:
             if (item.isChecked())
                 item.setChecked(false);
             else
@@ -196,6 +200,11 @@ public class ProgramFragment extends Fragment implements IntentListener,
 
     private String getTextFrom(View container, int id) {
         return ((EditText) container.findViewById(id)).getText().toString();
+    }
+
+    @Override
+    public boolean isReplacingSelectedTagEnabled() {
+        return replaceSelectedTag.isChecked();
     }
 
     @Override

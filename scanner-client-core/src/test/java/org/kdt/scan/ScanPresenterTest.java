@@ -29,7 +29,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -185,6 +184,13 @@ public class ScanPresenterTest {
         given.model.setSelectedTag(NONE);
         when.presenter.visibilityChanged(VISIBLE);
         then.it_should_not_select_a_tag();
+    }
+
+    @Test
+    public void refreshes_the_dispaly_of_scanned_tags__when_the_view_is_shown()
+            throws Exception {
+        when.presenter.visibilityChanged(VISIBLE);
+        then.it_should_refresh_the_display_of_scanned_tags();
     }
 
     @Test
@@ -397,7 +403,7 @@ public class ScanPresenterTest {
     }
 
     private void it_should_not_select_a_tag() {
-        verifyNoMoreInteractions(mockView);
+        verify(mockView, times(0)).selectTag(Mockito.anyInt());
     }
 
     private void the_scanned_tag_context_menu_should_be_displayed() {
@@ -442,6 +448,10 @@ public class ScanPresenterTest {
 
     private void it_should_not_try_to_close_the_context_menu() {
         verify(mockView, times(0)).closeTagContextMenu();
+    }
+
+    private void it_should_refresh_the_display_of_scanned_tags() {
+        verify(mockView).refreshTags();
     }
 
     @SuppressWarnings("unused")

@@ -28,8 +28,6 @@ import org.kdt.tag.Cell;
 import org.kdt.tag.Scanable;
 
 public class ListModel implements ScanModel, ProgramModel {
-    private static final int NONE = -1;
-
     private final String filenameTemplate;
     private final List<Scanable> scannedTags;
     private int selectedTagIndex = -1;
@@ -62,12 +60,22 @@ public class ListModel implements ScanModel, ProgramModel {
     /*
      * (non-Javadoc)
      * 
+     * @see org.kdt.program.ProgramModel#replace(int, org.kdt.tag.Scanable)
+     */
+    @Override
+    public void replace(int position, Scanable tag) {
+        scannedTags.set(position, tag);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kdt.ScanModel#clearScannedTags()
      */
     @Override
     public void clear() {
         scannedTags.clear();
-        selectedTagIndex = NONE;
+        selectedTagIndex = CommonConstants.NONE;
     }
 
     /*

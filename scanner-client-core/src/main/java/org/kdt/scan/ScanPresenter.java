@@ -87,6 +87,7 @@ public class ScanPresenter {
     public void visibilityChanged(Visible visible) {
         if (visible == VISIBLE) {
             restoreViewOfSelectedTag();
+            view.refreshTags();
         } else {
             closeContextMenuIfVisible();
         }

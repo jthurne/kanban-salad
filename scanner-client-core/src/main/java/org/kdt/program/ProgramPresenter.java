@@ -15,6 +15,12 @@
  */
 package org.kdt.program;
 
+import static org.kdt.CommonConstants.NONE;
+import static org.kdt.program.ProgramView.Message.TAG_PROGRAMMED;
+import static org.kdt.program.Programer.ThereWas.A_TAG_TO_PROGRAM;
+import static org.kdt.tag.TagType.CELL;
+import static org.kdt.tag.TagType.TASK;
+
 import org.kdt.Visible;
 import org.kdt.program.Programer.ThereWas;
 import org.kdt.tag.Cell;
@@ -37,7 +43,7 @@ public class ProgramPresenter {
     }
 
     public void typeChangedTo(TagType tagType) {
-        if (tagType == TagType.CELL) {
+        if (tagType == CELL) {
             view.setIsCellDetailsVisible(true);
             view.setIsTaskDetailsVisible(false);
         } else {
@@ -55,24 +61,37 @@ public class ProgramPresenter {
     }
 
     private void attemptToProgramTag() {
-        TagType selectedTagType = view.getSelectedTagType();
-
-        Programable tag = createTag(selectedTagType);
+        Programable tag = createTag();
         ThereWas thereWas = tagProgrammer.programTag(tag);
 
-        if (thereWas == ThereWas.A_TAG_TO_PROGRAM)
-            view.showMessage(ProgramView.Message.TAG_PROGRAMMED);
+        if (thereWas == A_TAG_TO_PROGRAM) {
+            view.showMessage(TAG_PROGRAMMED);
+            replaceSelectedTagWith(tag);
+        }
     }
 
-    private Programable createTag(TagType selectedTagType) {
-        if (selectedTagType == TagType.TASK) {
+    private Programable createTag() {
+        TagType selectedTagType = view.getSelectedTagType();
+    
+        if (selectedTagType == TASK) {
             return new Task(
                     view.getTaskId(),
                     view.getTaskName(),
                     view.getTaskSize());
         }
-
+    
         return new Cell(view.getSwimlane(), view.getQueue());
+    }
+
+    private void replaceSelectedTagWith(Programable tag) {
+        if (shouldReplaceSelectedTag()) {
+            model.replace(model.getSelectedTagIndex(), tag);
+        }
+    }
+
+    private boolean shouldReplaceSelectedTag() {
+        return view.isReplacingSelectedTagEnabled()
+                && model.getSelectedTagIndex() != NONE;
     }
 
     public void visibilityChanged(Visible visible) {
