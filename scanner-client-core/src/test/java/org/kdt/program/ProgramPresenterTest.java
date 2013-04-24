@@ -176,10 +176,9 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void replaces_selected_tag__when_tag_programmed__and_replacing_selected_tag_is_enabled()
+    public void replaces_selected_tag__when_tag_programmed()
             throws Exception {
         given.the_selected_tag_is(3);
-        and.replacing_the_selected_tag_is_enabled(true);
 
         // TODO the following setup is duplicated on several tests
         and.the_tag_type_is(TagType.CELL);
@@ -195,20 +194,8 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void does_not_replace_selected_tag__when_tag_programmed__and_replacing_selected_tag_disabled()
+    public void does_not_replace_selected_tag__when_programing_a_tag_throws_an_exception()
             throws Exception {
-        given.replacing_the_selected_tag_is_enabled(false);
-        and.the_programer_returns(A_TAG_TO_PROGRAM);
-
-        when.presenter.tagTapped();
-
-        then.the_selected_tag_should_NOT_be_replaced();
-    }
-
-    @Test
-    public void does_not_replace_selected_tag__when_programing_a_tag_throws_an_exception__and_replacing_selected_tag_enabled()
-            throws Exception {
-        given.replacing_the_selected_tag_is_enabled(true);
         and.the_programer_throws(an_exception());
 
         when.presenter.tagTapped();
@@ -217,9 +204,8 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void does_not_replace_selected_tag__when_there_was_no_tag_to_program__and_replacing_selected_tag_enabled()
+    public void does_not_replace_selected_tag__when_there_was_no_tag_to_program()
             throws Exception {
-        given.replacing_the_selected_tag_is_enabled(true);
         and.the_programer_returns(NO_TAG_TO_PROGRAM);
 
         when.presenter.tagTapped();
@@ -228,10 +214,9 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void does_not_replace_selected_tag__when_no_tag_is_selected__and_replacing_selected_tag_enabled()
+    public void does_not_replace_selected_tag__when_no_tag_is_selected()
             throws Exception {
         given.the_selected_tag_is(NONE);
-        and.replacing_the_selected_tag_is_enabled(true);
         and.the_programer_returns(A_TAG_TO_PROGRAM);
 
         when.presenter.tagTapped();
@@ -248,10 +233,6 @@ public class ProgramPresenterTest {
     private void the_selected_tag_should_be_replaced_with(int position,
             Scanable tag) {
         verify(mockModel).replace(Mockito.eq(3), Mockito.refEq(tag));
-    }
-
-    private void replacing_the_selected_tag_is_enabled(boolean isEnabled) {
-        when(mockView.isReplacingSelectedTagEnabled()).thenReturn(isEnabled);
     }
 
     private void the_model_has_a_tag(int position, Scanable tag) {

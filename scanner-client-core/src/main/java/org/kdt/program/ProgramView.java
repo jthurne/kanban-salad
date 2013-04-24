@@ -53,7 +53,4 @@ public interface ProgramView {
     public void setSwimlane(String swimlane);
 
     public void setQueue(String queue);
-
-    public boolean isReplacingSelectedTagEnabled();
-
 }

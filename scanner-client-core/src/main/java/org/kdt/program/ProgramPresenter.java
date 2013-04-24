@@ -90,8 +90,7 @@ public class ProgramPresenter {
     }
 
     private boolean shouldReplaceSelectedTag() {
-        return view.isReplacingSelectedTagEnabled()
-                && model.getSelectedTagIndex() != NONE;
+        return model.getSelectedTagIndex() != NONE;
     }
 
     public void visibilityChanged(Visible visible) {

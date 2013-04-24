@@ -28,9 +28,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -46,8 +43,6 @@ public class ProgramFragment extends Fragment implements IntentListener,
     private View taskDetails;
     private View cellDetails;
     private Spinner tagTypeSpinner;
-
-    private MenuItem replaceSelectedTag;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,36 +69,12 @@ public class ProgramFragment extends Fragment implements IntentListener,
 
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
-                        // taskDetails.setVisibility(View.GONE);
-                        // cellDetails.setVisibility(View.GONE);
                     }
                 });
 
         this.setHasOptionsMenu(true);
 
         return rootView;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.program_tag, menu);
-
-        replaceSelectedTag = menu.findItem(R.id.replace_selected_tag);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.replace_selected_tag:
-            if (item.isChecked())
-                item.setChecked(false);
-            else
-                item.setChecked(true);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -202,11 +173,6 @@ public class ProgramFragment extends Fragment implements IntentListener,
 
     private String getTextFrom(View container, int id) {
         return ((EditText) container.findViewById(id)).getText().toString();
-    }
-
-    @Override
-    public boolean isReplacingSelectedTagEnabled() {
-        return replaceSelectedTag.isChecked();
     }
 
     @Override
