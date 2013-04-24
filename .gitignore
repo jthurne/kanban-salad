@@ -39,3 +39,5 @@ project/plugins/project/
 # generated files
 bin/
 gen/
+
+.cache
