@@ -26,7 +26,6 @@ object Main {
 
   def main(args: Array[String]) {
     val mLocalDevice = LocalDevice.getLocalDevice();
-    mLocalDevice.setDiscoverable(DiscoveryAgent.GIAC);
 
     val connectionNotifier =
       Connector.open("btspp://localhost:" +
