@@ -72,7 +72,7 @@
             android:singleLine="true" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/task_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,12 +83,16 @@
             android:id="@+id/task_id_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:text="@string/task_id_label" />
-
+        
         <EditText
             android:id="@+id/task_id_edit"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/task_id_label"
+            android:layout_toLeftOf="@+id/find_details_by_id_button"            
             android:ems="10"
             android:inputType="text" 
             android:maxLines="1"
@@ -96,16 +100,31 @@
             android:singleLine="true" >
         </EditText>
 
+        <ImageButton
+            android:id="@+id/find_details_by_id_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/task_id_label"
+            android:contentDescription="Find"
+            android:scaleType="centerCrop"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_menu_search_holo_dark" />
+
         <TextView
             android:id="@+id/task_name_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/task_id_edit"
             android:text="@string/task_name_label" />
 
         <EditText
             android:id="@+id/task_name_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/task_name_label"
             android:ems="10"
             android:inputType="text" 
             android:maxLines="1"
@@ -116,18 +135,22 @@
             android:id="@+id/task_size_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/task_name_edit"            
             android:text="@string/task_size_label" />
 
         <EditText
             android:id="@+id/task_size_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/task_size_label"            
             android:ems="10"
             android:inputType="text" 
             android:maxLines="1"
             android:selectAllOnFocus="true"
             android:singleLine="true" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="wrap_content"
