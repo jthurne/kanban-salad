@@ -7,8 +7,22 @@
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"        
+        android:dialogMessage="@string/email_address_dialog_message"/>
+    
+    <SwitchPreference 
+        android:key="use_bluetooth" 
+        android:switchTextOff="@string/use_bluetooth_switch_off" 
+        android:switchTextOn="@string/use_bluetooth_switch_on" 
+        android:title="@string/title_bluetooth"
         />
     
+    <ListPreference 
+        android:key="bluetooth_device" 
+        android:title="@string/title_bluetooth_device"
+        android:dependency="use_bluetooth" 
+        />
     
-
+    <Preference android:title="@string/title_system_bluetooth_settings" android:dependency="use_bluetooth">
+        <intent android:action="android.settings.BLUETOOTH_SETTINGS" />
+    </Preference>
 </PreferenceScreen>

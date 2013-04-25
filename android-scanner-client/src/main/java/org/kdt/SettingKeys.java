@@ -17,4 +17,6 @@ package org.kdt;
 
 public class SettingKeys {
     public static final String EMAIL_ADDRESS = "email_address";
+    public static final String USE_BLUETOOTH = "use_bluetooth";
+    public static final String BLUETOOTH_DEVICE = "bluetooth_device";
 }

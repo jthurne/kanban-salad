@@ -2,5 +2,15 @@
 <resources>
     
     <string name="title_email_address">Email Address</string>
+    <string name="email_address_dialog_message">Default email address used when sending a snapshot (when not using Bluetooth).</string>
+    
+    <string name="title_bluetooth">Bluetooth</string>
+    <string name="use_bluetooth_summary_on">Bluetooth</string>
+    <string name="use_bluetooth_summary_off">Bluetooth</string>
+    <string name="use_bluetooth_switch_on">Use</string>
+    <string name="use_bluetooth_switch_off">Do not use</string>
+    <string name="title_bluetooth_device">Bluetooth Device</string>
+    <string name="title_system_bluetooth_settings">System Bluetooth Settings</string>
+    <string name="bluetooth_device_dialog_message">Select a device that is running the bluetooth app.</string>
     
 </resources>
