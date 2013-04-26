@@ -15,16 +15,8 @@
  */
 package org.kdt;
 
-import com.squareup.otto.Bus;
+public interface Settings {
 
-// XXX This class may longer be necessary (and we may be able to remove the Event Bus library).
-public class EventBusProvider {
-    private static final Bus INSTANCE = new Bus();
+    public boolean isBluetoothEnabled();
 
-    private EventBusProvider() {
-    }
-
-    public static Bus get() {
-        return INSTANCE;
-    }
 }

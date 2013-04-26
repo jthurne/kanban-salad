@@ -26,6 +26,8 @@ public interface ProgramView {
 
     public void setIsCellDetailsVisible(boolean isVisible);
 
+    public void setIsLookupButtonEnabled(boolean isEnabled);
+
     public String getSwimlane();
 
     public String getQueue();

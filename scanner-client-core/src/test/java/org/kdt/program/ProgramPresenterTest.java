@@ -33,6 +33,7 @@ import static org.mockito.Mockito.when;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.kdt.Settings;
 import org.kdt.program.Programer.ThereWas;
 import org.kdt.tag.Cell;
 import org.kdt.tag.Empty;
@@ -57,10 +58,17 @@ public class ProgramPresenterTest {
     @Mock
     private ProgramModel mockModel;
 
+    @Mock
+    private Settings mockSettings;
+
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new ProgramPresenter(mockView, mockModel, mockTagProgramer);
+        presenter = new ProgramPresenter(
+                mockView,
+                mockModel,
+                mockSettings,
+                mockTagProgramer);
     }
 
     @Test
@@ -222,6 +230,50 @@ public class ProgramPresenterTest {
         when.presenter.tagTapped();
 
         then.the_selected_tag_should_NOT_be_replaced();
+    }
+
+    @Test
+    public void enables_the_lookup_button__if_bluetooth_is_enabled__when_screen_is_first_displayed()
+            throws Exception {
+        given.bluetooth_is_enabled(true);
+        when.presenter.viewInitalized();
+        then.the_lookup_button_should_be_enabled();
+    }
+
+    @Test
+    public void disables_the_lookup_button__if_bluetooth_is_disabled__when_screen_is_first_displayed()
+            throws Exception {
+        given.bluetooth_is_enabled(false);
+        when.presenter.viewInitalized();
+        then.the_lookup_button_should_be_disabled();
+    }
+
+    @Test
+    public void enables_the_lookup_button__if_bluetooth_is_enabled__when_settings_changed()
+            throws Exception {
+        given.bluetooth_is_enabled(true);
+        when.presenter.settingsUpdated();
+        then.the_lookup_button_should_be_enabled();
+    }
+
+    @Test
+    public void disables_the_lookup_button__if_bluetooth_is_disabled__when_screen_settings_changed()
+            throws Exception {
+        given.bluetooth_is_enabled(false);
+        when.presenter.settingsUpdated();
+        then.the_lookup_button_should_be_disabled();
+    }
+
+    private void the_lookup_button_should_be_enabled() {
+        verify(mockView).setIsLookupButtonEnabled(true);
+    }
+
+    private void the_lookup_button_should_be_disabled() {
+        verify(mockView).setIsLookupButtonEnabled(false);
+    }
+
+    private void bluetooth_is_enabled(boolean isEnabled) {
+        when(mockSettings.isBluetoothEnabled()).thenReturn(isEnabled);
     }
 
     private void the_selected_tag_should_NOT_be_replaced() {

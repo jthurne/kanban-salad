@@ -19,13 +19,17 @@ import static org.kdt.CommonConstants.NONE;
 
 import org.kdt.IntentListener;
 import org.kdt.ModelProvider;
+import org.kdt.SharedPrefsSettings;
 import org.kdt.Visible;
 import org.kdt.kanbandatatracker.R;
 import org.kdt.tag.TagType;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +46,10 @@ public class ProgramFragment extends Fragment implements IntentListener,
 
     private View taskDetails;
     private View cellDetails;
+    private View lookupButton;
     private Spinner tagTypeSpinner;
+
+    private OnSharedPreferenceChangeListener sharedPrefsListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +61,30 @@ public class ProgramFragment extends Fragment implements IntentListener,
 
         taskDetails = rootView.findViewById(R.id.task_details);
         cellDetails = rootView.findViewById(R.id.cell_details);
+        lookupButton = taskDetails.findViewById(R.id.lookup_button);
+        initTagTypeSpinner(rootView);
 
+        presenter.viewInitalized();
+        initSharedPrefsListener();
+
+        return rootView;
+    }
+
+    private void initSharedPrefsListener() {
+        sharedPrefsListener = new OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(
+                    SharedPreferences sharedPreferences,
+                    String key) {
+                presenter.settingsUpdated();
+            }
+        };
+
+        PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .registerOnSharedPreferenceChangeListener(sharedPrefsListener);
+    }
+
+    private void initTagTypeSpinner(final View rootView) {
         tagTypeSpinner = (Spinner) rootView
                 .findViewById(R.id.tag_type_spinner);
         tagTypeSpinner
@@ -71,17 +101,24 @@ public class ProgramFragment extends Fragment implements IntentListener,
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
-
-        this.setHasOptionsMenu(true);
-
-        return rootView;
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        presenter = new ProgramPresenter(this, ModelProvider.getInstance(),
+        presenter = new ProgramPresenter(
+                this,
+                ModelProvider.getInstance(),
+                new SharedPrefsSettings(activity),
                 new NfcProgramer(activity));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        PreferenceManager
+                .getDefaultSharedPreferences(getActivity())
+                .unregisterOnSharedPreferenceChangeListener(sharedPrefsListener);
     }
 
     @Override
@@ -106,6 +143,15 @@ public class ProgramFragment extends Fragment implements IntentListener,
             cellDetails.setVisibility(View.VISIBLE);
         } else {
             cellDetails.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setIsLookupButtonEnabled(boolean isEnabled) {
+        if (isEnabled) {
+            lookupButton.setVisibility(View.VISIBLE);
+        } else {
+            lookupButton.setVisibility(View.INVISIBLE);
         }
     }
 

@@ -15,16 +15,27 @@
  */
 package org.kdt;
 
-import com.squareup.otto.Bus;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-// XXX This class may longer be necessary (and we may be able to remove the Event Bus library).
-public class EventBusProvider {
-    private static final Bus INSTANCE = new Bus();
+public class SharedPrefsSettings implements Settings {
 
-    private EventBusProvider() {
+    private final SharedPreferences preferences;
+
+    public SharedPrefsSettings(Context context) {
+        this.preferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
     }
 
-    public static Bus get() {
-        return INSTANCE;
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.kdt.Settings#isBluetoothEnabled()
+     */
+    @Override
+    public boolean isBluetoothEnabled() {
+        return preferences.getBoolean(SettingKeys.USE_BLUETOOTH, true);
     }
+
 }

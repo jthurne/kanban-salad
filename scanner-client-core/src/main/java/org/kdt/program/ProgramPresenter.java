@@ -21,6 +21,7 @@ import static org.kdt.program.Programer.ThereWas.A_TAG_TO_PROGRAM;
 import static org.kdt.tag.TagType.CELL;
 import static org.kdt.tag.TagType.TASK;
 
+import org.kdt.Settings;
 import org.kdt.Visible;
 import org.kdt.program.Programer.ThereWas;
 import org.kdt.tag.Cell;
@@ -34,12 +35,26 @@ public class ProgramPresenter {
     private final ProgramView view;
     private final ProgramModel model;
     private final Programer tagProgrammer;
+    private final Settings settings;
 
-    public ProgramPresenter(ProgramView view, ProgramModel model,
+    public ProgramPresenter(
+            ProgramView view,
+            ProgramModel model,
+            Settings settings,
             Programer tagProgrammer) {
+
         this.view = view;
         this.tagProgrammer = tagProgrammer;
         this.model = model;
+        this.settings = settings;
+    }
+
+    public void viewInitalized() {
+        settingsUpdated();
+    }
+
+    public void settingsUpdated() {
+        view.setIsLookupButtonEnabled(settings.isBluetoothEnabled());
     }
 
     public void typeChangedTo(TagType tagType) {

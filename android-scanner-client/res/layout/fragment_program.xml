@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/task_id_label"
-            android:layout_toLeftOf="@+id/find_details_by_id_button"            
+            android:layout_toLeftOf="@+id/lookup_button"            
             android:ems="10"
             android:inputType="text" 
             android:maxLines="1"
@@ -101,14 +101,14 @@
         </EditText>
 
         <ImageButton
-            android:id="@+id/find_details_by_id_button"
+            android:id="@+id/lookup_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/task_id_label"
+            android:background="?android:attr/selectableItemBackground"
             android:contentDescription="Find"
             android:scaleType="centerCrop"
-            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_menu_search_holo_dark" />
 
         <TextView
