@@ -15,6 +15,7 @@
  */
 package org.kdt.program;
 
+import org.kdt.Visible;
 import org.kdt.tag.TagType;
 
 public interface ProgramView {
@@ -22,11 +23,11 @@ public interface ProgramView {
         TAG_PROGRAMMED
     }
 
-    public void setIsTaskDetailsVisible(boolean isVisible);
+    public void setTaskDetailsVisible(Visible visible);
 
-    public void setIsCellDetailsVisible(boolean isVisible);
+    public void setCellDetailsVisible(Visible visible);
 
-    public void setIsLookupButtonEnabled(boolean isEnabled);
+    public void setLookupButtonVisible(Visible visible);
 
     public String getSwimlane();
 

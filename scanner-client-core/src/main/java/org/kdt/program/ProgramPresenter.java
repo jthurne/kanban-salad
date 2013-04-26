@@ -16,6 +16,8 @@
 package org.kdt.program;
 
 import static org.kdt.CommonConstants.NONE;
+import static org.kdt.Visible.HIDDEN;
+import static org.kdt.Visible.VISIBLE;
 import static org.kdt.program.ProgramView.Message.TAG_PROGRAMMED;
 import static org.kdt.program.Programer.ThereWas.A_TAG_TO_PROGRAM;
 import static org.kdt.tag.TagType.CELL;
@@ -54,16 +56,20 @@ public class ProgramPresenter {
     }
 
     public void settingsUpdated() {
-        view.setIsLookupButtonEnabled(settings.isBluetoothEnabled());
+        if (settings.isBluetoothEnabled()) {
+            view.setLookupButtonVisible(VISIBLE);
+        } else {
+            view.setLookupButtonVisible(HIDDEN);
+        }
     }
 
     public void typeChangedTo(TagType tagType) {
         if (tagType == CELL) {
-            view.setIsCellDetailsVisible(true);
-            view.setIsTaskDetailsVisible(false);
+            view.setCellDetailsVisible(VISIBLE);
+            view.setTaskDetailsVisible(HIDDEN);
         } else {
-            view.setIsCellDetailsVisible(false);
-            view.setIsTaskDetailsVisible(true);
+            view.setCellDetailsVisible(HIDDEN);
+            view.setTaskDetailsVisible(VISIBLE);
         }
     }
 

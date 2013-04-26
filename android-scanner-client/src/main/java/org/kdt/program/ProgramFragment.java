@@ -16,6 +16,7 @@
 package org.kdt.program;
 
 import static org.kdt.CommonConstants.NONE;
+import static org.kdt.Visible.VISIBLE;
 
 import org.kdt.IntentListener;
 import org.kdt.ModelProvider;
@@ -129,8 +130,8 @@ public class ProgramFragment extends Fragment implements IntentListener,
     }
 
     @Override
-    public void setIsTaskDetailsVisible(boolean isVisible) {
-        if (isVisible) {
+    public void setTaskDetailsVisible(Visible is) {
+        if (is == VISIBLE) {
             taskDetails.setVisibility(View.VISIBLE);
         } else {
             taskDetails.setVisibility(View.GONE);
@@ -138,8 +139,8 @@ public class ProgramFragment extends Fragment implements IntentListener,
     }
 
     @Override
-    public void setIsCellDetailsVisible(boolean isVisible) {
-        if (isVisible) {
+    public void setCellDetailsVisible(Visible is) {
+        if (is == VISIBLE) {
             cellDetails.setVisibility(View.VISIBLE);
         } else {
             cellDetails.setVisibility(View.GONE);
@@ -147,8 +148,8 @@ public class ProgramFragment extends Fragment implements IntentListener,
     }
 
     @Override
-    public void setIsLookupButtonEnabled(boolean isEnabled) {
-        if (isEnabled) {
+    public void setLookupButtonVisible(Visible is) {
+        if (is == VISIBLE) {
             lookupButton.setVisibility(View.VISIBLE);
         } else {
             lookupButton.setVisibility(View.INVISIBLE);

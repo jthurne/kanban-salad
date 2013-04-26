@@ -19,6 +19,7 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.kdt.CommonConstants.NONE;
+import static org.kdt.Visible.HIDDEN;
 import static org.kdt.Visible.VISIBLE;
 import static org.kdt.program.ProgramView.Message.TAG_PROGRAMMED;
 import static org.kdt.program.Programer.ThereWas.A_TAG_TO_PROGRAM;
@@ -34,6 +35,7 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.kdt.Settings;
+import org.kdt.Visible;
 import org.kdt.program.Programer.ThereWas;
 import org.kdt.tag.Cell;
 import org.kdt.tag.Empty;
@@ -75,24 +77,24 @@ public class ProgramPresenterTest {
     public void shows_cell_fields__when_tag_type_is_set_to_cell()
             throws Exception {
         when.presenter.typeChangedTo(TagType.CELL);
-        then.it_should_call(mockView).setIsTaskDetailsVisible(false);
-        then.it_should_call(mockView).setIsCellDetailsVisible(true);
+        then.it_should_call(mockView).setTaskDetailsVisible(HIDDEN);
+        then.it_should_call(mockView).setCellDetailsVisible(VISIBLE);
     }
 
     @Test
     public void shows_task_fields__when_tag_type_is_set_to_task()
             throws Exception {
         when.presenter.typeChangedTo(TagType.TASK);
-        then.it_should_call(mockView).setIsTaskDetailsVisible(true);
-        then.it_should_call(mockView).setIsCellDetailsVisible(false);
+        then.it_should_call(mockView).setTaskDetailsVisible(VISIBLE);
+        then.it_should_call(mockView).setCellDetailsVisible(HIDDEN);
     }
 
     @Test
     public void shows_task_fields__when_tag_type_is_anything_else()
             throws Exception {
         when.presenter.typeChangedTo(TagType.EMPTY);
-        then.it_should_call(mockView).setIsTaskDetailsVisible(true);
-        then.it_should_call(mockView).setIsCellDetailsVisible(false);
+        then.it_should_call(mockView).setTaskDetailsVisible(VISIBLE);
+        then.it_should_call(mockView).setCellDetailsVisible(HIDDEN);
     }
 
     @Test
@@ -233,43 +235,39 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void enables_the_lookup_button__if_bluetooth_is_enabled__when_screen_is_first_displayed()
+    public void shows_the_lookup_button__if_bluetooth_is_enabled__when_screen_is_first_displayed()
             throws Exception {
         given.bluetooth_is_enabled(true);
         when.presenter.viewInitalized();
-        then.the_lookup_button_should_be_enabled();
+        then.the_lookup_button_should_be(VISIBLE);
     }
 
     @Test
-    public void disables_the_lookup_button__if_bluetooth_is_disabled__when_screen_is_first_displayed()
+    public void hides_the_lookup_button__if_bluetooth_is_disabled__when_screen_is_first_displayed()
             throws Exception {
         given.bluetooth_is_enabled(false);
         when.presenter.viewInitalized();
-        then.the_lookup_button_should_be_disabled();
+        then.the_lookup_button_should_be(HIDDEN);
     }
 
     @Test
-    public void enables_the_lookup_button__if_bluetooth_is_enabled__when_settings_changed()
+    public void shows_the_lookup_button__if_bluetooth_is_enabled__when_settings_changed()
             throws Exception {
         given.bluetooth_is_enabled(true);
         when.presenter.settingsUpdated();
-        then.the_lookup_button_should_be_enabled();
+        then.the_lookup_button_should_be(VISIBLE);
     }
 
     @Test
-    public void disables_the_lookup_button__if_bluetooth_is_disabled__when_screen_settings_changed()
+    public void hides_the_lookup_button__if_bluetooth_is_disabled__when_screen_settings_changed()
             throws Exception {
         given.bluetooth_is_enabled(false);
         when.presenter.settingsUpdated();
-        then.the_lookup_button_should_be_disabled();
+        then.the_lookup_button_should_be(HIDDEN);
     }
 
-    private void the_lookup_button_should_be_enabled() {
-        verify(mockView).setIsLookupButtonEnabled(true);
-    }
-
-    private void the_lookup_button_should_be_disabled() {
-        verify(mockView).setIsLookupButtonEnabled(false);
+    private void the_lookup_button_should_be(Visible visible) {
+        verify(mockView).setLookupButtonVisible(visible);
     }
 
     private void bluetooth_is_enabled(boolean isEnabled) {
