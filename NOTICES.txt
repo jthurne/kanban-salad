@@ -1,12 +1,17 @@
-This software uses the event bus provided by the Otto library package,
-which is open source software licensed under the Apache v2.0 License
-(see LICENSE.txt) and is copyright by Square, Inc. and Google, Inc.
-The original software is available from:
-   http://square.github.com/otto/
+Kanban Salad
+Copyright 2013 Kanban Salad Team
 
+This software uses the BlueCove library which is open source software licensed
+under the Apache v2.0 License and is copyright the BlueCove Team. The original software is
+available from: http://bluecove.org/
 
-Apache Commons IO
-Copyright 2002-2012 The Apache Software Foundation
+This software uses the event bus provided by the Otto library, which is open
+source software licensed under the Apache v2.0 License and is
+copyright by Square, Inc. and Google, Inc. The original software is available
+from: http://square.github.com/otto/
 
 This product includes software developed by
 The Apache Software Foundation (http://www.apache.org/).
+
+Apache Commons IO
+Copyright 2002-2012 The Apache Software Foundation
