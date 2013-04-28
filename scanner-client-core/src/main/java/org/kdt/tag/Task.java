@@ -17,6 +17,8 @@ package org.kdt.tag;
 
 public class Task implements Scanable, Programable {
 
+    public static final Task NONE = new Task("", "", "");
+
     private final String id;
     private final String name;
     private final String size;
