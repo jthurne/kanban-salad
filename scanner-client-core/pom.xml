@@ -1,22 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.kdt</groupId>
   <artifactId>scanner-client-core</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <name>Kanban Data Tracker - Scanner Client Core</name>
+  <name>Kanban Salad - Scanner Client - Core</name>
   <packaging>jar</packaging>
 
   <parent>
-    <groupId>org.kdt</groupId>
-    <artifactId>kanban-data-tracker</artifactId>
+    <groupId>org.kanbansalad</groupId>
+    <artifactId>kanban-salad</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
 
   <dependencies>
     <dependency>
-      <groupId>org.kdt</groupId>
+      <groupId>org.kanbansalad</groupId>
       <artifactId>common</artifactId>
       <version>1.0.0-SNAPSHOT</version>
       <scope>compile</scope>

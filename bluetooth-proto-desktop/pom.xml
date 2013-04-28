@@ -13,7 +13,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.kdt</groupId>
+      <groupId>org.kanbansalad</groupId>
       <artifactId>common</artifactId>
       <version>1.0.0-SNAPSHOT</version>
       <scope>compile</scope>

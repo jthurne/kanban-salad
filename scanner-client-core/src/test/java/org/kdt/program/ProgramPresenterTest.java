@@ -16,7 +16,6 @@
 package org.kdt.program;
 
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.kdt.CommonConstants.NONE;
 import static org.kdt.Visible.HIDDEN;
@@ -412,27 +411,25 @@ public class ProgramPresenterTest {
 
     private void the_tag_should_be_programmed_using(Cell cell) {
         // TODO Pull into a commonly used matcher??
-        Mockito.verify(mockTagProgramer)
-                .programTag(
-                        Mockito.argThat(both(
-                                Matchers.<Cell> hasProperty("swimlane",
-                                        equalTo(cell.getSwimlane()))).and(
-                                Matchers.<Cell> hasProperty("queue",
-                                        equalTo(cell.getQueue())))));
+        verify(mockTagProgramer).programTag((Programable)
+                Mockito.argThat(allOf(
+                        Matchers.<Cell> hasProperty("swimlane",
+                                equalTo(cell.getSwimlane())),
+                        Matchers.<Cell> hasProperty("queue",
+                                equalTo(cell.getQueue())))));
     }
 
     private void the_tag_should_be_programmed_using(Task task) {
         // TODO Pull into a commonly used matcher??
-        Mockito.verify(mockTagProgramer)
-                .programTag(
-                        Mockito.argThat(allOf(
-                                Matchers.<Task> hasProperty("id",
-                                        equalTo(task.getId())),
-                                Matchers.<Task> hasProperty("name",
-                                        equalTo(task.getName())),
-                                Matchers.<Task> hasProperty("size",
-                                        equalTo(task.getSize()))
-                                )));
+        verify(mockTagProgramer).programTag((Programable)
+                Mockito.argThat(allOf(
+                        Matchers.<Task> hasProperty("id",
+                                equalTo(task.getId())),
+                        Matchers.<Task> hasProperty(
+                                "name", equalTo(task.getName())),
+                        Matchers
+                                .<Task> hasProperty("size",
+                                        equalTo(task.getSize())))));
     }
 
     private void the_tag_type_is(TagType type) {
