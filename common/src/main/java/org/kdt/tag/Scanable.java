@@ -15,7 +15,9 @@
  */
 package org.kdt.tag;
 
-public interface Scanable {
+import java.io.Serializable;
+
+public interface Scanable extends Serializable {
 
     public String getDisplayName();
 

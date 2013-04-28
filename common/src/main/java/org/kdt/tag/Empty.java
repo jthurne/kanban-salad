@@ -19,6 +19,8 @@ package org.kdt.tag;
  * Represents an empty (unprogrammed) tag
  */
 public class Empty implements Scanable {
+    private static final long serialVersionUID = 1L;
+
     @Override
     public String getDisplayName() {
         return "<EMPTY>";

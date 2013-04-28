@@ -19,6 +19,7 @@ package org.kdt.tag;
  * 
  */
 public class IncorrectlyFormatted implements Scanable {
+    private static final long serialVersionUID = 1L;
 
     private final String invalidData;
 

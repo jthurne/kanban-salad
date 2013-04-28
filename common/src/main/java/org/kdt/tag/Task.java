@@ -16,6 +16,7 @@
 package org.kdt.tag;
 
 public class Task implements Scanable, Programable {
+    private static final long serialVersionUID = 1L;
 
     public static final Task NONE = new Task("", "", "");
 

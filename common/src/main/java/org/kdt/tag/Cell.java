@@ -16,6 +16,7 @@
 package org.kdt.tag;
 
 public class Cell implements Scanable, Programable {
+    private static final long serialVersionUID = 1L;
 
     private final String swimlane;
     private final String queue;

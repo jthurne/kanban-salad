@@ -16,6 +16,5 @@
 package org.kdt.tag;
 
 public interface Programable extends Scanable {
-
     public String getMimeType();
 }
