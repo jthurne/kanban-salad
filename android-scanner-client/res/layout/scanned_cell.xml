@@ -15,9 +15,9 @@
         android:typeface="sans"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:text="Kanban Data Tracker" 
+        android:text="Kanban Salad"
         />
-    
+
     <TextView
         android:id="@+id/seperator"
         android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         android:typeface="sans"
-        android:text="Ready for QA" 
+        android:text="Ready for QA"
         />
-    
+
 </RelativeLayout>

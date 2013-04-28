@@ -1,9 +1,9 @@
-Kanban Data Tracker
+Kanban Salad
 ===================
 
-Kanban Data Tracker will make tracking data on a kanban board (and maybe other types of process visualization boards) easy.
+Kanban Salad makes tracking data on a Kanban board (and maybe other types of process visualization boards) easy.
 
-The project is currently in the inception phase.  So far, we've built a prototype android application which can read and program NFC tags on a Kanban board.
+Kanban Salad is currently alpha-quality software.
 
 Building the Android Client
 ===========================

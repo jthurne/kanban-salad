@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.kdt.kanbandatatracker"
+    package="org.kanbansalad.scanner.client.android"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -38,54 +38,49 @@ limitations under the License.
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="org.kdt.ScanActivity"
+            android:name="org.kanbansalad.scanner.client.android.ScanActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="application/vnd.kdt.task" />
+                <data android:mimeType="application/vnd.org.kanbansalad.task" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="application/vnd.kdt.cell" />
+                <data android:mimeType="application/vnd.org.kanbansalad.cell" />
             </intent-filter>
         </activity>
         <activity
-            android:name="org.kdt.HelpActivity"
+            android:name="org.kanbansalad.scanner.client.android.HelpActivity"
             android:label="@string/title_activity_help"
-            android:parentActivityName="org.kdt.ScanActivity"
+            android:parentActivityName="org.kanbansalad.scanner.client.android.ScanActivity"
             android:theme="@android:style/Theme.Holo.Dialog" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.kdt.ScanActivity" />
+                android:value="org.kanbansalad.scanner.client.android.ScanActivity" />
         </activity>
         <activity
-            android:name="org.kdt.AboutActivity"
+            android:name="org.kanbansalad.scanner.client.android.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName="org.kdt.ScanActivity"
+            android:parentActivityName="org.kanbansalad.scanner.client.android.ScanActivity"
             android:theme="@android:style/Theme.Holo.Dialog" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.kdt.ScanActivity" />
+                android:value="org.kanbansalad.scanner.client.android.ScanActivity" />
         </activity>
         <activity
-            android:name="org.kdt.SettingsActivity"
+            android:name="org.kanbansalad.scanner.client.android.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="org.kdt.ScanActivity" >
+            android:parentActivityName="org.kanbansalad.scanner.client.android.ScanActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.kdt.ScanActivity" />
+                android:value="org.kanbansalad.scanner.client.android.ScanActivity" />
         </activity>
         </application>
 
