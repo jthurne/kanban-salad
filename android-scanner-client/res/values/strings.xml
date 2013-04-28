@@ -34,21 +34,6 @@ limitations under the License.
     <string name="title_scan_tab">Scan</string>
     <string name="title_program_tab">Program</string>
     
-    <string name="title_activity_program_tag">Program Tag</string>
-    <string name="program_tag_instructions">To program a tag, enter desired data above and then scan the tag</string>
     <string name="action_delete_scan">Delete</string>
-    <string name="swimlane_label">Swimlane</string>
-    <string name="queue_label">Queue</string>
-    <string name="task_id_label">ID</string>
-    <string name="task_name_label">Name</string>
-    <string name="task_size_label">Size</string>
-    <string name="tag_type_label">Type</string>
-    <string name="tag_type_prompt">Select a tag type</string>
-    <string name="tag_programmed">Tag Programmed</string>
-    <string-array name="tag_types_array">
-        <item>Task</item>
-        <item>Cell</item>
-    </string-array>
-        <string name="action_clear">Clear</string>
-        <string name="replace_selected_tag">Replace selected tag</string>
+    <string name="action_clear">Clear</string>
 </resources>
