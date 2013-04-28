@@ -20,7 +20,7 @@ import org.kdt.tag.TagType;
 
 public interface ProgramView {
     public enum Message {
-        TAG_PROGRAMMED
+        TAG_PROGRAMMED, TASK_NOT_FOUND, TASK_LOOKUP_FAILED
     }
 
     public void setTaskDetailsVisible(Visible visible);
@@ -44,6 +44,8 @@ public interface ProgramView {
     public void showMessage(Message message);
 
     public void showException(Exception exception);
+
+    public void showException(Message message, Exception exception);
 
     public void setSelectedTagType(TagType type);
 

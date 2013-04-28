@@ -21,6 +21,8 @@ import javax.bluetooth._
 import javax.microedition.io.Connector
 import javax.microedition.io.StreamConnection
 import javax.microedition.io.StreamConnectionNotifier
+import org.kdt.bluetooth.TaskLookupRequest
+import org.kdt.bluetooth.TaskLookupResponse
 
 object Main {
 
@@ -29,16 +31,27 @@ object Main {
 
     val connectionNotifier =
       Connector.open("btspp://localhost:" +
-        "DEADBEEFDEADBEEFDEADBEEFDEADBEEF;name=Prototype;" +
-        "authenticate=false;encrypt=false;master=false").asInstanceOf[StreamConnectionNotifier];
+        "792510F682524C8480F5E1F17386AECF;name=Prototype;" +
+        "authenticate=true;encrypt=true;master=false").asInstanceOf[StreamConnectionNotifier];
 
     println("accepting on " + mLocalDevice.getBluetoothAddress());
-    val streamConnection = connectionNotifier.acceptAndOpen();
-    val is = streamConnection.openInputStream();
-    val reader = new BufferedReader(new InputStreamReader(is))
 
-    while (reader.ready()) {
-      println(reader.readLine());
+    while (true) {
+      val streamConnection = connectionNotifier.acceptAndOpen();
+
+      try {
+        val in = new ObjectInputStream(streamConnection.openInputStream());
+        val out = new ObjectOutputStream(streamConnection.openOutputStream());
+
+        while (true) {
+          val request = in.readObject().asInstanceOf[TaskLookupRequest]
+          out.writeObject(new TaskLookupResponse(request.getId(), "Lookup tasks with bluetooth", "2"))
+        }
+      } catch {
+        case e: EOFException => println("Client closed the connection.")
+      } finally {
+        streamConnection.close()
+      }
     }
   }
 

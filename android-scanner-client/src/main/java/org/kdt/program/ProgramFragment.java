@@ -34,6 +34,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -62,13 +63,26 @@ public class ProgramFragment extends Fragment implements IntentListener,
 
         taskDetails = rootView.findViewById(R.id.task_details);
         cellDetails = rootView.findViewById(R.id.cell_details);
-        lookupButton = taskDetails.findViewById(R.id.lookup_button);
+        initLookupButton();
         initTagTypeSpinner(rootView);
 
         presenter.viewInitalized();
         initSharedPrefsListener();
 
         return rootView;
+    }
+
+    /**
+     * 
+     */
+    private void initLookupButton() {
+        lookupButton = taskDetails.findViewById(R.id.lookup_button);
+        lookupButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.lookupClicked();
+            }
+        });
     }
 
     private void initSharedPrefsListener() {
@@ -111,7 +125,9 @@ public class ProgramFragment extends Fragment implements IntentListener,
                 this,
                 ModelProvider.getInstance(),
                 new SharedPrefsSettings(activity),
-                new NfcProgramer(activity));
+                new NfcProgramer(activity),
+                new BluetoothTaskFinder(new AndroidBluetoothConnectionProvider(
+                        activity)));
     }
 
     @Override
@@ -169,19 +185,35 @@ public class ProgramFragment extends Fragment implements IntentListener,
                 Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void showException(Exception e) {
+        // TODO use a dialog box instead?
+        Toast.makeText(this.getActivity(),
+                e.getMessage(),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showException(Message message, Exception e) {
+        int messageId = stringIdFor(message);
+
+        // TODO use a dialog box instead?
+        Toast.makeText(this.getActivity(),
+                getString(messageId, e.getMessage()),
+                Toast.LENGTH_LONG).show();
+
+    }
+
     private int stringIdFor(Message message) {
         switch (message) {
         case TAG_PROGRAMMED:
             return R.string.tag_programmed;
+        case TASK_NOT_FOUND:
+            return R.string.task_not_found;
+        case TASK_LOOKUP_FAILED:
+            return R.string.task_lookup_failed;
         }
         return NONE;
-    }
-
-    @Override
-    public void showException(Exception e) {
-        Toast.makeText(this.getActivity(),
-                e.getMessage(),
-                Toast.LENGTH_LONG).show();
     }
 
     @Override

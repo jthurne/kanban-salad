@@ -19,12 +19,14 @@ import static org.kdt.CommonConstants.NONE;
 import static org.kdt.Visible.HIDDEN;
 import static org.kdt.Visible.VISIBLE;
 import static org.kdt.program.ProgramView.Message.TAG_PROGRAMMED;
+import static org.kdt.program.ProgramView.Message.TASK_NOT_FOUND;
 import static org.kdt.program.Programer.ThereWas.A_TAG_TO_PROGRAM;
 import static org.kdt.tag.TagType.CELL;
 import static org.kdt.tag.TagType.TASK;
 
 import org.kdt.Settings;
 import org.kdt.Visible;
+import org.kdt.program.ProgramView.Message;
 import org.kdt.program.Programer.ThereWas;
 import org.kdt.tag.Cell;
 import org.kdt.tag.Programable;
@@ -38,17 +40,20 @@ public class ProgramPresenter {
     private final ProgramModel model;
     private final Programer tagProgrammer;
     private final Settings settings;
+    private final TaskFinder taskFinder;
 
     public ProgramPresenter(
             ProgramView view,
             ProgramModel model,
             Settings settings,
-            Programer tagProgrammer) {
+            Programer tagProgrammer,
+            TaskFinder taskFinder) {
 
         this.view = view;
         this.tagProgrammer = tagProgrammer;
         this.model = model;
         this.settings = settings;
+        this.taskFinder = taskFinder;
     }
 
     public void viewInitalized() {
@@ -56,7 +61,7 @@ public class ProgramPresenter {
     }
 
     public void settingsUpdated() {
-        if (settings.isBluetoothEnabled()) {
+        if (settings.isBluetoothSupported() && settings.isBluetoothEnabled()) {
             view.setLookupButtonVisible(VISIBLE);
         } else {
             view.setLookupButtonVisible(HIDDEN);
@@ -154,4 +159,31 @@ public class ProgramPresenter {
         view.setTaskName("");
         view.setTaskSize("");
     }
+
+    public void lookupClicked() {
+        if (thereIsNoIdToLookUp())
+            return;
+
+        try {
+            attemptLookup();
+        } catch (TaskFinder.LookupFailed e) {
+            view.showException(Message.TASK_LOOKUP_FAILED, e);
+        }
+    }
+
+    private boolean thereIsNoIdToLookUp() {
+        return view.getTaskId() == null || view.getTaskId().isEmpty();
+    }
+
+    private void attemptLookup() {
+        Task task = taskFinder.find(view.getTaskId());
+
+        if (task == Task.NONE) {
+            view.showMessage(TASK_NOT_FOUND);
+        } else {
+            view.setTaskName(task.getName());
+            view.setTaskSize(task.getSize());
+        }
+    }
+
 }

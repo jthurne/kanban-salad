@@ -22,6 +22,7 @@ import static org.kdt.CommonConstants.NONE;
 import static org.kdt.Visible.HIDDEN;
 import static org.kdt.Visible.VISIBLE;
 import static org.kdt.program.ProgramView.Message.TAG_PROGRAMMED;
+import static org.kdt.program.ProgramView.Message.TASK_NOT_FOUND;
 import static org.kdt.program.Programer.ThereWas.A_TAG_TO_PROGRAM;
 import static org.kdt.program.Programer.ThereWas.NO_TAG_TO_PROGRAM;
 import static org.kdt.tag.TagType.CELL;
@@ -36,6 +37,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kdt.Settings;
 import org.kdt.Visible;
+import org.kdt.program.ProgramView.Message;
 import org.kdt.program.Programer.ThereWas;
 import org.kdt.tag.Cell;
 import org.kdt.tag.Empty;
@@ -48,6 +50,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class ProgramPresenterTest {
+    private static final RuntimeException TASK_LOOKUP_FAILED = new TaskFinder.LookupFailed(
+            new RuntimeException("test"));
 
     private ProgramPresenter presenter;
 
@@ -63,6 +67,9 @@ public class ProgramPresenterTest {
     @Mock
     private Settings mockSettings;
 
+    @Mock
+    private TaskFinder mockFinder;
+
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -70,7 +77,8 @@ public class ProgramPresenterTest {
                 mockView,
                 mockModel,
                 mockSettings,
-                mockTagProgramer);
+                mockTagProgramer,
+                mockFinder);
     }
 
     @Test
@@ -274,8 +282,83 @@ public class ProgramPresenterTest {
     public void hides_the_lookup_button__if_bluetooth_is_disabled__when_screen_settings_changed()
             throws Exception {
         given.bluetooth_is_enabled(false);
+        and.bluetooth_is_supported(true);
         when.presenter.settingsUpdated();
         then.the_lookup_button_should_be(HIDDEN);
+    }
+
+    @Test
+    public void hides_the_lookup_button__if_bluetooth_is_unsupported__when_screen_settings_changed()
+            throws Exception {
+        given.bluetooth_is_enabled(true);
+        and.bluetooth_is_supported(false);
+        when.presenter.settingsUpdated();
+        then.the_lookup_button_should_be(HIDDEN);
+    }
+
+    @Test
+    public void looks_up_task_details__when_the_lookup_button_is_clicked()
+            throws Exception {
+        given.the_id_is_set_to("1234");
+        and.the_task_finder_can_find("1234", "Looked up summary", "XXL");
+        when.presenter.lookupClicked();
+        then.it_should_call(mockView).setTaskName("Looked up summary");
+        then.it_should_call(mockView).setTaskSize("XXL");
+    }
+
+    @Test
+    public void does_not_look_up_task_details__when_the_lookup_button_is_clicked__and_the_task_id_is_empty()
+            throws Exception {
+        given.the_id_is_set_to("");
+        and.the_task_finder_can_find("", "Looked up summary", "XXL");
+        when.presenter.lookupClicked();
+        then.it_should_not_call(mockView).setTaskName("Looked up summary");
+        then.it_should_not_call(mockView).setTaskSize("XXL");
+    }
+
+    @Test
+    public void does_not_look_up_task_details__when_the_lookup_button_is_clicked__and_the_task_id_is_null()
+            throws Exception {
+        given.the_id_is_set_to(null);
+        and.the_task_finder_can_find(null, "Looked up summary", "XXL");
+        when.presenter.lookupClicked();
+        then.it_should_not_call(mockView).setTaskName("Looked up summary");
+        then.it_should_not_call(mockView).setTaskSize("XXL");
+    }
+
+    @Test
+    public void displays_task_not_found_message__when_the_lookup_button_is_clicked__but_no_task_is_found()
+            throws Exception {
+
+        given.the_id_is_set_to("1234");
+        and.the_task_finder_does_not_find_a_task_for("1234");
+        when.presenter.lookupClicked();
+        then.it_should_call(mockView).showMessage(TASK_NOT_FOUND);
+    }
+
+    @Test
+    public void displays_message_and_exception__when_the_lookup_button_is_clicked__but_the_finder_throws_an_exception()
+            throws Exception {
+
+        given.the_id_is_set_to("1234");
+        and.the_task_finder_throws(TASK_LOOKUP_FAILED);
+        when.presenter.lookupClicked();
+        then.it_should_call(mockView).showException(Message.TASK_LOOKUP_FAILED,
+                TASK_LOOKUP_FAILED);
+    }
+
+    private void the_task_finder_throws(RuntimeException exception) {
+        when(mockFinder.find(Mockito.anyString())).thenThrow(exception);
+    }
+
+    private void the_task_finder_does_not_find_a_task_for(String id) {
+        when(mockFinder.find(id)).thenReturn(Task.NONE);
+    }
+
+    private void the_task_finder_can_find(String id, String summary,
+            String size) {
+        when(mockFinder.find(id)).thenReturn(
+                new Task(id, summary, size));
     }
 
     private void the_lookup_button_should_be(Visible visible) {
@@ -378,6 +461,10 @@ public class ProgramPresenterTest {
 
     private <T> T it_should_call(T mock) {
         return Mockito.verify(mock);
+    }
+
+    private <T> T it_should_not_call(T mock) {
+        return Mockito.verify(mock, times(0));
     }
 
     private void the_programed_tag_message_should_not_be_shown() {
