@@ -29,6 +29,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.SwitchPreference;
 
 // FIXME: Find a way to push some of the logic in the class into testable objects
 public class SettingsActivity extends Activity {
@@ -49,7 +50,27 @@ public class SettingsActivity extends Activity {
             addPreferencesFromResource(R.xml.preferences);
 
             initEmailAddressPref();
-            initBluetoothDeviceList();
+            initBluetoothPrefs();
+        }
+
+        private void initBluetoothPrefs() {
+            SwitchPreference useBluetoothSwitch = (SwitchPreference) this
+                    .findPreference(SettingKeys.USE_BLUETOOTH);
+
+            if (bluetoothIsSupported()) {
+                useBluetoothSwitch.setEnabled(true);
+                initBluetoothDeviceList();
+            } else {
+                useBluetoothSwitch.setEnabled(false);
+                useBluetoothSwitch.setChecked(false);
+
+                String msg = getString(R.string.summary_bluetooth_not_supported);
+                useBluetoothSwitch.setSummary(msg);
+            }
+        }
+
+        private boolean bluetoothIsSupported() {
+            return BluetoothAdapter.getDefaultAdapter() != null;
         }
 
         private void initBluetoothDeviceList() {

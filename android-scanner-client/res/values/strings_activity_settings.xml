@@ -12,5 +12,6 @@
     <string name="title_bluetooth_device">Bluetooth Device</string>
     <string name="title_system_bluetooth_settings">System Bluetooth Settings</string>
     <string name="bluetooth_device_dialog_message">Select a device that is running the bluetooth app.</string>
+    <string name="summary_bluetooth_not_supported">Bluetooth is not supported by your device</string>
     
 </resources>
