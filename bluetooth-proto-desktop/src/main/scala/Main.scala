@@ -21,8 +21,8 @@ import javax.bluetooth._
 import javax.microedition.io.Connector
 import javax.microedition.io.StreamConnection
 import javax.microedition.io.StreamConnectionNotifier
-import org.kdt.bluetooth.TaskLookupRequest
-import org.kdt.bluetooth.TaskLookupResponse
+import org.kanbansalad.bluetooth.TaskLookupRequest
+import org.kanbansalad.bluetooth.TaskLookupResponse
 
 object Main {
 
