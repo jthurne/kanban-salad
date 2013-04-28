@@ -15,6 +15,7 @@
  */
 package org.kdt;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -28,14 +29,14 @@ public class SharedPrefsSettings implements Settings {
                 .getDefaultSharedPreferences(context);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.kdt.Settings#isBluetoothEnabled()
-     */
     @Override
     public boolean isBluetoothEnabled() {
         return preferences.getBoolean(SettingKeys.USE_BLUETOOTH, true);
+    }
+
+    @Override
+    public boolean isBluetoothSupported() {
+        return BluetoothAdapter.getDefaultAdapter() != null;
     }
 
 }

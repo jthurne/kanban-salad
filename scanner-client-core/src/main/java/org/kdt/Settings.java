@@ -19,4 +19,6 @@ public interface Settings {
 
     public boolean isBluetoothEnabled();
 
+    public boolean isBluetoothSupported();
+
 }

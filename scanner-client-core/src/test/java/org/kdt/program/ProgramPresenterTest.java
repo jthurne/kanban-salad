@@ -235,9 +235,10 @@ public class ProgramPresenterTest {
     }
 
     @Test
-    public void shows_the_lookup_button__if_bluetooth_is_enabled__when_screen_is_first_displayed()
+    public void shows_the_lookup_button__if_bluetooth_is_enabled_and_supported__when_screen_is_first_displayed()
             throws Exception {
         given.bluetooth_is_enabled(true);
+        and.bluetooth_is_supported(true);
         when.presenter.viewInitalized();
         then.the_lookup_button_should_be(VISIBLE);
     }
@@ -246,14 +247,25 @@ public class ProgramPresenterTest {
     public void hides_the_lookup_button__if_bluetooth_is_disabled__when_screen_is_first_displayed()
             throws Exception {
         given.bluetooth_is_enabled(false);
+        and.bluetooth_is_supported(true);
         when.presenter.viewInitalized();
         then.the_lookup_button_should_be(HIDDEN);
     }
 
     @Test
-    public void shows_the_lookup_button__if_bluetooth_is_enabled__when_settings_changed()
+    public void hides_the_lookup_button__if_bluetooth_is_unsupported__when_screen_is_first_displayed()
+            throws Exception {
+        given.bluetooth_is_supported(false);
+        and.bluetooth_is_enabled(true);
+        when.presenter.viewInitalized();
+        then.the_lookup_button_should_be(HIDDEN);
+    }
+
+    @Test
+    public void shows_the_lookup_button__if_bluetooth_is_enabled_and_supported__when_settings_changed()
             throws Exception {
         given.bluetooth_is_enabled(true);
+        and.bluetooth_is_supported(true);
         when.presenter.settingsUpdated();
         then.the_lookup_button_should_be(VISIBLE);
     }
@@ -272,6 +284,10 @@ public class ProgramPresenterTest {
 
     private void bluetooth_is_enabled(boolean isEnabled) {
         when(mockSettings.isBluetoothEnabled()).thenReturn(isEnabled);
+    }
+
+    private void bluetooth_is_supported(boolean isSupported) {
+        when(mockSettings.isBluetoothSupported()).thenReturn(isSupported);
     }
 
     private void the_selected_tag_should_NOT_be_replaced() {
