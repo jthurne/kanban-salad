@@ -10,6 +10,7 @@
     <module>common</module>
     <module>scanner-client-core</module>
     <module>android-scanner-client</module>
+    <module>bluetooth-service</module>
   </modules>
 
   <properties>
