@@ -15,12 +15,11 @@
  */
 package org.kanbansalad.scanner.client.tag;
 
-
 public interface ScanableTag {
 
     public String getDisplayName();
 
-    public String getDataString();
+    public String toDataString(int maxSize);
 
     public boolean isValid();
 }

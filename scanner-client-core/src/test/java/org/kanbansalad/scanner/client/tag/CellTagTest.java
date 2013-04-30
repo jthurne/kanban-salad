@@ -20,13 +20,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
-import org.kanbansalad.scanner.client.tag.CellTag;
-import org.kanbansalad.scanner.client.tag.TagType;
 
 /**
  * 
  */
-public class CellTest {
+public class CellTagTest {
 
     @Test
     public void creates_displayName_based_on_name() throws Exception {
@@ -36,8 +34,17 @@ public class CellTest {
 
     @Test
     public void creates_data_string() throws Exception {
-        assertThat(new CellTag("Swimlane", "Queue").getDataString(),
+        assertThat(
+                new CellTag("Swimlane", "Queue").toDataString(Integer.MAX_VALUE),
                 is(equalTo("Swimlane" + TagType.FIELD_DELIMITER + "Queue")));
+
+    }
+
+    @Test
+    public void truncates_swimline_if_data_string_too_long() throws Exception {
+        assertThat(
+                new CellTag("Swimlane", "Queue").toDataString(10),
+                is(equalTo("Swim" + TagType.FIELD_DELIMITER + "Queue")));
 
     }
 }

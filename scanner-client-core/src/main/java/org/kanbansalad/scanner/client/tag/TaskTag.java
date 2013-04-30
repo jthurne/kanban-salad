@@ -15,6 +15,7 @@
  */
 package org.kanbansalad.scanner.client.tag;
 
+
 public class TaskTag implements ScanableTag, ProgramableTag {
     public static final TaskTag NONE = new TaskTag("", "", "");
 
@@ -53,9 +54,12 @@ public class TaskTag implements ScanableTag, ProgramableTag {
     }
 
     @Override
-    public String getDataString() {
-        return id + TagType.FIELD_DELIMITER + name
-                + TagType.FIELD_DELIMITER + size;
+    public String toDataString(int maxSize) {
+        return new DataBuilder()
+                .add(id)
+                .add(name).canTruncate()
+                .add(size)
+                .toDataString(maxSize);
     }
 
     @Override

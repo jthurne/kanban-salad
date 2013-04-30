@@ -148,11 +148,12 @@ public class ListModel implements ScanModel, ProgramModel {
         }
     }
 
-    private void writeRecord(Date snapshotDate, ScanableTag cell, ScanableTag task,
+    private void writeRecord(Date snapshotDate, ScanableTag cell,
+            ScanableTag task,
             PrintWriter writer) {
         writer.printf("%tF\t%<tR\t%s\t%s%n",
                 snapshotDate,
-                cell.getDataString(),
-                task.getDataString());
+                cell.toDataString(Integer.MAX_VALUE),
+                task.toDataString(Integer.MAX_VALUE));
     }
 }

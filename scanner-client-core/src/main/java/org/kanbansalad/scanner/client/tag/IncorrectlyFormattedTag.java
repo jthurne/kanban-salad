@@ -36,7 +36,7 @@ public class IncorrectlyFormattedTag implements ScanableTag {
     }
 
     @Override
-    public String getDataString() {
+    public String toDataString(int maxSize) {
         return "";
     }
 }

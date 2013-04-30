@@ -30,7 +30,7 @@ public class EmptyTag implements ScanableTag {
     }
 
     @Override
-    public String getDataString() {
+    public String toDataString(int maxSize) {
         return "";
     }
 }

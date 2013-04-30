@@ -37,6 +37,11 @@ import android.util.Log;
  * 
  */
 public class NfcProgramer implements Programer {
+    /**
+     * 
+     */
+    private static final int MESSAGE_OVERHEAD = 57;
+
     private static final String TAG = "NfcProgrammer";
 
     private static final Charset ASCII = Charset.forName("US-ASCII");
@@ -79,21 +84,24 @@ public class NfcProgramer implements Programer {
         try {
             ndefTag.connect();
             Log.d(TAG, "NDEF Max Size: " + ndefTag.getMaxSize());
-            ndefTag.writeNdefMessage(createMessage(tag));
+            ndefTag.writeNdefMessage(createMessage(tag, ndefTag.getMaxSize()));
         } catch (IOException e) {
-            Log.e("NfcProgramer", "Failed to write tag:" + e.getMessage(), e);
+            Log.e(TAG, "Failed to write tag:" + e.getMessage(), e);
             throw new WriteFailed(e);
         } catch (FormatException e) {
-            Log.e("NfcProgramer", "Failed to write tag:" + e.getMessage(), e);
+            Log.e(TAG, "Failed to write tag:" + e.getMessage(), e);
             throw new WriteFailed(e);
         } finally {
             close(ndefTag);
         }
     }
 
-    private NdefMessage createMessage(ProgramableTag tag) throws IOException {
-        NdefRecord mimeRecord = createRecordFor(tag);
+    private NdefMessage createMessage(ProgramableTag tag, int maxMsgSize)
+            throws IOException {
 
+        int maxRecordSize = calcMaxRecordSize(maxMsgSize);
+
+        NdefRecord mimeRecord = createRecordFor(tag, maxRecordSize);
         NdefMessage message = new NdefMessage(new NdefRecord[] { mimeRecord });
 
         Log.d(TAG, "mimeRecord size: " + mimeRecord.getPayload().length);
@@ -102,10 +110,27 @@ public class NfcProgramer implements Programer {
         return message;
     }
 
-    private NdefRecord createRecordFor(ProgramableTag tag) throws IOException {
+    private int calcMaxRecordSize(int maxMsgSize) {
+        int maxRecordSize = maxMsgSize - MESSAGE_OVERHEAD;
+        Log.d(TAG, "maxRecordSize: " + maxRecordSize);
+        return maxRecordSize;
+    }
+
+    private NdefRecord createRecordFor(ProgramableTag tag, int maxRecordSize)
+            throws IOException {
+
+        byte[] encodedMimeType = encode(tag.getMimeType());
+        int maxDataSize = calcMaxDataSize(maxRecordSize, encodedMimeType);
+
         return new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-                encode(tag.getMimeType()), new byte[0],
-                encode(tag.getDataString()));
+                encodedMimeType, new byte[0],
+                encode(tag.toDataString(maxDataSize)));
+    }
+
+    private int calcMaxDataSize(int maxRecordSize, byte[] encodedMimeType) {
+        int maxDataSize = maxRecordSize - encodedMimeType.length;
+        Log.d(TAG, "maxDataSize: " + maxDataSize);
+        return maxDataSize;
     }
 
     private NdefRecord createAppRecord() {

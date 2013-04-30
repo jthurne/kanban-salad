@@ -43,8 +43,12 @@ public class CellTag implements ScanableTag, ProgramableTag {
     }
 
     @Override
-    public String getDataString() {
-        return swimlane + TagType.FIELD_DELIMITER + queue;
+    public String toDataString(int maxSize) {
+        return new DataBuilder()
+                .add(swimlane).canTruncate()
+                .add(queue)
+                .toDataString(maxSize);
+
     }
 
     @Override
