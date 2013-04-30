@@ -41,4 +41,6 @@ public interface ScanView {
     public void showException(Exception exception);
 
     public void refreshTags();
+
+    public void hideSoftKeyboard();
 }

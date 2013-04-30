@@ -38,10 +38,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kanbansalad.scanner.client.ListModel;
 import org.kanbansalad.scanner.client.Visible;
-import org.kanbansalad.scanner.client.scan.ScanPresenter;
-import org.kanbansalad.scanner.client.scan.ScanView;
-import org.kanbansalad.scanner.client.scan.Scanner;
-import org.kanbansalad.scanner.client.scan.Sender;
 import org.kanbansalad.trackable.Cell;
 import org.kanbansalad.trackable.Scanable;
 import org.kanbansalad.trackable.Task;
@@ -195,6 +191,13 @@ public class ScanPresenterTest {
             throws Exception {
         when.presenter.visibilityChanged(VISIBLE);
         then.it_should_refresh_the_display_of_scanned_tags();
+    }
+
+    @Test
+    public void hides_the_soft_keyboard__when_the_view_is_shown()
+            throws Exception {
+        when.presenter.visibilityChanged(VISIBLE);
+        then.it_should_hide_the_soft_keyboard();
     }
 
     @Test
@@ -456,6 +459,10 @@ public class ScanPresenterTest {
 
     private void it_should_refresh_the_display_of_scanned_tags() {
         verify(mockView).refreshTags();
+    }
+
+    private void it_should_hide_the_soft_keyboard() {
+        verify(mockView).hideSoftKeyboard();
     }
 
     @SuppressWarnings("unused")

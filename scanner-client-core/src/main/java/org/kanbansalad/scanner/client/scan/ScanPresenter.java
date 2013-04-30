@@ -87,6 +87,7 @@ public class ScanPresenter {
         if (visible == VISIBLE) {
             restoreViewOfSelectedTag();
             view.refreshTags();
+            view.hideSoftKeyboard();
         } else {
             closeContextMenuIfVisible();
         }

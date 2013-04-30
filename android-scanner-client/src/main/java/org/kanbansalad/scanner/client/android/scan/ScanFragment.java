@@ -24,6 +24,7 @@ import org.kanbansalad.scanner.client.scan.ScanView;
 import org.kanbansalad.trackable.Scanable;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -168,6 +170,15 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     public void refreshTags() {
         if (scannedTagsAdaptor != null)
             scannedTagsAdaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void hideSoftKeyboard() {
+        if (getView() != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity()
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        }
     }
 
     @Override
