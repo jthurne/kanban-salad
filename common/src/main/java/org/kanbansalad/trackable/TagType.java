@@ -16,7 +16,7 @@
 package org.kanbansalad.trackable;
 
 public enum TagType {
-    TASK("application/vnd.org.kanbansalad.task") {
+    TASK("application/vnd.knbnsld.t") {
         @Override
         public Scanable parse(String data) {
             String[] dataTokens = data.split(FIELD_DELIMITER);
@@ -28,7 +28,7 @@ public enum TagType {
         }
     },
 
-    CELL("application/vnd.org.kanbansalad.cell") {
+    CELL("application/vnd.knbnsld.c") {
         @Override
         public Scanable parse(String data) {
             String[] dataTokens = data.split(FIELD_DELIMITER);
