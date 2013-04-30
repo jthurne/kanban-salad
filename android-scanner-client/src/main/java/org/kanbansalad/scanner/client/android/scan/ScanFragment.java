@@ -128,6 +128,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     @Override
     public void selectTag(int position) {
         scannedTagsView.performItemClick(null, position, -1);
+        scannedTagsView.smoothScrollToPosition(position);
     }
 
     @Override
