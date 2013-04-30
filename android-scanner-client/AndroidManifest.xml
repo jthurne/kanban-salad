@@ -48,12 +48,12 @@ limitations under the License.
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/vnd.org.kanbansalad.task" />
+                <data android:mimeType="application/vnd.knbnsld.t" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/vnd.org.kanbansalad.cell" />
+                <data android:mimeType="application/vnd.knbnsld.c" />
             </intent-filter>
         </activity>
         <activity
