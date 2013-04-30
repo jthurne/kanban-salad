@@ -19,8 +19,8 @@ import java.nio.charset.Charset;
 
 import org.kanbansalad.scanner.client.scan.Scanner;
 import org.kanbansalad.scanner.client.scan.TagParser;
-import org.kanbansalad.trackable.Empty;
-import org.kanbansalad.trackable.Scanable;
+import org.kanbansalad.scanner.client.tag.EmptyTag;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -38,7 +38,7 @@ public class NfcScanner implements Scanner {
     }
 
     @Override
-    public Scanable scan() {
+    public ScanableTag scan() {
         Intent intent = parentActivity.getIntent();
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
             Parcelable[] rawMsgs = intent
@@ -47,18 +47,18 @@ public class NfcScanner implements Scanner {
         }
 
         if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
-            return new Empty();
+            return new EmptyTag();
         }
 
         return null;
     }
 
-    private Scanable rawToScanable(Parcelable[] rawMsgs) {
+    private ScanableTag rawToScanable(Parcelable[] rawMsgs) {
         NdefMessage message = (NdefMessage) rawMsgs[0];
         return messageToScanable(message);
     }
 
-    private Scanable messageToScanable(NdefMessage message) {
+    private ScanableTag messageToScanable(NdefMessage message) {
         NdefRecord record = message.getRecords()[0];
         String text = decodePayload(record.getPayload());
 

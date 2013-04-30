@@ -27,7 +27,7 @@ import org.kanbansalad.scanner.client.android.SharedPrefsSettings;
 import org.kanbansalad.scanner.client.program.BluetoothTaskFinder;
 import org.kanbansalad.scanner.client.program.ProgramPresenter;
 import org.kanbansalad.scanner.client.program.ProgramView;
-import org.kanbansalad.trackable.TagType;
+import org.kanbansalad.scanner.client.tag.TagType;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -24,8 +24,8 @@ import static org.kanbansalad.scanner.client.program.ProgramView.Message.TAG_PRO
 import static org.kanbansalad.scanner.client.program.ProgramView.Message.TASK_NOT_FOUND;
 import static org.kanbansalad.scanner.client.program.Programer.ThereWas.A_TAG_TO_PROGRAM;
 import static org.kanbansalad.scanner.client.program.Programer.ThereWas.NO_TAG_TO_PROGRAM;
-import static org.kanbansalad.trackable.TagType.CELL;
-import static org.kanbansalad.trackable.TagType.TASK;
+import static org.kanbansalad.scanner.client.tag.TagType.CELL;
+import static org.kanbansalad.scanner.client.tag.TagType.TASK;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -41,11 +41,12 @@ import org.kanbansalad.scanner.client.SimpleBackgroundExecutor;
 import org.kanbansalad.scanner.client.Visible;
 import org.kanbansalad.scanner.client.program.ProgramView.Message;
 import org.kanbansalad.scanner.client.program.Programer.ThereWas;
-import org.kanbansalad.trackable.Cell;
-import org.kanbansalad.trackable.Empty;
-import org.kanbansalad.trackable.Programable;
-import org.kanbansalad.trackable.Scanable;
-import org.kanbansalad.trackable.TagType;
+import org.kanbansalad.scanner.client.tag.CellTag;
+import org.kanbansalad.scanner.client.tag.EmptyTag;
+import org.kanbansalad.scanner.client.tag.ProgramableTag;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
+import org.kanbansalad.scanner.client.tag.TagType;
+import org.kanbansalad.scanner.client.tag.TaskTag;
 import org.kanbansalad.trackable.Task;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -117,7 +118,7 @@ public class ProgramPresenterTest {
         and.the_swimline_is_set_to("Android App");
         and.the_queue_is_set_to("Code Review");
         when.presenter.tagTapped();
-        then.the_tag_should_be_programmed_using(new Cell("Android App",
+        then.the_tag_should_be_programmed_using(new CellTag("Android App",
                 "Code Review"));
     }
 
@@ -128,7 +129,7 @@ public class ProgramPresenterTest {
         and.the_name_is_set_to("User can program a tag");
         and.the_size_is_set_to("XL");
         when.presenter.tagTapped();
-        then.the_tag_should_be_programmed_using(new Task("1234",
+        then.the_tag_should_be_programmed_using(new TaskTag("1234",
                 "User can program a tag", "XL"));
     }
 
@@ -161,7 +162,8 @@ public class ProgramPresenterTest {
     @Test
     public void updates_view_with_task_details__if_task_selected_when_the_view_is_made_visible()
             throws Exception {
-        given.the_model_has_a_tag(1, new Task("1234", "User can program a tag",
+        given.the_model_has_a_tag(1, new TaskTag("1234",
+                "User can program a tag",
                 "XL"));
         and.the_selected_tag_is(1);
         when.presenter.visibilityChanged(VISIBLE);
@@ -174,7 +176,7 @@ public class ProgramPresenterTest {
     @Test
     public void updates_view_with_cell_details__if_cell_selected_when_the_view_is_made_visible()
             throws Exception {
-        given.the_model_has_a_tag(1, new Cell("Android App", "Code Review"));
+        given.the_model_has_a_tag(1, new CellTag("Android App", "Code Review"));
         and.the_selected_tag_is(1);
         when.presenter.visibilityChanged(VISIBLE);
         then.it_should_call(mockView).setSelectedTagType(CELL);
@@ -185,7 +187,7 @@ public class ProgramPresenterTest {
     @Test
     public void clears_view__if_an_invalid_tag_selected_when_the_view_is_made_visible()
             throws Exception {
-        given.the_model_has_a_tag(1, new Empty());
+        given.the_model_has_a_tag(1, new EmptyTag());
         and.the_selected_tag_is(1);
         when.presenter.visibilityChanged(VISIBLE);
         then.the_view_should_be_cleared_and_task_type_should_be_selected();
@@ -212,7 +214,7 @@ public class ProgramPresenterTest {
 
         when.presenter.tagTapped();
 
-        then.the_selected_tag_should_be_replaced_with(3, new Cell(
+        then.the_selected_tag_should_be_replaced_with(3, new CellTag(
                 "Android App",
                 "Code Review"));
     }
@@ -405,15 +407,15 @@ public class ProgramPresenterTest {
     private void the_selected_tag_should_NOT_be_replaced() {
         verify(mockModel, times(0)).replace(
                 Mockito.anyInt(),
-                Mockito.any(Scanable.class));
+                Mockito.any(ScanableTag.class));
     }
 
     private void the_selected_tag_should_be_replaced_with(int position,
-            Scanable tag) {
+            ScanableTag tag) {
         verify(mockModel).replace(Mockito.eq(3), Mockito.refEq(tag));
     }
 
-    private void the_model_has_a_tag(int position, Scanable tag) {
+    private void the_model_has_a_tag(int position, ScanableTag tag) {
         when(mockModel.get(position)).thenReturn(tag);
     }
 
@@ -427,7 +429,7 @@ public class ProgramPresenterTest {
 
     private void the_programer_throws(ProgramingException an_exception) {
         doThrow(an_exception).when(mockTagProgramer).programTag(
-                Mockito.<Programable> any());
+                Mockito.<ProgramableTag> any());
     }
 
     private ProgramingException an_exception() {
@@ -439,26 +441,26 @@ public class ProgramPresenterTest {
         return testException;
     }
 
-    private void the_tag_should_be_programmed_using(Cell cell) {
+    private void the_tag_should_be_programmed_using(CellTag cell) {
         // TODO Pull into a commonly used matcher??
-        verify(mockTagProgramer).programTag((Programable)
+        verify(mockTagProgramer).programTag((ProgramableTag)
                 Mockito.argThat(allOf(
-                        Matchers.<Cell> hasProperty("swimlane",
+                        Matchers.<CellTag> hasProperty("swimlane",
                                 equalTo(cell.getSwimlane())),
-                        Matchers.<Cell> hasProperty("queue",
+                        Matchers.<CellTag> hasProperty("queue",
                                 equalTo(cell.getQueue())))));
     }
 
-    private void the_tag_should_be_programmed_using(Task task) {
+    private void the_tag_should_be_programmed_using(TaskTag task) {
         // TODO Pull into a commonly used matcher??
-        verify(mockTagProgramer).programTag((Programable)
+        verify(mockTagProgramer).programTag((ProgramableTag)
                 Mockito.argThat(allOf(
-                        Matchers.<Task> hasProperty("id",
+                        Matchers.<TaskTag> hasProperty("id",
                                 equalTo(task.getId())),
-                        Matchers.<Task> hasProperty(
+                        Matchers.<TaskTag> hasProperty(
                                 "name", equalTo(task.getName())),
                         Matchers
-                                .<Task> hasProperty("size",
+                                .<TaskTag> hasProperty("size",
                                         equalTo(task.getSize())))));
     }
 
@@ -500,7 +502,7 @@ public class ProgramPresenterTest {
     }
 
     private void the_programer_returns(ThereWas whatThereWas) {
-        when(mockTagProgramer.programTag(Mockito.any(Programable.class)))
+        when(mockTagProgramer.programTag(Mockito.any(ProgramableTag.class)))
                 .thenReturn(whatThereWas);
     }
 

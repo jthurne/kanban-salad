@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kanbansalad.trackable;
+package org.kanbansalad.scanner.client.tag;
 
-import java.io.Serializable;
-
-public class Task implements Serializable {
+public class TaskTag implements ScanableTag, ProgramableTag {
     private static final long serialVersionUID = 1L;
 
-    public static final Task NONE = new Task("", "", "");
+    public static final TaskTag NONE = new TaskTag("", "", "");
 
     private final String id;
     private final String name;
     private final String size;
 
-    public Task(String id, String name, String size) {
+    public TaskTag(String id, String name, String size) {
         this.id = id;
         this.name = name;
         this.size = size;
     }
 
-    private Task(Builder builder) {
+    private TaskTag(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
         this.size = builder.size;
@@ -48,6 +46,27 @@ public class Task implements Serializable {
 
     public String getSize() {
         return size;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "\t\t" + name;
+    }
+
+    @Override
+    public String getDataString() {
+        return id + TagType.FIELD_DELIMITER + name
+                + TagType.FIELD_DELIMITER + size;
+    }
+
+    @Override
+    public String getMimeType() {
+        return TagType.TASK.mimeType();
+    }
+
+    @Override
+    public boolean isValid() {
+        return true;
     }
 
     @Override
@@ -71,7 +90,7 @@ public class Task implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Task other = (Task) obj;
+        TaskTag other = (TaskTag) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -85,8 +104,8 @@ public class Task implements Serializable {
         private String name;
         private String size;
 
-        public Task build() {
-            return new Task(this);
+        public TaskTag build() {
+            return new TaskTag(this);
         }
 
         public Builder id(String id) {

@@ -21,8 +21,8 @@ import static org.kanbansalad.scanner.client.Visible.VISIBLE;
 import static org.kanbansalad.scanner.client.program.ProgramView.Message.TAG_PROGRAMMED;
 import static org.kanbansalad.scanner.client.program.ProgramView.Message.TASK_NOT_FOUND;
 import static org.kanbansalad.scanner.client.program.Programer.ThereWas.A_TAG_TO_PROGRAM;
-import static org.kanbansalad.trackable.TagType.CELL;
-import static org.kanbansalad.trackable.TagType.TASK;
+import static org.kanbansalad.scanner.client.tag.TagType.CELL;
+import static org.kanbansalad.scanner.client.tag.TagType.TASK;
 
 import org.kanbansalad.scanner.client.BackgroundAction;
 import org.kanbansalad.scanner.client.BackgroundExecutor;
@@ -30,10 +30,11 @@ import org.kanbansalad.scanner.client.Settings;
 import org.kanbansalad.scanner.client.Visible;
 import org.kanbansalad.scanner.client.program.ProgramView.Message;
 import org.kanbansalad.scanner.client.program.Programer.ThereWas;
-import org.kanbansalad.trackable.Cell;
-import org.kanbansalad.trackable.Programable;
-import org.kanbansalad.trackable.Scanable;
-import org.kanbansalad.trackable.TagType;
+import org.kanbansalad.scanner.client.tag.CellTag;
+import org.kanbansalad.scanner.client.tag.ProgramableTag;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
+import org.kanbansalad.scanner.client.tag.TagType;
+import org.kanbansalad.scanner.client.tag.TaskTag;
 import org.kanbansalad.trackable.Task;
 
 public class ProgramPresenter {
@@ -92,7 +93,7 @@ public class ProgramPresenter {
     }
 
     private void attemptToProgramTag() {
-        Programable tag = createTag();
+        ProgramableTag tag = createTag();
         ThereWas thereWas = tagProgrammer.programTag(tag);
 
         if (thereWas == A_TAG_TO_PROGRAM) {
@@ -101,20 +102,20 @@ public class ProgramPresenter {
         }
     }
 
-    private Programable createTag() {
+    private ProgramableTag createTag() {
         TagType selectedTagType = view.getSelectedTagType();
 
         if (selectedTagType == TASK) {
-            return new Task(
+            return new TaskTag(
                     view.getTaskId(),
                     view.getTaskName(),
                     view.getTaskSize());
         }
 
-        return new Cell(view.getSwimlane(), view.getQueue());
+        return new CellTag(view.getSwimlane(), view.getQueue());
     }
 
-    private void replaceSelectedTagWith(Programable tag) {
+    private void replaceSelectedTagWith(ProgramableTag tag) {
         if (shouldReplaceSelectedTag()) {
             model.replace(model.getSelectedTagIndex(), tag);
         }
@@ -125,19 +126,19 @@ public class ProgramPresenter {
     }
 
     public void visibilityChanged(Visible visible) {
-        Scanable tag = getSelectedTag();
+        ScanableTag tag = getSelectedTag();
 
         // TODO Another instanceof test...hmm
-        if (tag instanceof Task) {
-            resetViewForTask((Task) tag);
-        } else if (tag instanceof Cell) {
-            resetViewForCell((Cell) tag);
+        if (tag instanceof TaskTag) {
+            resetViewForTask((TaskTag) tag);
+        } else if (tag instanceof CellTag) {
+            resetViewForCell((CellTag) tag);
         } else {
             clearView();
         }
     }
 
-    private Scanable getSelectedTag() {
+    private ScanableTag getSelectedTag() {
         int selectedTag = model.getSelectedTagIndex();
         if (selectedTag != NONE)
             return model.get(selectedTag);
@@ -145,14 +146,14 @@ public class ProgramPresenter {
         return null;
     }
 
-    private void resetViewForTask(Task task) {
+    private void resetViewForTask(TaskTag task) {
         view.setSelectedTagType(TagType.TASK);
         view.setTaskId(task.getId());
         view.setTaskName(task.getName());
         view.setTaskSize(task.getSize());
     }
 
-    private void resetViewForCell(Cell cell) {
+    private void resetViewForCell(CellTag cell) {
         view.setSelectedTagType(TagType.CELL);
         view.setSwimlane(cell.getSwimlane());
         view.setQueue(cell.getQueue());
@@ -177,7 +178,7 @@ public class ProgramPresenter {
 
             @Override
             public void onComplete(Task task) {
-                if (task == Task.NONE) {
+                if (task.equals(Task.NONE)) {
                     view.showMessage(TASK_NOT_FOUND);
                 } else {
                     view.setTaskName(task.getName());

@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kanbansalad.trackable;
+package org.kanbansalad.scanner.client.tag;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
-import org.kanbansalad.trackable.Cell;
-import org.kanbansalad.trackable.TagType;
+import org.kanbansalad.scanner.client.tag.CellTag;
+import org.kanbansalad.scanner.client.tag.TagType;
 
 /**
  * 
@@ -30,13 +30,13 @@ public class CellTest {
 
     @Test
     public void creates_displayName_based_on_name() throws Exception {
-        assertThat(new Cell("Swimlane", "Queue").getDisplayName(),
+        assertThat(new CellTag("Swimlane", "Queue").getDisplayName(),
                 is(equalTo("Swimlane - Queue")));
     }
 
     @Test
     public void creates_data_string() throws Exception {
-        assertThat(new Cell("Swimlane", "Queue").getDataString(),
+        assertThat(new CellTag("Swimlane", "Queue").getDataString(),
                 is(equalTo("Swimlane" + TagType.FIELD_DELIMITER + "Queue")));
 
     }

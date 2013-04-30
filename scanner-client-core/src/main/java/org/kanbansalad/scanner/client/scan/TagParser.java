@@ -15,9 +15,9 @@
  */
 package org.kanbansalad.scanner.client.scan;
 
-import org.kanbansalad.trackable.Empty;
-import org.kanbansalad.trackable.Scanable;
-import org.kanbansalad.trackable.TagType;
+import org.kanbansalad.scanner.client.tag.EmptyTag;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
+import org.kanbansalad.scanner.client.tag.TagType;
 
 /**
  * Parses Scanables from strings.
@@ -33,9 +33,9 @@ public class TagParser {
      *         data is incorrectly formatted, and IncorrectlyFormatted is
      *         returned. Otherwise the appropriate Scanable is returned.
      */
-    public Scanable parse(String mimeType, String data) {
+    public ScanableTag parse(String mimeType, String data) {
         if (data.isEmpty()) {
-            return new Empty();
+            return new EmptyTag();
         }
 
         return TagType.forMimeType(mimeType).parse(data);

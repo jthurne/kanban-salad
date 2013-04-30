@@ -13,44 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kanbansalad.trackable;
+package org.kanbansalad.scanner.client.tag;
 
 public enum TagType {
     TASK("application/vnd.knbnsld.t") {
         @Override
-        public Scanable parse(String data) {
+        public ScanableTag parse(String data) {
             String[] dataTokens = data.split(FIELD_DELIMITER);
 
             if (dataTokens.length < 3)
                 return INCORRECTLY_FORMATTED.parse(data);
 
-            return new Task(dataTokens[0], dataTokens[1], dataTokens[2]);
+            return new TaskTag(dataTokens[0], dataTokens[1], dataTokens[2]);
         }
     },
 
     CELL("application/vnd.knbnsld.c") {
         @Override
-        public Scanable parse(String data) {
+        public ScanableTag parse(String data) {
             String[] dataTokens = data.split(FIELD_DELIMITER);
 
             if (dataTokens.length < 2)
                 return INCORRECTLY_FORMATTED.parse(data);
 
-            return new Cell(dataTokens[0], dataTokens[1]);
+            return new CellTag(dataTokens[0], dataTokens[1]);
         }
     },
 
     EMPTY("") {
         @Override
-        public Scanable parse(String data) {
-            return new Empty();
+        public ScanableTag parse(String data) {
+            return new EmptyTag();
         }
     },
 
     INCORRECTLY_FORMATTED("*") {
         @Override
-        public Scanable parse(String data) {
-            return new IncorrectlyFormatted(data);
+        public ScanableTag parse(String data) {
+            return new IncorrectlyFormattedTag(data);
         }
     };
 
@@ -62,7 +62,7 @@ public enum TagType {
         this.mimeType = mimeType;
     }
 
-    public abstract Scanable parse(String data);
+    public abstract ScanableTag parse(String data);
 
     public String mimeType() {
         return mimeType;

@@ -19,22 +19,22 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.kanbansalad.trackable.TagType.CELL;
-import static org.kanbansalad.trackable.TagType.TASK;
+import static org.kanbansalad.scanner.client.tag.TagType.CELL;
+import static org.kanbansalad.scanner.client.tag.TagType.TASK;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kanbansalad.scanner.client.scan.TagParser;
-import org.kanbansalad.trackable.Cell;
-import org.kanbansalad.trackable.Empty;
-import org.kanbansalad.trackable.IncorrectlyFormatted;
-import org.kanbansalad.trackable.Scanable;
-import org.kanbansalad.trackable.Task;
+import org.kanbansalad.scanner.client.tag.CellTag;
+import org.kanbansalad.scanner.client.tag.EmptyTag;
+import org.kanbansalad.scanner.client.tag.IncorrectlyFormattedTag;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
+import org.kanbansalad.scanner.client.tag.TaskTag;
 
 public class TagParserTest {
 
     private TagParser parser;
-    private Scanable parsedObject;
+    private ScanableTag parsedObject;
 
     @Before
     public void given_a_parser() {
@@ -45,7 +45,7 @@ public class TagParserTest {
     public void parses_empty_tags__when_no_mime_type_is_provided()
             throws Exception {
         when.parsedObject = parser.parse("", "some unknown data");
-        then.parsedObject_should_be_a(Empty.class);
+        then.parsedObject_should_be_a(EmptyTag.class);
     }
 
     @Test
@@ -53,21 +53,21 @@ public class TagParserTest {
             throws Exception {
         when.parsedObject = parser.parse("application/unknown",
                 "some unknown data");
-        then.parsedObject_should_be_a(Empty.class);
+        then.parsedObject_should_be_a(EmptyTag.class);
     }
 
     @Test
     public void parses_empty_tags__when_data_is_an_empty_string__when_task_mime_type()
             throws Exception {
         when.parsedObject = parser.parse(TASK.mimeType(), "");
-        then.parsedObject_should_be_a(Empty.class);
+        then.parsedObject_should_be_a(EmptyTag.class);
     }
 
     @Test
     public void parses_empty_tags__when_data_is_an_empty_string__when_cell_mime_type()
             throws Exception {
         when.parsedObject = parser.parse(CELL.mimeType(), "");
-        then.parsedObject_should_be_a(Empty.class);
+        then.parsedObject_should_be_a(EmptyTag.class);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class TagParserTest {
             throws Exception {
         when.parsedObject = parser
                 .parse(TASK.mimeType(), "the-id\tthe-name\t3");
-        then.parsedObject_should_be_a(Task.class);
+        then.parsedObject_should_be_a(TaskTag.class);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class TagParserTest {
             throws Exception {
         when.parsedObject = parser.parse(CELL.mimeType(),
                 "the-swimlane\tthe-queue");
-        then.parsedObject_should_be_a(Cell.class);
+        then.parsedObject_should_be_a(CellTag.class);
     }
 
     @Test
@@ -106,13 +106,13 @@ public class TagParserTest {
     @Test
     public void parses_incorrectly_formatted_task_tag() throws Exception {
         when.parsedObject = parser.parse(TASK.mimeType(), "totally-incorrect");
-        then.parsedObject_should_be_a(IncorrectlyFormatted.class);
+        then.parsedObject_should_be_a(IncorrectlyFormattedTag.class);
     }
 
     @Test
     public void parses_incorrectly_formatted_cell_tag() throws Exception {
         when.parsedObject = parser.parse(CELL.mimeType(), "totally-incorrect");
-        then.parsedObject_should_be_a(IncorrectlyFormatted.class);
+        then.parsedObject_should_be_a(IncorrectlyFormattedTag.class);
     }
 
     private void the_parsedObject_should_have_property(String name,

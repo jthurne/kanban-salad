@@ -16,7 +16,7 @@
 package org.kanbansalad.scanner.client.program;
 
 import org.kanbansalad.scanner.client.Visible;
-import org.kanbansalad.trackable.TagType;
+import org.kanbansalad.scanner.client.tag.TagType;
 
 public interface ProgramView {
     public enum Message {

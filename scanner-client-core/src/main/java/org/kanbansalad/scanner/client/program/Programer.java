@@ -15,14 +15,14 @@
  */
 package org.kanbansalad.scanner.client.program;
 
-import org.kanbansalad.trackable.Programable;
+import org.kanbansalad.scanner.client.tag.ProgramableTag;
 
 /**
  * Programs Tags
  */
 public interface Programer {
 
-    public ThereWas programTag(Programable toProgram);
+    public ThereWas programTag(ProgramableTag toProgram);
 
     public enum ThereWas {
         A_TAG_TO_PROGRAM, NO_TAG_TO_PROGRAM

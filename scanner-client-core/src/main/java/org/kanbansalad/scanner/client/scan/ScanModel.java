@@ -18,15 +18,15 @@ package org.kanbansalad.scanner.client.scan;
 import java.io.File;
 import java.io.IOException;
 
-import org.kanbansalad.trackable.Scanable;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
 
 public interface ScanModel {
 
-    public void add(Scanable scannedTag);
+    public void add(ScanableTag scannedTag);
 
     public void remove(int index);
 
-    public Scanable get(int position);
+    public ScanableTag get(int position);
 
     public int getCount();
 

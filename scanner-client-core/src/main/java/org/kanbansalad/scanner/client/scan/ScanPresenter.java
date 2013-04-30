@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.kanbansalad.scanner.client.Visible;
-import org.kanbansalad.trackable.Scanable;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
 
 public class ScanPresenter {
     private final ScanView view;
@@ -39,7 +39,7 @@ public class ScanPresenter {
     }
 
     public void tagTapped() {
-        Scanable scannedTag = scanner.scan();
+        ScanableTag scannedTag = scanner.scan();
         if (scannedTag == null)
             return;
 
@@ -49,7 +49,7 @@ public class ScanPresenter {
         view.selectTag(model.getCount() - 1);
     }
 
-    private void display(Scanable scannedTag) {
+    private void display(ScanableTag scannedTag) {
         view.appendToTags(scannedTag);
     }
 

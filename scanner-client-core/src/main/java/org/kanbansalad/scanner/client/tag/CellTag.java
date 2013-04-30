@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kanbansalad.trackable;
+package org.kanbansalad.scanner.client.tag;
 
-public class Cell implements Scanable, Programable {
+public class CellTag implements ScanableTag, ProgramableTag {
     private static final long serialVersionUID = 1L;
 
     private final String swimlane;
     private final String queue;
 
-    public Cell(String swimlane, String queue) {
+    public CellTag(String swimlane, String queue) {
         this.swimlane = swimlane;
         this.queue = queue;
     }
 
-    private Cell(Builder builder) {
+    private CellTag(Builder builder) {
         this.swimlane = builder.swimlane;
         this.queue = builder.queue;
     }
@@ -63,8 +63,8 @@ public class Cell implements Scanable, Programable {
         private String swimlane;
         private String queue;
 
-        public Cell build() {
-            return new Cell(this);
+        public CellTag build() {
+            return new CellTag(this);
         }
 
         public Builder swimlane(String swimlane) {

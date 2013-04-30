@@ -38,16 +38,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kanbansalad.scanner.client.ListModel;
 import org.kanbansalad.scanner.client.Visible;
-import org.kanbansalad.trackable.Cell;
-import org.kanbansalad.trackable.Scanable;
-import org.kanbansalad.trackable.Task;
+import org.kanbansalad.scanner.client.tag.CellTag;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
+import org.kanbansalad.scanner.client.tag.TaskTag;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class ScanPresenterTest {
     private static final int NONE = -1;
-    private static final Cell A_CELL_TAG = new Cell("Swimlane", "Queue");
+    private static final CellTag A_CELL_TAG = new CellTag("Swimlane", "Queue");
 
     private ScanPresenter presenter;
 
@@ -85,14 +85,14 @@ public class ScanPresenterTest {
 
     @Test
     public void adds_scanned_tag_to_the_model() throws Exception {
-        given.the_scanner_returns(new Task("1234", "Do Something", "1"));
+        given.the_scanner_returns(new TaskTag("1234", "Do Something", "1"));
         when.presenter.tagTapped();
-        then.the_model_should_contain(new Task("1234", "Do Something", "1"));
+        then.the_model_should_contain(new TaskTag("1234", "Do Something", "1"));
     }
 
     @Test
     public void selects_tag__when_a_task_tag_is_scanned() throws Exception {
-        given.the_scanner_returns(new Task("1234", "Do Something", "1"));
+        given.the_scanner_returns(new TaskTag("1234", "Do Something", "1"));
         when.presenter.tagTapped();
         then.it_should_select_tag(0);
     }
@@ -107,7 +107,7 @@ public class ScanPresenterTest {
     @Test
     public void selects_last_scanned_tag__when_more_than_one_tag_is_scanned()
             throws Exception {
-        given.the_scanner_returns(new Task("1234", "Do Something", "1"));
+        given.the_scanner_returns(new TaskTag("1234", "Do Something", "1"));
         when.presenter.tagTapped();
         when.presenter.tagTapped();
         when.presenter.tagTapped();
@@ -219,19 +219,19 @@ public class ScanPresenterTest {
     @Test
     public void deletes_scanned_tag_from_the_model__when_item_is_selected_and_delete_is_pressed()
             throws Exception {
-        given.scanned_tag(new Task("1234", "Do Something", "1"));
-        given.scanned_tag(new Task("12345", "Do Something Else", "1"));
+        given.scanned_tag(new TaskTag("1234", "Do Something", "1"));
+        given.scanned_tag(new TaskTag("12345", "Do Something Else", "1"));
         given.scanned_tag(A_CELL_TAG);
         when.presenter.deleteTagClicked(1);
-        then.the_model_should_not_contain(new Task("12345",
+        then.the_model_should_not_contain(new TaskTag("12345",
                 "Do Something Else", "1"));
     }
 
     @Test
     public void selects_previous_tag__when_a_task_tag_is_deleted()
             throws Exception {
-        given.scanned_tag(new Task("1234", "Do Something", "1"));
-        given.scanned_tag(new Task("12345", "Do Something Else", "1"));
+        given.scanned_tag(new TaskTag("1234", "Do Something", "1"));
+        given.scanned_tag(new TaskTag("12345", "Do Something Else", "1"));
         given.scanned_tag(A_CELL_TAG);
 
         when.presenter.deleteTagClicked(2);
@@ -364,7 +364,7 @@ public class ScanPresenterTest {
         when(mockView.getVisisble()).thenReturn(visible);
     }
 
-    private void the_scanner_returns(Scanable scanable) {
+    private void the_scanner_returns(ScanableTag scanable) {
         when(mockScanner.scan()).thenReturn(scanable);
     }
 
@@ -373,11 +373,11 @@ public class ScanPresenterTest {
     }
 
     private void two_tags_have_been_scanned() {
-        scanned_tag(new Task("1234", "Do Something", "1"));
+        scanned_tag(new TaskTag("1234", "Do Something", "1"));
         scanned_tag(A_CELL_TAG);
     }
 
-    private void scanned_tag(Scanable scanable) {
+    private void scanned_tag(ScanableTag scanable) {
         given.the_scanner_returns(scanable);
         when.presenter.tagTapped();
         reset(mockView);
@@ -391,13 +391,13 @@ public class ScanPresenterTest {
         verify(mockView, times(0)).clearTags();
     }
 
-    private void it_should_add_to_the_view(Scanable toDisplay) {
+    private void it_should_add_to_the_view(ScanableTag toDisplay) {
         verify(mockView).appendToTags(toDisplay);
     }
 
     private void the_scan_should_NOT_be_displayed() {
         verify(mockView, times(0)).appendToTags(
-                Mockito.any(Scanable.class));
+                Mockito.any(ScanableTag.class));
     }
 
     private void the_corresponding_tag_should_be_removed_from_the_view(
@@ -421,7 +421,7 @@ public class ScanPresenterTest {
         verify(mockView).closeTagContextMenu();
     }
 
-    private void the_model_should_contain(Scanable expectedScanable) {
+    private void the_model_should_contain(ScanableTag expectedScanable) {
         assertThat(model.getScannedTags(),
                 contains(samePropertyValuesAs(expectedScanable)));
     }
@@ -438,8 +438,8 @@ public class ScanPresenterTest {
         assertThat(model.getScannedTags(), is(not(empty())));
     }
 
-    private void the_model_should_not_contain(Scanable shouldNotExist) {
-        for (Scanable scanable : model.getScannedTags()) {
+    private void the_model_should_not_contain(ScanableTag shouldNotExist) {
+        for (ScanableTag scanable : model.getScannedTags()) {
             assertThat(scanable, not(samePropertyValuesAs(shouldNotExist)));
         }
     }

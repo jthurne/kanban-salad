@@ -32,11 +32,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.kanbansalad.scanner.client.ListModel;
-import org.kanbansalad.trackable.Cell;
-import org.kanbansalad.trackable.Empty;
-import org.kanbansalad.trackable.IncorrectlyFormatted;
-import org.kanbansalad.trackable.Scanable;
-import org.kanbansalad.trackable.Task;
+import org.kanbansalad.scanner.client.tag.CellTag;
+import org.kanbansalad.scanner.client.tag.EmptyTag;
+import org.kanbansalad.scanner.client.tag.IncorrectlyFormattedTag;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
+import org.kanbansalad.scanner.client.tag.TaskTag;
 
 public class ListModelTest {
     private static final int NONE = -1;
@@ -72,8 +72,8 @@ public class ListModelTest {
     @Test
     public void writes_cell_and_tasks_on_one_line() throws Exception {
         given.the_model_contains(
-                new Cell("Wings", "Review"),
-                new Task("12345", "John can move the flap", "2")
+                new CellTag("Wings", "Review"),
+                new TaskTag("12345", "John can move the flap", "2")
                 );
         when.model_dumped_to_csv_with(date_april_12_2013_at_13_23());
         then.line(1)
@@ -84,9 +84,9 @@ public class ListModelTest {
     @Test
     public void writes_multiple_tasks_following_a_cell() throws Exception {
         given.the_model_contains(
-                new Cell("Wings", "Review"),
-                new Task("12345", "John can move the flap", "2"),
-                new Task("54321", "Jane can fill the wing with gas", "8")
+                new CellTag("Wings", "Review"),
+                new TaskTag("12345", "John can move the flap", "2"),
+                new TaskTag("54321", "Jane can fill the wing with gas", "8")
                 );
 
         when.model_dumped_to_csv_with(date_april_12_2013_at_13_23());
@@ -101,11 +101,11 @@ public class ListModelTest {
     @Test
     public void writes_multiple_cell_and_task_clusters() throws Exception {
         given.the_model_contains(
-                new Cell("Wings", "Review"),
-                new Task("12345", "John can move the flap", "2"),
-                new Task("54321", "Jane can fill the wing with gas", "8"),
-                new Cell("Flight Control", "Done"),
-                new Task("45433", "Jill can read the speed", "XL")
+                new CellTag("Wings", "Review"),
+                new TaskTag("12345", "John can move the flap", "2"),
+                new TaskTag("54321", "Jane can fill the wing with gas", "8"),
+                new CellTag("Flight Control", "Done"),
+                new TaskTag("45433", "Jill can read the speed", "XL")
                 );
 
         when.model_dumped_to_csv_with(date_april_12_2013_at_13_23());
@@ -123,10 +123,10 @@ public class ListModelTest {
     @Test
     public void skips_empty_cells() throws Exception {
         given.the_model_contains(
-                new Cell("Empty", "No Tasks"),
-                new Cell("Wings", "Review"),
-                new Task("12345", "John can move the flap", "2"),
-                new Task("54321", "Jane can fill the wing with gas", "8")
+                new CellTag("Empty", "No Tasks"),
+                new CellTag("Wings", "Review"),
+                new TaskTag("12345", "John can move the flap", "2"),
+                new TaskTag("54321", "Jane can fill the wing with gas", "8")
                 );
 
         when.model_dumped_to_csv_with(date_april_12_2013_at_13_23());
@@ -141,10 +141,10 @@ public class ListModelTest {
     @Test
     public void ignores_empty_tags() throws Exception {
         given.the_model_contains(
-                new Cell("Wings", "Review"),
-                new Task("12345", "John can move the flap", "2"),
-                new Empty(),
-                new Task("54321", "Jane can fill the wing with gas", "8")
+                new CellTag("Wings", "Review"),
+                new TaskTag("12345", "John can move the flap", "2"),
+                new EmptyTag(),
+                new TaskTag("54321", "Jane can fill the wing with gas", "8")
                 );
 
         when.model_dumped_to_csv_with(date_april_12_2013_at_13_23());
@@ -159,10 +159,10 @@ public class ListModelTest {
     @Test
     public void ignores_incorrectly_formatted_tags() throws Exception {
         given.the_model_contains(
-                new Cell("Wings", "Review"),
-                new Task("12345", "John can move the flap", "2"),
-                new IncorrectlyFormatted("bad data"),
-                new Task("54321", "Jane can fill the wing with gas", "8")
+                new CellTag("Wings", "Review"),
+                new TaskTag("12345", "John can move the flap", "2"),
+                new IncorrectlyFormattedTag("bad data"),
+                new TaskTag("54321", "Jane can fill the wing with gas", "8")
                 );
 
         when.model_dumped_to_csv_with(date_april_12_2013_at_13_23());
@@ -178,8 +178,8 @@ public class ListModelTest {
     public void resets_the_selected_tag__when_the_model_is_cleared()
             throws Exception {
         given.the_model_contains(
-                new Task("12345", "John can move the flap", "2"),
-                new Task("54321", "Jane can fill the wing with gas", "8")
+                new TaskTag("12345", "John can move the flap", "2"),
+                new TaskTag("54321", "Jane can fill the wing with gas", "8")
                 );
         and.the_selected_tag_is(1);
         when.model.clear();
@@ -194,8 +194,8 @@ public class ListModelTest {
         model.setSelectedTag(selectedTagIndex);
     }
 
-    private void the_model_contains(Scanable... scanables) {
-        for (Scanable scanable : scanables) {
+    private void the_model_contains(ScanableTag... scanables) {
+        for (ScanableTag scanable : scanables) {
             model.add(scanable);
         }
     }

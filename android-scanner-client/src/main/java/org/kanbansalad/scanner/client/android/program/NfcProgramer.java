@@ -21,7 +21,7 @@ import java.nio.charset.Charset;
 import org.kanbansalad.scanner.R;
 import org.kanbansalad.scanner.client.program.Programer;
 import org.kanbansalad.scanner.client.program.ProgramingException;
-import org.kanbansalad.trackable.Programable;
+import org.kanbansalad.scanner.client.tag.ProgramableTag;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -46,7 +46,7 @@ public class NfcProgramer implements Programer {
     }
 
     @Override
-    public ThereWas programTag(Programable tag) {
+    public ThereWas programTag(ProgramableTag tag) {
         Intent intent = parentActivity.getIntent();
 
         if (aTagWeCanHandleWasScanned(intent)) {
@@ -73,7 +73,7 @@ public class NfcProgramer implements Programer {
         return Ndef.get(tagFromIntent);
     }
 
-    private void program(Ndef ndefTag, Programable tag) {
+    private void program(Ndef ndefTag, ProgramableTag tag) {
         try {
             ndefTag.connect();
             ndefTag.writeNdefMessage(createMessage(tag));
@@ -88,7 +88,7 @@ public class NfcProgramer implements Programer {
         }
     }
 
-    private NdefMessage createMessage(Programable tag) {
+    private NdefMessage createMessage(ProgramableTag tag) {
         NdefRecord mimeRecord = createMimeRecord(tag);
         NdefRecord appRecord = createAppRecord();
 
@@ -104,7 +104,7 @@ public class NfcProgramer implements Programer {
         return new NdefMessage(new NdefRecord[] { mimeRecord, appRecord });
     }
 
-    private NdefRecord createMimeRecord(Programable tag) {
+    private NdefRecord createMimeRecord(ProgramableTag tag) {
         return new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
                 encode(tag.getMimeType()), new byte[0],
                 encode(tag.getDataString()));

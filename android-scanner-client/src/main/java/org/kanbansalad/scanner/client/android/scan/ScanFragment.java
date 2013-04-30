@@ -21,7 +21,7 @@ import org.kanbansalad.scanner.client.android.IntentListener;
 import org.kanbansalad.scanner.client.android.ModelProvider;
 import org.kanbansalad.scanner.client.scan.ScanPresenter;
 import org.kanbansalad.scanner.client.scan.ScanView;
-import org.kanbansalad.trackable.Scanable;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
 
 import android.app.Activity;
 import android.content.Context;
@@ -134,7 +134,7 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
     }
 
     @Override
-    public void appendToTags(Scanable tag) {
+    public void appendToTags(ScanableTag tag) {
         // We don't actually need to add the tag because the adaptor is backed
         // by the same model as the presenter (the adaptor displays whatever is
         // in the model).

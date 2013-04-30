@@ -15,13 +15,13 @@
  */
 package org.kanbansalad.scanner.client.program;
 
-import org.kanbansalad.trackable.Scanable;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
 
 public interface ProgramModel {
 
-    public Scanable get(int position);
+    public ScanableTag get(int position);
 
     public int getSelectedTagIndex();
 
-    public void replace(int position, Scanable tag);
+    public void replace(int position, ScanableTag tag);
 }

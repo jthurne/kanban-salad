@@ -13,15 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kanbansalad.trackable;
+package org.kanbansalad.scanner.client.tag;
 
-import java.io.Serializable;
-
-public interface Scanable extends Serializable {
-
-    public String getDisplayName();
-
-    public String getDataString();
-
-    public boolean isValid();
+public interface ProgramableTag extends ScanableTag {
+    public String getMimeType();
 }

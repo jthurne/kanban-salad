@@ -17,9 +17,9 @@ package org.kanbansalad.scanner.client.android.scan;
 
 import org.kanbansalad.scanner.R;
 import org.kanbansalad.scanner.client.scan.ScanModel;
-import org.kanbansalad.trackable.Cell;
-import org.kanbansalad.trackable.Scanable;
-import org.kanbansalad.trackable.Task;
+import org.kanbansalad.scanner.client.tag.CellTag;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
+import org.kanbansalad.scanner.client.tag.TaskTag;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -49,13 +49,13 @@ public class ScanModelAdaptor extends BaseAdapter {
      */
     @Override
     public int getItemViewType(int position) {
-        Scanable tag = this.getItem(position);
+        ScanableTag tag = this.getItem(position);
 
         // TODO ANOTHER InstanceOf check...
-        if (tag instanceof Cell) {
+        if (tag instanceof CellTag) {
             return CELL_VIEW_TYPE;
         }
-        if (tag instanceof Task) {
+        if (tag instanceof TaskTag) {
             return TASK_VIEW_TYPE;
         }
 
@@ -74,20 +74,20 @@ public class ScanModelAdaptor extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Scanable tag = this.getItem(position);
+        ScanableTag tag = this.getItem(position);
 
         int viewType = getItemViewType(position);
         switch (viewType) {
         case CELL_VIEW_TYPE:
-            return getViewForCell((Cell) tag, convertView, parent);
+            return getViewForCell((CellTag) tag, convertView, parent);
         case TASK_VIEW_TYPE:
-            return getViewForTask((Task) tag, convertView, parent);
+            return getViewForTask((TaskTag) tag, convertView, parent);
         default:
             return getViewForOtherTag(tag, convertView, parent);
         }
     }
 
-    private View getViewForCell(Cell cell, View convertView, ViewGroup parent) {
+    private View getViewForCell(CellTag cell, View convertView, ViewGroup parent) {
         View row = createOrReuse(convertView, R.layout.scanned_cell, parent);
 
         updateText(row, R.id.swimlane, cell.getSwimlane());
@@ -96,7 +96,7 @@ public class ScanModelAdaptor extends BaseAdapter {
         return row;
     }
 
-    private View getViewForTask(Task task, View convertView, ViewGroup parent) {
+    private View getViewForTask(TaskTag task, View convertView, ViewGroup parent) {
         View row = createOrReuse(convertView, R.layout.scanned_task, parent);
 
         updateText(row, R.id.task_id, task.getId());
@@ -106,7 +106,7 @@ public class ScanModelAdaptor extends BaseAdapter {
         return row;
     }
 
-    private View getViewForOtherTag(Scanable tag, View convertView,
+    private View getViewForOtherTag(ScanableTag tag, View convertView,
             ViewGroup parent) {
         View row = createOrReuse(convertView, R.layout.scanned_tag, parent);
 
@@ -150,7 +150,7 @@ public class ScanModelAdaptor extends BaseAdapter {
      * @see android.widget.Adapter#getItem(int)
      */
     @Override
-    public Scanable getItem(int position) {
+    public ScanableTag getItem(int position) {
         return model.get(position);
     }
 

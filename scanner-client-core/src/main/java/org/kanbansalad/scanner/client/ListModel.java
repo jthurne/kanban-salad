@@ -26,16 +26,16 @@ import java.util.List;
 
 import org.kanbansalad.scanner.client.program.ProgramModel;
 import org.kanbansalad.scanner.client.scan.ScanModel;
-import org.kanbansalad.trackable.Cell;
-import org.kanbansalad.trackable.Scanable;
+import org.kanbansalad.scanner.client.tag.CellTag;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
 
 public class ListModel implements ScanModel, ProgramModel {
     private final String filenameTemplate;
-    private final List<Scanable> scannedTags;
+    private final List<ScanableTag> scannedTags;
     private int selectedTagIndex = NONE;
 
     public ListModel(String filenameTemplate) {
-        scannedTags = new ArrayList<Scanable>();
+        scannedTags = new ArrayList<ScanableTag>();
         this.filenameTemplate = filenameTemplate;
     }
 
@@ -45,7 +45,7 @@ public class ListModel implements ScanModel, ProgramModel {
      * @see org.kdt.ScanModel#add(org.kdt.model.Scanable)
      */
     @Override
-    public void add(Scanable scannedTag) {
+    public void add(ScanableTag scannedTag) {
         scannedTags.add(scannedTag);
     }
 
@@ -65,7 +65,7 @@ public class ListModel implements ScanModel, ProgramModel {
      * @see org.kdt.program.ProgramModel#replace(int, org.kdt.tag.Scanable)
      */
     @Override
-    public void replace(int position, Scanable tag) {
+    public void replace(int position, ScanableTag tag) {
         scannedTags.set(position, tag);
     }
 
@@ -91,11 +91,11 @@ public class ListModel implements ScanModel, ProgramModel {
     }
 
     @Override
-    public Scanable get(int position) {
+    public ScanableTag get(int position) {
         return scannedTags.get(position);
     }
 
-    public List<Scanable> getScannedTags() {
+    public List<ScanableTag> getScannedTags() {
         return scannedTags;
     }
 
@@ -138,9 +138,9 @@ public class ListModel implements ScanModel, ProgramModel {
     }
 
     private void writeBody(Date snapshotDate, PrintWriter writer) {
-        Scanable cell = null;
-        for (Scanable tag : scannedTags) {
-            if (tag instanceof Cell) {
+        ScanableTag cell = null;
+        for (ScanableTag tag : scannedTags) {
+            if (tag instanceof CellTag) {
                 cell = tag;
             } else if (tag.isValid()) {
                 writeRecord(snapshotDate, cell, tag, writer);
@@ -148,7 +148,7 @@ public class ListModel implements ScanModel, ProgramModel {
         }
     }
 
-    private void writeRecord(Date snapshotDate, Scanable cell, Scanable task,
+    private void writeRecord(Date snapshotDate, ScanableTag cell, ScanableTag task,
             PrintWriter writer) {
         writer.printf("%tF\t%<tR\t%s\t%s%n",
                 snapshotDate,

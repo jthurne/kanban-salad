@@ -15,10 +15,10 @@
  */
 package org.kanbansalad.scanner.client.scan;
 
-import org.kanbansalad.trackable.Scanable;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
 
 public interface Scanner {
 	
-	public Scanable scan();
+	public ScanableTag scan();
 
 }

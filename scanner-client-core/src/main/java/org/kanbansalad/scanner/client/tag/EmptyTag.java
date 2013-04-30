@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kanbansalad.trackable;
+package org.kanbansalad.scanner.client.tag;
 
 /**
  * Represents an empty (unprogrammed) tag
  */
-public class Empty implements Scanable {
+public class EmptyTag implements ScanableTag {
     private static final long serialVersionUID = 1L;
 
     @Override

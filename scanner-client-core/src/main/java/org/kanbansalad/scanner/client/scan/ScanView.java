@@ -16,13 +16,13 @@
 package org.kanbansalad.scanner.client.scan;
 
 import org.kanbansalad.scanner.client.Visible;
-import org.kanbansalad.trackable.Scanable;
+import org.kanbansalad.scanner.client.tag.ScanableTag;
 
 /**
  * 
  */
 public interface ScanView {
-    public void appendToTags(Scanable tag);
+    public void appendToTags(ScanableTag tag);
 
     public void deleteTag(int position);
 

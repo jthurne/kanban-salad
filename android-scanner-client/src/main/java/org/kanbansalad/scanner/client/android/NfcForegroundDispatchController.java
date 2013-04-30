@@ -15,8 +15,8 @@
  */
 package org.kanbansalad.scanner.client.android;
 
-import static org.kanbansalad.trackable.TagType.CELL;
-import static org.kanbansalad.trackable.TagType.TASK;
+import static org.kanbansalad.scanner.client.tag.TagType.CELL;
+import static org.kanbansalad.scanner.client.tag.TagType.TASK;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
