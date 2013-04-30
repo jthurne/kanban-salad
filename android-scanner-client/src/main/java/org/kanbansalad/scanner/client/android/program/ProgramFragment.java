@@ -70,15 +70,20 @@ public class ProgramFragment extends Fragment implements IntentListener,
         initLookupButton();
         initTagTypeSpinner(rootView);
 
+        giveTaskSummaryTwoLines(rootView);
+
         presenter.viewInitalized();
         initSharedPrefsListener();
 
         return rootView;
     }
 
-    /**
-     * 
-     */
+    private void giveTaskSummaryTwoLines(final View rootView) {
+        EditText name = (EditText) rootView.findViewById(R.id.task_name_edit);
+        name.setLines(2);
+        name.setHorizontallyScrolling(false);
+    }
+
     private void initLookupButton() {
         lookupButton = taskDetails.findViewById(R.id.lookup_button);
         lookupButton.setOnClickListener(new OnClickListener() {
