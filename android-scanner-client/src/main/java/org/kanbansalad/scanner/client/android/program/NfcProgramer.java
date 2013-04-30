@@ -122,9 +122,18 @@ public class NfcProgramer implements Programer {
         byte[] encodedMimeType = encode(tag.getMimeType());
         int maxDataSize = calcMaxDataSize(maxRecordSize, encodedMimeType);
 
+        // XXX Adding format flag temporarily to avoid needing to reprogram tags
+        // Subtract one byte to reserve space for the format flag
+        maxDataSize -= 1;
+
+        byte[] tagData = encode(tag.toDataString(maxDataSize));
+        byte[] data = new byte[tagData.length + 1];
+        data[0] = 0;
+        System.arraycopy(tagData, 0, data, 1, tagData.length);
+
         return new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
                 encodedMimeType, new byte[0],
-                encode(tag.toDataString(maxDataSize)));
+                data);
     }
 
     private int calcMaxDataSize(int maxRecordSize, byte[] encodedMimeType) {

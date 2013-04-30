@@ -60,7 +60,13 @@ public class NfcScanner implements Scanner {
 
     private ScanableTag messageToScanable(NdefMessage message) {
         NdefRecord record = message.getRecords()[0];
-        String text = decodePayload(record.getPayload());
+
+        // XXX Ignoring the first byte because it contains a flag we are not
+        // paying attention to yet
+        byte[] rawData = new byte[record.getPayload().length - 1];
+        System.arraycopy(record.getPayload(), 1, rawData, 0, rawData.length);
+
+        String text = decodePayload(rawData);
 
         String mimeType = decodePayload(record.getType());
 
