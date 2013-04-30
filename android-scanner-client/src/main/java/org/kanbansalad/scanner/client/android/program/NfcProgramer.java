@@ -111,7 +111,7 @@ public class NfcProgramer implements Programer {
     }
 
     private NdefRecord createAppRecord() {
-        return NdefRecord.createApplicationRecord("org.kdt.kanbandatatracker");
+        return NdefRecord.createApplicationRecord("org.kanbansalad.scanner");
     }
 
     private byte[] encode(String toConvert) {
