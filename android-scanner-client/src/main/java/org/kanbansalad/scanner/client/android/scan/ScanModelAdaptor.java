@@ -15,7 +15,7 @@
  */
 package org.kanbansalad.scanner.client.android.scan;
 
-import org.kanbansalad.scanner.client.android.R;
+import org.kanbansalad.scanner.R;
 import org.kanbansalad.scanner.client.scan.ScanModel;
 import org.kanbansalad.trackable.Cell;
 import org.kanbansalad.trackable.Scanable;

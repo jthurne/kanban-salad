@@ -17,7 +17,7 @@ package org.kanbansalad.scanner.client.android;
 
 import java.util.Set;
 
-import org.kanbansalad.scanner.client.android.R;
+import org.kanbansalad.scanner.R;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;

@@ -15,6 +15,8 @@
  */
 package org.kanbansalad.scanner.client.android;
 
+import org.kanbansalad.scanner.R;
+
 import android.app.DialogFragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;

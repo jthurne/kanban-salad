@@ -17,7 +17,7 @@ package org.kanbansalad.scanner.client.android.scan;
 
 import java.io.File;
 
-import org.kanbansalad.scanner.client.android.R;
+import org.kanbansalad.scanner.R;
 import org.kanbansalad.scanner.client.android.SettingKeys;
 import org.kanbansalad.scanner.client.scan.Sender;
 

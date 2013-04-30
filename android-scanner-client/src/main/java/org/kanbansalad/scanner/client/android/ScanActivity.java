@@ -17,9 +17,9 @@ package org.kanbansalad.scanner.client.android;
 
 import java.util.Locale;
 
+import org.kanbansalad.scanner.R;
 import org.kanbansalad.scanner.client.NavigationPresenter;
 import org.kanbansalad.scanner.client.NavigationView;
-import org.kanbansalad.scanner.client.android.R;
 import org.kanbansalad.scanner.client.android.program.ProgramFragment;
 import org.kanbansalad.scanner.client.android.scan.ScanFragment;
 

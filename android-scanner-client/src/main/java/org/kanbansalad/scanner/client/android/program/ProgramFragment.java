@@ -18,11 +18,11 @@ package org.kanbansalad.scanner.client.android.program;
 import static org.kanbansalad.scanner.client.CommonConstants.NONE;
 import static org.kanbansalad.scanner.client.Visible.VISIBLE;
 
+import org.kanbansalad.scanner.R;
 import org.kanbansalad.scanner.client.Visible;
 import org.kanbansalad.scanner.client.android.AsyncTaskExecutor;
 import org.kanbansalad.scanner.client.android.IntentListener;
 import org.kanbansalad.scanner.client.android.ModelProvider;
-import org.kanbansalad.scanner.client.android.R;
 import org.kanbansalad.scanner.client.android.SharedPrefsSettings;
 import org.kanbansalad.scanner.client.program.BluetoothTaskFinder;
 import org.kanbansalad.scanner.client.program.ProgramPresenter;

@@ -15,7 +15,7 @@
  */
 package org.kanbansalad.scanner.client.android;
 
-import org.kanbansalad.scanner.client.android.R;
+import org.kanbansalad.scanner.R;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -15,10 +15,10 @@
  */
 package org.kanbansalad.scanner.client.android.scan;
 
+import org.kanbansalad.scanner.R;
 import org.kanbansalad.scanner.client.Visible;
 import org.kanbansalad.scanner.client.android.IntentListener;
 import org.kanbansalad.scanner.client.android.ModelProvider;
-import org.kanbansalad.scanner.client.android.R;
 import org.kanbansalad.scanner.client.scan.ScanPresenter;
 import org.kanbansalad.scanner.client.scan.ScanView;
 import org.kanbansalad.trackable.Scanable;

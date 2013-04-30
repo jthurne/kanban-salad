@@ -18,7 +18,7 @@ package org.kanbansalad.scanner.client.android.program;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import org.kanbansalad.scanner.client.android.R;
+import org.kanbansalad.scanner.R;
 import org.kanbansalad.scanner.client.program.Programer;
 import org.kanbansalad.scanner.client.program.ProgramingException;
 import org.kanbansalad.trackable.Programable;
