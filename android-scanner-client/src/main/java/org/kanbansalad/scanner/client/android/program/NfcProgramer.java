@@ -78,8 +78,10 @@ public class NfcProgramer implements Programer {
             ndefTag.connect();
             ndefTag.writeNdefMessage(createMessage(tag));
         } catch (IOException e) {
+            Log.e("NfcProgramer", "Failed to write tag:" + e.getMessage(), e);
             throw new WriteFailed(e);
         } catch (FormatException e) {
+            Log.e("NfcProgramer", "Failed to write tag:" + e.getMessage(), e);
             throw new WriteFailed(e);
         } finally {
             close(ndefTag);
