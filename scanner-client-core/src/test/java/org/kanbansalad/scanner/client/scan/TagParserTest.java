@@ -24,7 +24,6 @@ import static org.kanbansalad.scanner.client.tag.TagType.TASK;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kanbansalad.scanner.client.scan.TagParser;
 import org.kanbansalad.scanner.client.tag.CellTag;
 import org.kanbansalad.scanner.client.tag.EmptyTag;
 import org.kanbansalad.scanner.client.tag.IncorrectlyFormattedTag;
@@ -79,6 +78,30 @@ public class TagParserTest {
     }
 
     @Test
+    public void parses_task_tags__when_the_mime_type_is_a_task__and_the_size_field_is_empty()
+            throws Exception {
+        when.parsedObject = parser
+                .parse(TASK.mimeType(), "the-id\tthe-name\t");
+        then.parsedObject_should_be_a(TaskTag.class);
+    }
+
+    @Test
+    public void parses_task_tags__when_the_mime_type_is_a_task__and_the_name_field_is_empty()
+            throws Exception {
+        when.parsedObject = parser
+                .parse(TASK.mimeType(), "the-id\t\t3");
+        then.parsedObject_should_be_a(TaskTag.class);
+    }
+
+    @Test
+    public void parses_task_tags__when_the_mime_type_is_a_task__and_the_id_field_is_empty()
+            throws Exception {
+        when.parsedObject = parser
+                .parse(TASK.mimeType(), "t\tname\t3");
+        then.parsedObject_should_be_a(TaskTag.class);
+    }
+
+    @Test
     public void sets_correct_properties_on_a_task() throws Exception {
         when.parsedObject = parser
                 .parse(TASK.mimeType(), "the-id\tthe-name\t3");
@@ -92,6 +115,22 @@ public class TagParserTest {
             throws Exception {
         when.parsedObject = parser.parse(CELL.mimeType(),
                 "the-swimlane\tthe-queue");
+        then.parsedObject_should_be_a(CellTag.class);
+    }
+
+    @Test
+    public void parses_cell_tags__when_the_queue_is_empty()
+            throws Exception {
+        when.parsedObject = parser.parse(CELL.mimeType(),
+                "the-swimlane\t");
+        then.parsedObject_should_be_a(CellTag.class);
+    }
+
+    @Test
+    public void parses_cell_tags__when_the_swimlane_is_empty()
+            throws Exception {
+        when.parsedObject = parser.parse(CELL.mimeType(),
+                "\tthe-queue");
         then.parsedObject_should_be_a(CellTag.class);
     }
 
