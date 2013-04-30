@@ -1,9 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_program"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fillViewport="true"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -11,156 +10,164 @@
     tools:context=".ProgramTagActivity" >
 
     <LinearLayout
-        android:id="@+id/tag_type_layout"
+        android:id="@+id/fragment_program"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/tag_type_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tag_type_label" />
-
-        <Spinner
-            android:id="@+id/tag_type_spinner"
+        <LinearLayout
+            android:id="@+id/tag_type_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5pt"
-            android:entries="@array/tag_types_array"
-            android:prompt="@string/tag_type_prompt" />
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tag_type_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tag_type_label" />
+
+            <Spinner
+                android:id="@+id/tag_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5pt"
+                android:entries="@array/tag_types_array"
+                android:prompt="@string/tag_type_prompt" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cell_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/swimlane_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/swimlane_label" />
+
+            <EditText
+                android:id="@+id/swimlane_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:maxLines="1"
+                android:selectAllOnFocus="true"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/queue_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/queue_label" />
+
+            <EditText
+                android:id="@+id/queue_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:maxLines="1"
+                android:selectAllOnFocus="true"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/task_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible" >
+
+            <TextView
+                android:id="@+id/task_id_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/task_id_label" />
+
+            <EditText
+                android:id="@+id/task_id_edit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/task_id_label"
+                android:layout_toLeftOf="@+id/lookup_button"
+                android:ems="10"
+                android:inputType="text"
+                android:maxLines="1"
+                android:selectAllOnFocus="true"
+                android:singleLine="true" >
+            </EditText>
+
+            <ImageButton
+                android:id="@+id/lookup_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/task_id_label"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="Find"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_menu_search_holo_dark" />
+
+            <TextView
+                android:id="@+id/task_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/task_id_edit"
+                android:text="@string/task_name_label" />
+
+            <EditText
+                android:id="@+id/task_name_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/task_name_label"
+                android:ems="10"
+                android:inputType="text"
+                android:maxLines="1"
+                android:selectAllOnFocus="true"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/task_size_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/task_name_edit"
+                android:text="@string/task_size_label" />
+
+            <EditText
+                android:id="@+id/task_size_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/task_size_label"
+                android:ems="10"
+                android:inputType="text"
+                android:maxLines="1"
+                android:selectAllOnFocus="true"
+                android:singleLine="true" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/programming_instructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:text="@string/program_tag_instructions" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/cell_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/swimlane_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/swimlane_label" />
-
-        <EditText
-            android:id="@+id/swimlane_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" />
-
-        <TextView
-            android:id="@+id/queue_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/queue_label" />
-
-        <EditText
-            android:id="@+id/queue_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text" 
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/task_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible" >
-
-        <TextView
-            android:id="@+id/task_id_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/task_id_label" />
-        
-        <EditText
-            android:id="@+id/task_id_edit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/task_id_label"
-            android:layout_toLeftOf="@+id/lookup_button"            
-            android:ems="10"
-            android:inputType="text" 
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" >
-        </EditText>
-
-        <ImageButton
-            android:id="@+id/lookup_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/task_id_label"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="Find"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_menu_search_holo_dark" />
-
-        <TextView
-            android:id="@+id/task_name_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/task_id_edit"
-            android:text="@string/task_name_label" />
-
-        <EditText
-            android:id="@+id/task_name_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/task_name_label"
-            android:ems="10"
-            android:inputType="text" 
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" />
-
-        <TextView
-            android:id="@+id/task_size_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/task_name_edit"            
-            android:text="@string/task_size_label" />
-
-        <EditText
-            android:id="@+id/task_size_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/task_size_label"            
-            android:ems="10"
-            android:inputType="text" 
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <TextView
-        android:id="@+id/programming_instructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/program_tag_instructions" />
-
-</LinearLayout>
+</ScrollView>
