@@ -24,6 +24,8 @@ import static org.kanbansalad.scanner.client.program.Programer.ThereWas.A_TAG_TO
 import static org.kanbansalad.trackable.TagType.CELL;
 import static org.kanbansalad.trackable.TagType.TASK;
 
+import org.kanbansalad.scanner.client.BackgroundAction;
+import org.kanbansalad.scanner.client.BackgroundExecutor;
 import org.kanbansalad.scanner.client.Settings;
 import org.kanbansalad.scanner.client.Visible;
 import org.kanbansalad.scanner.client.program.ProgramView.Message;
@@ -41,19 +43,22 @@ public class ProgramPresenter {
     private final Programer tagProgrammer;
     private final Settings settings;
     private final TaskFinder taskFinder;
+    private final BackgroundExecutor executor;
 
     public ProgramPresenter(
             ProgramView view,
             ProgramModel model,
             Settings settings,
             Programer tagProgrammer,
-            TaskFinder taskFinder) {
+            TaskFinder taskFinder,
+            BackgroundExecutor executor) {
 
         this.view = view;
         this.tagProgrammer = tagProgrammer;
         this.model = model;
         this.settings = settings;
         this.taskFinder = taskFinder;
+        this.executor = executor;
     }
 
     public void viewInitalized() {
@@ -164,26 +169,30 @@ public class ProgramPresenter {
         if (thereIsNoIdToLookUp())
             return;
 
-        try {
-            attemptLookup();
-        } catch (TaskFinder.LookupFailed e) {
-            view.showException(Message.TASK_LOOKUP_FAILED, e);
-        }
+        executor.execute(new BackgroundAction<Task>() {
+            @Override
+            public Task doAction() {
+                return taskFinder.find(view.getTaskId());
+            }
+
+            @Override
+            public void onComplete(Task task) {
+                if (task == Task.NONE) {
+                    view.showMessage(TASK_NOT_FOUND);
+                } else {
+                    view.setTaskName(task.getName());
+                    view.setTaskSize(task.getSize());
+                }
+            }
+
+            @Override
+            public void onException(Exception e) {
+                view.showException(Message.TASK_LOOKUP_FAILED, e);
+            }
+        });
     }
 
     private boolean thereIsNoIdToLookUp() {
         return view.getTaskId() == null || view.getTaskId().isEmpty();
     }
-
-    private void attemptLookup() {
-        Task task = taskFinder.find(view.getTaskId());
-
-        if (task == Task.NONE) {
-            view.showMessage(TASK_NOT_FOUND);
-        } else {
-            view.setTaskName(task.getName());
-            view.setTaskSize(task.getSize());
-        }
-    }
-
 }

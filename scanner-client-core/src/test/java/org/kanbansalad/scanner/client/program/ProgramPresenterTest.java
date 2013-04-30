@@ -34,14 +34,11 @@ import static org.mockito.Mockito.when;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.kanbansalad.scanner.client.BackgroundAction;
+import org.kanbansalad.scanner.client.BackgroundExecutor;
 import org.kanbansalad.scanner.client.Settings;
+import org.kanbansalad.scanner.client.SimpleBackgroundExecutor;
 import org.kanbansalad.scanner.client.Visible;
-import org.kanbansalad.scanner.client.program.ProgramModel;
-import org.kanbansalad.scanner.client.program.ProgramPresenter;
-import org.kanbansalad.scanner.client.program.ProgramView;
-import org.kanbansalad.scanner.client.program.Programer;
-import org.kanbansalad.scanner.client.program.ProgramingException;
-import org.kanbansalad.scanner.client.program.TaskFinder;
 import org.kanbansalad.scanner.client.program.ProgramView.Message;
 import org.kanbansalad.scanner.client.program.Programer.ThereWas;
 import org.kanbansalad.trackable.Cell;
@@ -75,6 +72,9 @@ public class ProgramPresenterTest {
     @Mock
     private TaskFinder mockFinder;
 
+    @Mock
+    private BackgroundExecutor mockExecutor;
+
     @Before
     public void given_a_presenter() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -83,7 +83,8 @@ public class ProgramPresenterTest {
                 mockModel,
                 mockSettings,
                 mockTagProgramer,
-                mockFinder);
+                mockFinder,
+                new SimpleBackgroundExecutor());
     }
 
     @Test
@@ -344,12 +345,35 @@ public class ProgramPresenterTest {
     @Test
     public void displays_message_and_exception__when_the_lookup_button_is_clicked__but_the_finder_throws_an_exception()
             throws Exception {
-
         given.the_id_is_set_to("1234");
         and.the_task_finder_throws(TASK_LOOKUP_FAILED);
         when.presenter.lookupClicked();
         then.it_should_call(mockView).showException(Message.TASK_LOOKUP_FAILED,
                 TASK_LOOKUP_FAILED);
+    }
+
+    @Test
+    public void performs_task_lookup_in_the_background() throws Exception {
+        given.a_mock_BackgroundExecutor();
+        and.the_id_is_set_to("1234");
+        and.the_task_finder_can_find("1234", "Looked up summary", "XXL");
+        when.presenter.lookupClicked();
+        then.the_presenter_should_execute_a_task_on_the_BackgroundExecutor();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void the_presenter_should_execute_a_task_on_the_BackgroundExecutor() {
+        verify(mockExecutor).execute(Mockito.any(BackgroundAction.class));
+    }
+
+    private void a_mock_BackgroundExecutor() {
+        presenter = new ProgramPresenter(
+                mockView,
+                mockModel,
+                mockSettings,
+                mockTagProgramer,
+                mockFinder,
+                mockExecutor);
     }
 
     private void the_task_finder_throws(RuntimeException exception) {

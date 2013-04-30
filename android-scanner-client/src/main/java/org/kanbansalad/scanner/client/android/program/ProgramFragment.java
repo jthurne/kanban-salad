@@ -19,6 +19,7 @@ import static org.kanbansalad.scanner.client.CommonConstants.NONE;
 import static org.kanbansalad.scanner.client.Visible.VISIBLE;
 
 import org.kanbansalad.scanner.client.Visible;
+import org.kanbansalad.scanner.client.android.AsyncTaskExecutor;
 import org.kanbansalad.scanner.client.android.IntentListener;
 import org.kanbansalad.scanner.client.android.ModelProvider;
 import org.kanbansalad.scanner.client.android.R;
@@ -130,7 +131,8 @@ public class ProgramFragment extends Fragment implements IntentListener,
                 new SharedPrefsSettings(activity),
                 new NfcProgramer(activity),
                 new BluetoothTaskFinder(new AndroidBluetoothConnectionProvider(
-                        activity)));
+                        activity)),
+                new AsyncTaskExecutor(activity));
     }
 
     @Override
