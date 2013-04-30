@@ -16,8 +16,6 @@
 package org.kanbansalad.scanner.client.tag;
 
 public class CellTag implements ScanableTag, ProgramableTag {
-    private static final long serialVersionUID = 1L;
-
     private final String swimlane;
     private final String queue;
 

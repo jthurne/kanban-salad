@@ -16,10 +16,9 @@
 package org.kanbansalad.scanner.client.tag;
 
 public class TaskTag implements ScanableTag, ProgramableTag {
-    private static final long serialVersionUID = 1L;
-
     public static final TaskTag NONE = new TaskTag("", "", "");
 
+    // TODO Delegate actual storage to the trackable Task class
     private final String id;
     private final String name;
     private final String size;

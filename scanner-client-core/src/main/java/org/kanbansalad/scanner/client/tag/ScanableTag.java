@@ -15,9 +15,8 @@
  */
 package org.kanbansalad.scanner.client.tag;
 
-import java.io.Serializable;
 
-public interface ScanableTag extends Serializable {
+public interface ScanableTag {
 
     public String getDisplayName();
 

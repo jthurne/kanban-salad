@@ -19,8 +19,6 @@ package org.kanbansalad.scanner.client.tag;
  * 
  */
 public class IncorrectlyFormattedTag implements ScanableTag {
-    private static final long serialVersionUID = 1L;
-
     private final String invalidData;
 
     public IncorrectlyFormattedTag(String invalidData) {

@@ -19,8 +19,6 @@ package org.kanbansalad.scanner.client.tag;
  * Represents an empty (unprogrammed) tag
  */
 public class EmptyTag implements ScanableTag {
-    private static final long serialVersionUID = 1L;
-
     @Override
     public String getDisplayName() {
         return "<EMPTY>";
