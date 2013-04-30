@@ -37,6 +37,8 @@ import android.util.Log;
  * 
  */
 public class NfcProgramer implements Programer {
+    private static final String TAG = "NfcProgrammer";
+
     private static final Charset ASCII = Charset.forName("US-ASCII");
 
     private final Activity parentActivity;
@@ -76,6 +78,7 @@ public class NfcProgramer implements Programer {
     private void program(Ndef ndefTag, ProgramableTag tag) {
         try {
             ndefTag.connect();
+            Log.d(TAG, "NDEF Max Size: " + ndefTag.getMaxSize());
             ndefTag.writeNdefMessage(createMessage(tag));
         } catch (IOException e) {
             Log.e("NfcProgramer", "Failed to write tag:" + e.getMessage(), e);
@@ -88,23 +91,18 @@ public class NfcProgramer implements Programer {
         }
     }
 
-    private NdefMessage createMessage(ProgramableTag tag) {
-        NdefRecord mimeRecord = createMimeRecord(tag);
-        NdefRecord appRecord = createAppRecord();
+    private NdefMessage createMessage(ProgramableTag tag) throws IOException {
+        NdefRecord mimeRecord = createRecordFor(tag);
 
-        Log.d("NfcProgrammer", "mimeRecord size: "
-                + mimeRecord.getPayload().length);
-        Log.d("NfcProgrammer", "appRecord size: "
-                + appRecord.getPayload().length);
-        Log.d("NfcProgrammer",
-                "total size: "
-                        + (mimeRecord.getPayload().length + appRecord
-                                .getPayload().length));
+        NdefMessage message = new NdefMessage(new NdefRecord[] { mimeRecord });
 
-        return new NdefMessage(new NdefRecord[] { mimeRecord, appRecord });
+        Log.d(TAG, "mimeRecord size: " + mimeRecord.getPayload().length);
+        Log.d(TAG, "NdefMessage size: " + message.toByteArray().length);
+
+        return message;
     }
 
-    private NdefRecord createMimeRecord(ProgramableTag tag) {
+    private NdefRecord createRecordFor(ProgramableTag tag) throws IOException {
         return new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
                 encode(tag.getMimeType()), new byte[0],
                 encode(tag.getDataString()));
