@@ -217,10 +217,6 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null)
             return;
-
-        // scannedTags.clear();
-        // scannedTags
-        // .addAll(savedInstanceState.getStringArrayList("scannedTags"));
     }
 
     @Override
@@ -229,15 +225,6 @@ public class ScanFragment extends Fragment implements ScanView, IntentListener {
         Toast.makeText(this.getActivity(),
                 e.getMessage(),
                 Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // TODO Move to presenter
-        if (scannedTagsView.getCheckedItemPosition() > -1) {
-            showTagContextMenu();
-        }
     }
 
     @Override
