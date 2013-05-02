@@ -100,7 +100,7 @@ public class ScanModelAdaptor extends BaseAdapter {
         View row = createOrReuse(convertView, R.layout.scanned_task, parent);
 
         updateText(row, R.id.task_id, task.getId());
-        updateText(row, R.id.task_name, task.getName());
+        updateText(row, R.id.task_name, task.getSummary());
         updateText(row, R.id.task_size, task.getSize());
 
         return row;

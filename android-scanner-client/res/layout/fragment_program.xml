@@ -117,19 +117,19 @@
                 android:src="@drawable/ic_menu_search_holo_dark" />
 
             <TextView
-                android:id="@+id/task_name_label"
+                android:id="@+id/task_summary_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/task_id_edit"
-                android:text="@string/task_name_label" />
+                android:text="@string/task_summary_label" />
 
             <EditText
-                android:id="@+id/task_name_edit"
+                android:id="@+id/task_summary_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/task_name_label"
+                android:layout_below="@id/task_summary_label"
                 android:ems="10"
                 android:inputType="text"
                 android:selectAllOnFocus="true"
@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/task_name_edit"
+                android:layout_below="@id/task_summary_edit"
                 android:text="@string/task_size_label" />
 
             <EditText

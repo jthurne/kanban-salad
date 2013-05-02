@@ -23,18 +23,18 @@ public class Task implements Serializable {
     public static final Task NONE = new Task("", "", "");
 
     private final String id;
-    private final String name;
+    private final String summary;
     private final String size;
 
-    public Task(String id, String name, String size) {
+    public Task(String id, String summary, String size) {
         this.id = id;
-        this.name = name;
+        this.summary = summary;
         this.size = size;
     }
 
     private Task(Builder builder) {
         this.id = builder.id;
-        this.name = builder.name;
+        this.summary = builder.name;
         this.size = builder.size;
     }
 
@@ -42,8 +42,8 @@ public class Task implements Serializable {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getSummary() {
+        return summary;
     }
 
     public String getSize() {
@@ -52,7 +52,7 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        return name;
+        return summary;
     }
 
     @Override

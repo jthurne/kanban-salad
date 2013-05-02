@@ -140,7 +140,7 @@ public class BluetoothTaskFinderTest {
         assertThat(returnedTask,
                 hasProperty("id", equalTo(expectedTask.getId())));
         assertThat(returnedTask,
-                hasProperty("name", equalTo(expectedTask.getName())));
+                hasProperty("summary", equalTo(expectedTask.getSummary())));
         assertThat(returnedTask,
                 hasProperty("size", equalTo(expectedTask.getSize())));
     }

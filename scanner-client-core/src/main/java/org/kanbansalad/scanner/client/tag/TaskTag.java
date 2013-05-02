@@ -21,18 +21,18 @@ public class TaskTag implements ScanableTag, ProgramableTag {
 
     // TODO Delegate actual storage to the trackable Task class
     private final String id;
-    private final String name;
+    private final String summary;
     private final String size;
 
-    public TaskTag(String id, String name, String size) {
+    public TaskTag(String id, String summary, String size) {
         this.id = id;
-        this.name = name;
+        this.summary = summary;
         this.size = size;
     }
 
     private TaskTag(Builder builder) {
         this.id = builder.id;
-        this.name = builder.name;
+        this.summary = builder.name;
         this.size = builder.size;
     }
 
@@ -40,8 +40,8 @@ public class TaskTag implements ScanableTag, ProgramableTag {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getSummary() {
+        return summary;
     }
 
     public String getSize() {
@@ -50,14 +50,14 @@ public class TaskTag implements ScanableTag, ProgramableTag {
 
     @Override
     public String getDisplayName() {
-        return "\t\t" + name;
+        return "\t\t" + summary;
     }
 
     @Override
     public String toDataString(int maxSize) {
         return new DataBuilder()
                 .add(id)
-                .add(name).canTruncate()
+                .add(summary).canTruncate()
                 .add(size)
                 .toDataString(maxSize);
     }
@@ -74,7 +74,7 @@ public class TaskTag implements ScanableTag, ProgramableTag {
 
     @Override
     public String toString() {
-        return name;
+        return summary;
     }
 
     @Override

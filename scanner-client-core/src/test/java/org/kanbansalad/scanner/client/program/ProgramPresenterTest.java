@@ -126,7 +126,7 @@ public class ProgramPresenterTest {
     public void programs_a_task_tag__when_tag_is_tapped() throws Exception {
         given.the_tag_type_is(TagType.TASK);
         and.the_id_is_set_to("1234");
-        and.the_name_is_set_to("User can program a tag");
+        and.the_summary_is_set_to("User can program a tag");
         and.the_size_is_set_to("XL");
         when.presenter.tagTapped();
         then.the_tag_should_be_programmed_using(new TaskTag("1234",
@@ -169,7 +169,7 @@ public class ProgramPresenterTest {
         when.presenter.visibilityChanged(VISIBLE);
         then.it_should_call(mockView).setSelectedTagType(TASK);
         then.it_should_call(mockView).setTaskId("1234");
-        then.it_should_call(mockView).setTaskName("User can program a tag");
+        then.it_should_call(mockView).setTaskSummary("User can program a tag");
         then.it_should_call(mockView).setTaskSize("XL");
     }
 
@@ -310,7 +310,7 @@ public class ProgramPresenterTest {
         given.the_id_is_set_to("1234");
         and.the_task_finder_can_find("1234", "Looked up summary", "XXL");
         when.presenter.lookupClicked();
-        then.it_should_call(mockView).setTaskName("Looked up summary");
+        then.it_should_call(mockView).setTaskSummary("Looked up summary");
         then.it_should_call(mockView).setTaskSize("XXL");
     }
 
@@ -320,7 +320,7 @@ public class ProgramPresenterTest {
         given.the_id_is_set_to("");
         and.the_task_finder_can_find("", "Looked up summary", "XXL");
         when.presenter.lookupClicked();
-        then.it_should_not_call(mockView).setTaskName("Looked up summary");
+        then.it_should_not_call(mockView).setTaskSummary("Looked up summary");
         then.it_should_not_call(mockView).setTaskSize("XXL");
     }
 
@@ -330,7 +330,7 @@ public class ProgramPresenterTest {
         given.the_id_is_set_to(null);
         and.the_task_finder_can_find(null, "Looked up summary", "XXL");
         when.presenter.lookupClicked();
-        then.it_should_not_call(mockView).setTaskName("Looked up summary");
+        then.it_should_not_call(mockView).setTaskSummary("Looked up summary");
         then.it_should_not_call(mockView).setTaskSize("XXL");
     }
 
@@ -458,7 +458,7 @@ public class ProgramPresenterTest {
                         Matchers.<TaskTag> hasProperty("id",
                                 equalTo(task.getId())),
                         Matchers.<TaskTag> hasProperty(
-                                "name", equalTo(task.getName())),
+                                "summary", equalTo(task.getSummary())),
                         Matchers
                                 .<TaskTag> hasProperty("size",
                                         equalTo(task.getSize())))));
@@ -480,8 +480,8 @@ public class ProgramPresenterTest {
         Mockito.when(mockView.getTaskId()).thenReturn(id);
     }
 
-    private void the_name_is_set_to(String name) {
-        Mockito.when(mockView.getTaskName()).thenReturn(name);
+    private void the_summary_is_set_to(String summary) {
+        Mockito.when(mockView.getTaskSummary()).thenReturn(summary);
     }
 
     private void the_size_is_set_to(String size) {
@@ -509,7 +509,7 @@ public class ProgramPresenterTest {
     private void the_view_should_be_cleared_and_task_type_should_be_selected() {
         it_should_call(mockView).setSelectedTagType(TagType.TASK);
         it_should_call(mockView).setTaskId("");
-        it_should_call(mockView).setTaskName("");
+        it_should_call(mockView).setTaskSummary("");
         it_should_call(mockView).setTaskSize("");
     }
 

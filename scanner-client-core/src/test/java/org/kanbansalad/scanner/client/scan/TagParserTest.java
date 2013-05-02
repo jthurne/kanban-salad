@@ -106,7 +106,7 @@ public class TagParserTest {
         when.parsedObject = parser
                 .parse(TASK.mimeType(), "the-id\tthe-name\t3");
         then.the_parsedObject_should_have_property("id", "the-id");
-        and.the_parsedObject_should_have_property("name", "the-name");
+        and.the_parsedObject_should_have_property("summary", "the-name");
         and.the_parsedObject_should_have_property("size", "3");
     }
 

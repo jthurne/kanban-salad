@@ -5,7 +5,7 @@
     <string name="swimlane_label">Swimlane</string>
     <string name="queue_label">Queue</string>
     <string name="task_id_label">ID</string>
-    <string name="task_name_label">Name</string>
+    <string name="task_summary_label">Summary</string>
     <string name="task_size_label">Size</string>
     <string name="tag_type_label">Type</string>
     <string name="tag_type_prompt">Select a tag type</string>

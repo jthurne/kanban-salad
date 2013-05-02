@@ -37,7 +37,7 @@ public interface ProgramView {
 
     public String getTaskId();
 
-    public String getTaskName();
+    public String getTaskSummary();
 
     public String getTaskSize();
 
@@ -51,7 +51,7 @@ public interface ProgramView {
 
     public void setTaskId(String id);
 
-    public void setTaskName(String name);
+    public void setTaskSummary(String name);
 
     public void setTaskSize(String size);
 

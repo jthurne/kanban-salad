@@ -108,7 +108,7 @@ public class ProgramPresenter {
         if (selectedTagType == TASK) {
             return new TaskTag(
                     view.getTaskId(),
-                    view.getTaskName(),
+                    view.getTaskSummary(),
                     view.getTaskSize());
         }
 
@@ -149,7 +149,7 @@ public class ProgramPresenter {
     private void resetViewForTask(TaskTag task) {
         view.setSelectedTagType(TagType.TASK);
         view.setTaskId(task.getId());
-        view.setTaskName(task.getName());
+        view.setTaskSummary(task.getSummary());
         view.setTaskSize(task.getSize());
     }
 
@@ -162,7 +162,7 @@ public class ProgramPresenter {
     private void clearView() {
         view.setSelectedTagType(TagType.TASK);
         view.setTaskId("");
-        view.setTaskName("");
+        view.setTaskSummary("");
         view.setTaskSize("");
     }
 
@@ -181,7 +181,7 @@ public class ProgramPresenter {
                 if (task.equals(Task.NONE)) {
                     view.showMessage(TASK_NOT_FOUND);
                 } else {
-                    view.setTaskName(task.getName());
+                    view.setTaskSummary(task.getSummary());
                     view.setTaskSize(task.getSize());
                 }
             }

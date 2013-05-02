@@ -79,7 +79,7 @@ public class ProgramFragment extends Fragment implements IntentListener,
     }
 
     private void giveTaskSummaryTwoLines(final View rootView) {
-        EditText name = (EditText) rootView.findViewById(R.id.task_name_edit);
+        EditText name = (EditText) rootView.findViewById(R.id.task_summary_edit);
         name.setLines(3);
         name.setHorizontallyScrolling(false);
     }
@@ -251,8 +251,8 @@ public class ProgramFragment extends Fragment implements IntentListener,
     }
 
     @Override
-    public String getTaskName() {
-        return getTextFrom(taskDetails, R.id.task_name_edit);
+    public String getTaskSummary() {
+        return getTextFrom(taskDetails, R.id.task_summary_edit);
     }
 
     @Override
@@ -292,8 +292,8 @@ public class ProgramFragment extends Fragment implements IntentListener,
     }
 
     @Override
-    public void setTaskName(String name) {
-        setTextOn(taskDetails, R.id.task_name_edit, name);
+    public void setTaskSummary(String name) {
+        setTextOn(taskDetails, R.id.task_summary_edit, name);
     }
 
     @Override
