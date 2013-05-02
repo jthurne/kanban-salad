@@ -80,7 +80,7 @@ public class ProgramFragment extends Fragment implements IntentListener,
 
     private void giveTaskSummaryTwoLines(final View rootView) {
         EditText name = (EditText) rootView.findViewById(R.id.task_name_edit);
-        name.setLines(2);
+        name.setLines(3);
         name.setHorizontallyScrolling(false);
     }
 
