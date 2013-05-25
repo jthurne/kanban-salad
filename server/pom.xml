@@ -19,6 +19,28 @@
       <version>2.10.1</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+        <groupId>play</groupId>
+        <artifactId>play_2.10</artifactId>
+        <version>2.1.1</version>
+    </dependency>
+    <dependency>
+        <groupId>play</groupId>
+        <artifactId>play-test_2.10</artifactId>
+        <version>2.1.1</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>play</groupId>
+        <artifactId>play-jdbc_2.10</artifactId>
+        <version>2.1.1</version>
+    </dependency>
+    <dependency>
+        <groupId>play</groupId>
+        <artifactId>anorm_2.10</artifactId>
+        <version>2.1.1</version>
+    </dependency>
+
 
     <dependency>
       <groupId>org.kanbansalad</groupId>
@@ -57,4 +79,20 @@
       </plugin>
     </plugins>
   </build>
+
+  <repositories>
+    <repository>
+        <id>TypesafeReleasesRepository</id>
+        <name>Typesafe Releases Repository</name>
+        <url>http://repo.typesafe.com/typesafe/releases/</url>
+        <layout>default</layout>
+    </repository>
+    <repository>
+        <id>TypesafeSnapshotsRepository</id>
+        <name>Typesafe Snapshots Repository</name>
+        <url>http://repo.typesafe.com/typesafe/snapshots/</url>
+        <layout>default</layout>
+    </repository>
+  </repositories>
+
 </project>
