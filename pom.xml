@@ -11,6 +11,7 @@
     <module>scanner-client-core</module>
     <module>android-scanner-client</module>
     <module>bluetooth-service</module>
+    <module>server</module>
   </modules>
 
   <properties>
